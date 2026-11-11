@@ -284,7 +284,7 @@ z = \gamma / 0.3, \qquad \beta = \sigma(z), \qquad
 a      &= \mathrm{Attn}(x)\, W_o^\top \\
 s_1    &= \alpha_1\, s + \beta_1\, \mathrm{RMSNorm}_{10^{-8}}(a) \\
 h      &= \mathrm{RMSNorm}(s_1) \odot (1 + w_{\text{pre-ffn}}) \\
-r      &= \sigma\big(0.1768\cdot h\, W_r^\top\big), \qquad \mathcal{E} = \operatorname{top8}(r + b) \\
+r      &= \sigma\big(0.1768\cdot h\, W_r^\top\big), \qquad \mathcal{E} = \mathrm{top8}(r + b) \\
 w_e    &= r_e \Big/ \Big(\textstyle\sum_{e'\in\mathcal{E}} r_{e'} + 10^{-15}\Big) \\
 p      &= \mathrm{RMSNorm}(h\, W_{pool}^\top) \odot (1 + w_{\text{pre-expert}}) \\
 f      &= \big(\mathrm{MoE}(p)\, W_{unpool}^\top\big) \odot (1 + w_{\text{post-ffn}}) \\
