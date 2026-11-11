@@ -325,19 +325,6 @@ Correctness is relative L2 against an FP64 reference: $`\lVert \text{out} - \tex
 
 ---
 
-## Reproducing
-
-Each folder's working `submission.py` (and older variants) stays local; the final version of each
-is in [best_submissions/](best_submissions/). The problem statements (`TASK.md`) and agent notes
-(`AGENTS.md`), plus my local planning notes (`intent.md`), are not in the repository either (see [.gitignore](.gitignore)). Each problem's full statement is on
-[openkernelchallenge.dev](https://openkernelchallenge.dev/).
-
-Every file in [best_submissions/](best_submissions/) can be submitted to the challenge as it is.
-No local GPU is needed: the challenge runs each submission on its own H200, checks it against the
-reference and times it against SGLang.
-
-The judge environment: torch 2.14.1+cu130, Triton 3.8.0, CUDA 13.0, H200 SXM. Locally I checked
-correctness without a GPU using `TRITON_INTERPRET=1` against the judge's `reference.py`.
 
 ## Rules I kept to
 
@@ -348,9 +335,3 @@ These solutions aim for real speedups that could be upstreamed, not tricks again
 - Everything is CUDA-graph safe: no host syncs, no branching on input values.
 - Correctness is checked against the FP64 reference, including stress runs for race conditions.
 
-## Side study: 10T model on Cerebras ([10t_model/](10t_model/))
-
-This is not part of the kernel challenge. It sizes a 10-trillion-parameter model on Cerebras WSE-3T wafers
-using the method from Cerebras' "Deploying Trillion-parameter Frontier Models" talk: about 128-190 wafers,
-with the trade-off between wafer count and KV-cache room. See [10t_model/README.md](10t_model/README.md)
-and `python3 10t_model/calc.py`.
