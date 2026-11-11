@@ -16,5 +16,5 @@ okc check best_submissions/muse_bf16_proj.py --json
 | [muse_decode_layer.py](muse_decode_layer.py) | Whole decoder layer, decode/verify | v7 | 1.271x check | [decode_layer/LOG.md](../decode_layer/LOG.md) |
 | [muse_prefill_layer.py](muse_prefill_layer.py) | Whole decoder layer, prefill | v3 | 1.133x submitted | [prefill_layer/LOG.md](../prefill_layer/LOG.md) |
 
-These are the only submission files in the repository; the working `submission.py` in each
-problem folder is kept local.
+These are copies of each problem folder's `submission.py`. If you change a submission there,
+copy it here again.
