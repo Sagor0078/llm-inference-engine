@@ -3,8 +3,9 @@
 **Muse Spark Open Kernel Challenge: my solutions.**
 GPU kernels that make parts of **Muse Spark Open** inference faster than stock **SGLang** on one
 NVIDIA H200, written for the [Open Kernel Challenge](https://openkernelchallenge.dev/).
-Each folder holds one challenge problem: the kernel I submitted, the probes I used to explore it,
-and a `LOG.md` recording every experiment with its judge job ID.
+The final kernel for each problem is in [best_submissions/](best_submissions/); each problem folder
+holds the probes and prototypes I used to explore it, and a `LOG.md` recording every experiment with
+its judge job ID.
 
 All results below come from the official judge (H200, CUDA-graph replays, cold L2, paired against
 SGLang on the same inputs). Leaderboard positions are provisional until the organizers' final review.
@@ -149,7 +150,7 @@ The weights stay NVFP4 in memory, and the dequant runs inside the timed call.
 ```
 .
 ├── README.md                  # this file
-├── .gitignore                 # keeps TASK.md, AGENTS.md and intent.md out of git (every folder)
+├── .gitignore                 # keeps TASK.md, AGENTS.md, intent.md and working submission*.py out of git
 ├── best_submissions/          # the best submission of every problem, in one place
 ├── bf16_proj/                 # muse_bf16_proj
 ├── attn_decode/               # muse_attention_decode (my working copy)
