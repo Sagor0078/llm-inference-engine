@@ -24,7 +24,8 @@ The speedup is the judge's score: the geometric mean over loads of SGLang's time
 1.0x means parity with SGLang.
 
 **Just want the kernels?** The best submission for each problem is collected in
-[best_submissions/](best_submissions/), one self-contained file per problem.
+[best_submissions/](best_submissions/), one self-contained file per problem. The math each one
+computes is in [Mathematical formulation](#mathematical-formulation).
 
 ## The approach, in one paragraph
 
@@ -142,6 +143,184 @@ TFLOPS), followed by a grouped SiLU-mul and finalize. Smaller blocks stay on Mar
 
 Result: v1 1.000x (parity) → **v3 1.133x submitted**, with 1.28-1.50x on the 16K-token shapes.
 The weights stay NVFP4 in memory, and the dequant runs inside the timed call.
+
+---
+
+## Mathematical formulation
+
+These are the functions each submission computes, taken from the judge's reference code, plus the
+reformulations the kernels use to compute them faster. All accumulation is in FP32.
+
+### Common building blocks
+
+```math
+\mathrm{RMSNorm}_\epsilon(x) = \frac{x}{\sqrt{\tfrac{1}{d}\sum_{i=1}^{d} x_i^2 + \epsilon}},
+\qquad \sigma(z) = \frac{1}{1+e^{-z}},
+\qquad \mathrm{SiLU}(z) = z\,\sigma(z)
+```
+
+$`\epsilon = 10^{-5}`$ unless noted. "Norm with weight $`w`$" means $`\mathrm{RMSNorm}(x)\odot(1+w)`$.
+
+### 1. Dense projections (`muse_bf16_proj`)
+
+A plain GEMM, $`X \in \mathbb{R}^{m\times k}`$, $`W \in \mathbb{R}^{n\times k}`$:
+
+```math
+Y = X W^\top, \qquad y_{ij} = \sum_{l=1}^{k} x_{il}\, w_{jl}
+```
+
+**Split-K.** K is cut into $`S`$ slices $`\mathcal{K}_1,\dots,\mathcal{K}_S`$, one per work unit, so every SM
+streams a share of $`W`$; the partial sums meet in an FP32 workspace by atomic adds:
+
+```math
+y_{ij} = \sum_{s=1}^{S} \underbrace{\sum_{l \in \mathcal{K}_s} x_{il}\, w_{jl}}_{\text{one work unit}}
+```
+
+**Swap-AB.** For small $`m`$ the kernel computes the transpose, so the wide weight tile is the
+tensor-core operand that fills the MMA: $`Y^\top = W X^\top`$.
+
+**Router (FP32 weights) as a BF16 hi + lo pair**, split once in `prepare()`:
+
+```math
+W_{hi} = \mathrm{bf16}(W), \qquad W_{lo} = \mathrm{bf16}(W - W_{hi}), \qquad
+Y \approx X W_{hi}^\top + X W_{lo}^\top
+```
+
+Both products go through the tensor cores into one FP32 accumulator in a single pass over the
+weights. The pair carries about 16 mantissa bits, well inside the router's $`10^{-4}`$ error bound.
+When the input is FP32 too (the decode layer, up to 8 tokens), it is split the same way and the
+negligible $`x_{lo}W_{lo}`$ term is dropped:
+$`Y \approx x_{hi}W_{hi}^\top + x_{hi}W_{lo}^\top + x_{lo}W_{hi}^\top`$.
+
+**m = 1 (GEMV).** $`y_j = \sum_l x_l w_{jl}`$, with each warp summing one row segment and the warps
+of a row reduced in shared memory. The router's FP32 weights are used directly here.
+
+### 2. Gated attention decode (`muse_attention_decode`)
+
+Per token at position $`p`$ and query head $`h`$ (KV head $`g`$ of its group), head dim $`d = 64`$:
+
+```math
+\hat q = c\cdot\mathrm{RMSNorm}(q), \quad \hat k = \mathrm{RMSNorm}(k), \qquad c = 5.473
+```
+
+**RoPE** (sliding layers only, interleaved/GPT-J form), $`\theta = 500{,}000`$:
+
+```math
+\begin{pmatrix} x'_{2i} \\ x'_{2i+1} \end{pmatrix} =
+\begin{pmatrix} \cos\phi_i & -\sin\phi_i \\ \sin\phi_i & \cos\phi_i \end{pmatrix}
+\begin{pmatrix} x_{2i} \\ x_{2i+1} \end{pmatrix}, \qquad \phi_i = p\,\theta^{-2i/d}
+```
+
+**FP8 cache write:** $`\tilde K = \mathrm{E4M3}(\hat k / s_k)`$, $`\tilde V = \mathrm{E4M3}(v / s_v)`$.
+
+**Attention** over the visible keys $`t \in [t_0, p]`$, with $`t_0 = \max(0, p - 2048 + 1)`$ on sliding
+layers and $`0`$ on full layers (causal inside an 8-token verify block):
+
+```math
+\ell_t = \frac{\hat q \cdot k_t}{\sqrt d}, \qquad
+o = \sum_{t=t_0}^{p} \frac{e^{\ell_t}}{\sum_{u} e^{\ell_u}}\, v_t, \qquad
+\text{out} = \mathrm{RMSNorm}(o) \odot \sigma(\text{gate})
+```
+
+**FP8 query (as FA3 does):** the query is rounded after the norm and $`c`$ moves into the softmax scale,
+$`\ell_t = \mathrm{E4M3}(\mathrm{RMSNorm}(q))\cdot k_t \cdot c/\sqrt d`$.
+
+**Split-KV with online softmax.** Each program handles a key chunk $`j`$ and keeps the running max,
+sum and unnormalized output:
+
+```math
+m_j = \max_{t\in j} \ell_t, \qquad
+L_j = \sum_{t\in j} e^{\ell_t - m_j}, \qquad
+O_j = \sum_{t\in j} e^{\ell_t - m_j}\, v_t
+```
+
+The combine kernel merges the chunks exactly:
+
+```math
+m = \max_j m_j, \qquad
+o = \frac{\sum_j e^{m_j - m}\, O_j}{\sum_j e^{m_j - m}\, L_j}
+```
+
+### 3. Routed experts, NVFP4 (`muse_moe_w4a16`)
+
+**NVFP4 weights:** two 4-bit E2M1 codes per byte, one E4M3 scale $`s`$ per 16 values, one FP32
+global scale $`g`$ per expert:
+
+```math
+W_{r,l} = e_{r,l}\cdot s_{r,\lfloor l/16\rfloor}\cdot g, \qquad
+e \in \{0, \pm 0.5, \pm 1, \pm 1.5, \pm 2, \pm 3, \pm 4, \pm 6\}
+```
+
+**Per token** $`x`$ with its top-8 experts $`\mathcal{E}`$ and routing weights $`w_e`$ ($`\sum_e w_e = 1`$),
+$`D = 4096`$:
+
+```math
+h = x\,W_{13,e}^\top = [\,h_{gate} \mid h_{up}\,], \qquad
+a = \mathrm{SiLU}(h_{gate}) \odot h_{up}, \qquad
+y_e = a\,W_{2,e}^\top
+```
+
+```math
+\hat y_e = \mathrm{RMSNorm}_{10^{-8}}\big(y_e \odot (1 + w_{post})\big), \qquad
+\text{out} = \sum_{e \in \mathcal{E}\,\cap\,\text{local}} w_e\, \hat y_e
+```
+
+The $`(1+w_{post})`$ scale is applied *before* the normalization, in FP32. My finalize kernel computes
+$`\hat y_e`$ and the weighted sum in one launch.
+
+### 4. Whole decoder layer (`muse_decode_layer`)
+
+**Norm-preserving residual** with a learned gate $`\gamma`$:
+
+```math
+z = \gamma / 0.3, \qquad \beta = \sigma(z), \qquad
+\alpha = \sqrt{\max\big(\sigma(-z)\,(1+\beta),\ 10^{-3}\big)}
+```
+
+**The layer**, from residual stream $`s`$ and attention input $`x`$:
+
+```math
+\begin{aligned}
+a      &= \mathrm{Attn}(x)\, W_o^\top \\
+s_1    &= \alpha_1\, s + \beta_1\, \mathrm{RMSNorm}_{10^{-8}}(a) \\
+h      &= \mathrm{RMSNorm}(s_1) \odot (1 + w_{\text{pre-ffn}}) \\
+r      &= \sigma\big(0.1768\cdot h\, W_r^\top\big), \qquad \mathcal{E} = \operatorname{top8}(r + b) \\
+w_e    &= r_e \Big/ \Big(\textstyle\sum_{e'\in\mathcal{E}} r_{e'} + 10^{-15}\Big) \\
+p      &= \mathrm{RMSNorm}(h\, W_{pool}^\top) \odot (1 + w_{\text{pre-expert}}) \\
+f      &= \big(\mathrm{MoE}(p)\, W_{unpool}^\top\big) \odot (1 + w_{\text{post-ffn}}) \\
+s_2    &= \alpha_2\, s_1 + \beta_2\, \mathrm{RMSNorm}_{10^{-8}}(f) \\
+x_{next} &= \mathrm{RMSNorm}(s_2) \odot (1 + w_{\text{next-attn}})
+\end{aligned}
+```
+
+$`\mathrm{Attn}`$ is section 2, $`\mathrm{MoE}`$ is section 3, and the projections are section 1. The
+bias $`b`$ only chooses the experts; the weights $`w_e`$ use the unbiased scores. Up to 8 tokens this
+GPU computes only the first $`8192/8 = 1024`$ columns of $`f`$. My kernels fuse the norm/residual
+lines and the router into single launches; the math is unchanged.
+
+### 5. Prefill layer (`muse_prefill_layer`)
+
+The same layer as section 4. The change is how the experts are computed at ≥ 8,192 tokens. The
+global scales are factored out of the GEMMs, so the dequantized weights are exact in BF16:
+
+```math
+\tilde W = e \cdot s \ \ (\text{exact in BF16}), \qquad
+H_e = g_{13}\,\big(X_e \tilde W_{13,e}^\top\big), \qquad
+Y_e = g_{2}\,\big(A_e \tilde W_{2,e}^\top\big)
+```
+
+Here $`X_e`$ holds all tokens routed to expert $`e`$, so the whole step is one grouped GEMM
+(`torch._grouped_mm`) per projection, followed by the SiLU-mul and the same finalize as section 3.
+
+### How the judge scores it
+
+```math
+T_{\text{load}} = \sum_{\text{shapes}} \text{weight}\times t_{\text{shape}}, \qquad
+\text{speedup} = \Big(\prod_{\text{loads}} \frac{T^{\text{SGLang}}_{\text{load}}}{T^{\text{mine}}_{\text{load}}}\Big)^{1/N_{\text{loads}}}
+```
+
+The floor for each shape is $`\max(\text{bytes}/4.8\,\text{TB/s},\ \text{FLOPs}/989\,\text{TFLOP/s})`$.
+Correctness is relative L2 against an FP64 reference: $`\lVert \text{out} - \text{ref}\rVert_2 / \lVert \text{ref}\rVert_2`$.
 
 ---
 
