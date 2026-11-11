@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-trlpqlnl/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-trlpqlnl/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-trlpqlnl/run/submission.py", line 97, in prepare
+    best = res[0][0]
+           ~~~^^^
+IndexError: list index out of range

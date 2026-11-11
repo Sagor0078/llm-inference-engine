@@ -1,0 +1,30 @@
+unpo m1 n1024 base 10.66 | s1M0=18.94 s1M1=18.78 s1M2=18.78 s1M3=18.78 s8M0=9.76 s8M1=8.48 s8M2=8.51 s8M3=8.38 s16M0=9.31 s16M1=7.97 s16M2=8.10 s16M3=8.03 [1s]
+unpo m8 n1024 base 10.85 | s1M0=18.94 s1M1=18.78 s1M2=18.82 s1M3=18.78 s8M0=9.82 s8M1=8.42 s8M2=8.45 s8M3=8.35 s16M0=9.57 s16M1=8.13 s16M2=8.06 s16M3=8.13 [1s]
+rout m1 n256 base 13.92 | bn32s16M0=9.66 bn32s16M1=8.61 bn32s16M2=8.61 bn32s16M3=8.70 bn32s8M0=10.43 bn32s8M1=9.54 bn32s8M2=9.50 bn32s8M3=9.57 bn64s4M0=15.65 bn64s4M1=13.44 bn64s4M2=13.57 bn64s4M3=13.63 [3s]
+rout m16 n256 base 29.98 | bn32s16M0=9.79 bn32s16M1=8.61 bn32s16M2=8.58 bn32s16M3=8.67 bn32s8M0=10.59 bn32s8M1=9.54 bn32s8M2=9.41 bn32s8M3=9.57 bn64s4M0=14.75 bn64s4M1=13.28 bn64s4M2=13.41 bn64s4M3=13.60 [3s]
+o m1 n8192 base 10.59 | s1M0=10.34 s1M1=10.30 s1M2=10.34 s1M3=10.18 [4s]
+o m32 n8192 base 10.43 | s1M0=10.05 s1M1=10.11 s1M2=10.14 s1M3=9.86 [4s]
+qkv_ m1 n2304 base 17.25 | s1M0=24.86 s1M1=24.80 s1M2=24.86 s1M3=24.96 s3M0=16.96 s3M1=15.52 s3M2=15.58 s3M3=15.58 s7M0=16.00 s7M1=14.82 s7M2=14.69 s7M3=14.98 [5s]
+pool m1 n4096 base 24.32 | s1M0=34.88 s1M1=34.59 s1M2=34.69 s1M3=34.69 s2M0=25.44 s2M1=24.03 s2M2=24.10 s2M3=24.10 s4M0=22.30 s4M1=20.99 s4M2=21.09 s4M3=21.09 [5s]
+unpo m16 n8192 base 21.98 | s1M0=21.63 s1M1=21.54 s1M2=21.63 s1M3=21.47 [5s]
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-5337gy_q/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-5337gy_q/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-5337gy_q/run/submission.py", line 170, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0
+nop 5.06
+unpo m1 n1024 base 10.66 | s1M0=18.94 s1M1=18.78 s1M2=18.78 s1M3=18.78 s8M0=9.76 s8M1=8.48 s8M2=8.51 s8M3=8.38 s16M0=9.31 s16M1=7.97 s16M2=8.10 s16M3=8.03 [1s]
+unpo m8 n1024 base 10.85 | s1M0=18.94 s1M1=18.78 s1M2=18.82 s1M3=18.78 s8M0=9.82 s8M1=8.42 s8M2=8.45 s8M3=8.35 s16M0=9.57 s16M1=8.13 s16M2=8.06 s16M3=8.13 [1s]
+rout m1 n256 base 13.92 | bn32s16M0=9.66 bn32s16M1=8.61 bn32s16M2=8.61 bn32s16M3=8.70 bn32s8M0=10.43 bn32s8M1=9.54 bn32s8M2=9.50 bn32s8M3=9.57 bn64s4M0=15.65 bn64s4M1=13.44 bn64s4M2=13.57 bn64s4M3=13.63 [3s]
+rout m16 n256 base 29.98 | bn32s16M0=9.79 bn32s16M1=8.61 bn32s16M2=8.58 bn32s16M3=8.67 bn32s8M0=10.59 bn32s8M1=9.54 bn32s8M2=9.41 bn32s8M3=9.57 bn64s4M0=14.75 bn64s4M1=13.28 bn64s4M2=13.41 bn64s4M3=13.60 [3s]
+o m1 n8192 base 10.59 | s1M0=10.34 s1M1=10.30 s1M2=10.34 s1M3=10.18 [4s]
+o m32 n8192 base 10.43 | s1M0=10.05 s1M1=10.11 s1M2=10.14 s1M3=9.86 [4s]
+qkv_ m1 n2304 base 17.25 | s1M0=24.86 s1M1=24.80 s1M2=24.86 s1M3=24.96 s3M0=16.96 s3M1=15.52 s3M2=15.58 s3M3=15.58 s7M0=16.00 s7M1=14.82 s7M2=14.69 s7M3=14.98 [5s]
+pool m1 n4096 base 24.32 | s1M0=34.88 s1M1=34.59 s1M2=34.69 s1M3=34.69 s2M0=25.44 s2M1=24.03 s2M2=24.10 s2M3=24.10 s4M0=22.30 s4M1=20.99 s4M2=21.09 s4M3=21.09 [5s]
+unpo m16 n8192 base 21.98 | s1M0=21.63 s1M1=21.54 s1M2=21.63 s1M3=21.47 [5s]

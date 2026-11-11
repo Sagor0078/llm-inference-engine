@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-ck16l6_b/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-ck16l6_b/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-ck16l6_b/run/submission.py", line 92, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+fused_moe.B12xW4A16Runner: Unified SM120/SM121 adapter for b12x W4A16 MoE.
+fused_moe.B12xW4A16Config: SM120/SM121 CuTe-DSL b12x W4A16 backend.
+fused_moe.CuTileNvfp4Runner: cuTile NVFP4 weights and inputs for both grouped GEMMs.
+fused_moe.B12xMoEWrapper: B12x fused MoE wrapper for SM120/SM121 with CUDA graph support.      Pre-allocates workspace buffers for CUDA graph compatibility.     Automatically selects micro/static/dynamic backend per call.      Args:         num_experts: Total number of experts.         top_k: Number of experts per token.         hidden_size: Hidden dimension size.         intermediate_size: Intermediate size.         use_c
+scale helpers: ['block_scale_interleave', 'e2m1_and_ufp8sf_scale_to_float', 'fused_dit_gate_residual_layernorm_scale_shift', 'fused_dit_residual_layernorm_scale_shift', 'nvfp4_block_scale_interleave', 'prims_ts_fp4_block_scale_moe', 'prims_ts_fp4_block_scale_routed_moe', 'prims_ts_fp8_block_scale_moe', 'prims_ts_fp8_block_scale_routed_moe', 'prims_ts_fp8_per_tensor_scale_moe', 'scaled_fp4_grouped_quantize', 'silu_and_mul_scaled_nvfp4_experts_quantize', 'trtllm_fp4_block_scale_moe', 'trtllm_fp4_block_scale_routed_moe', 'trtllm_fp8_block_scale_moe', 'trtllm_fp8_block_scale_routed_moe', 'trtllm_fp8_per_tensor_scale_moe', 'trtllm_fp8_per_tensor_scale_routed_moe']
+swizzle via block_scale_interleave(unswizzled_sf: torch.Tensor) -> torch.Tensor
+swizzled sf (1048576,) torch.uint8
+cudnn m16: FAILED BackendSupportedError: mm_bf16_fp4 does not support backend 'cudnn' with capability 90
+cudnn m64: FAILED BackendSupportedError: mm_bf16_fp4 does not support backend 'cudnn' with capability 90
+cudnn m256: FAILED BackendSupportedError: mm_bf16_fp4 does not support backend 'cudnn' with capability 90
+cute-dsl: prepare FAILED NotImplementedError: cute-dsl w4a16 GEMM only supports SM100/103 and SM12x; got 9.0
+[2s]

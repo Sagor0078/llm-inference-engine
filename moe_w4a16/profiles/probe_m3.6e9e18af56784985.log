@@ -1,0 +1,26 @@
+bs1 sglang-choice bsm8,mb4=60.3 | 60.3/bsm8,mb4 60.5/bsm8,mb8 63.0/bsm16,mb4 63.1/bsm16,mb8 74.9/bsm32,mb4 [1s]
+bs8 sglang-choice bsm8,mb4=74.8 | 74.4/bsm8,mb8 74.8/bsm8,mb4 77.5/bsm16,mb8 77.8/bsm16,mb4 90.6/bsm32,mb4 [2s]
+bs16 sglang-choice bsm8,mb4=92.0 | 78.4/bsm16,mb4 78.8/bsm16,mb8 91.4/bsm32,mb4 91.8/bsm32,mb8 92.0/bsm8,mb4 [2s]
+bs32 sglang-choice bsm16,mb4=120.8 | 120.8/bsm16,mb4 121.0/bsm16,mb8 123.3/bsm32,mb4 123.6/bsm32,mb8 146.8/bsm48,mb4 [2s]
+bs128 sglang-choice bsm48,mb4=247.3 | 246.6/bsm48,mb8 247.1/bsm64,mb8 247.3/bsm64,mb4 247.3/bsm48,mb4 248.2/bsm32,mb8 [2s]
+bs256 sglang-choice bsm64,mb4=366.0 | 366.0/bsm64,mb4 366.3/bsm64,mb8 381.9/bsm48,mb4 383.7/bsm48,mb8 396.5/bsm32,mb4 [2s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-t3ct5ab7/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-t3ct5ab7/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-t3ct5ab7/run/submission.py", line 254, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+align local=[[3, -1, 7, -1, 1, -1, 0, 2], [7, 0, 9, -1, 3, 31, -1, 5]]
+align sorted(128,torch.int32)=[1, 3, 5, 11, 14, 16, 16, 16, 6, 9, 16, 16, 16, 16, 16, 16, 4, 16, 16, 16, 16, 16, 16, 16, 7, 16, 16, 16, 16, 16, 16, 16, 0, 12, 16, 16, 16, 16, 16, 16, 15, 16, 16, 16, 16, 16, 16, 16, 2, 8, 16, 16, 16, 16, 16, 16, 10, 16, 16, 16, 16, 16, 16, 16]
+align blocks(16,torch.int32)=[-1, 0, 1, 2, 3, 5, 7, 9, 31, 0, 0, 0, 0, 0, 0, 0] npad=[72]
+nop 5.1
+bs1 sglang-choice bsm8,mb4=60.3 | 60.3/bsm8,mb4 60.5/bsm8,mb8 63.0/bsm16,mb4 63.1/bsm16,mb8 74.9/bsm32,mb4 [1s]
+bs8 sglang-choice bsm8,mb4=74.8 | 74.4/bsm8,mb8 74.8/bsm8,mb4 77.5/bsm16,mb8 77.8/bsm16,mb4 90.6/bsm32,mb4 [2s]
+bs16 sglang-choice bsm8,mb4=92.0 | 78.4/bsm16,mb4 78.8/bsm16,mb8 91.4/bsm32,mb4 91.8/bsm32,mb8 92.0/bsm8,mb4 [2s]
+bs32 sglang-choice bsm16,mb4=120.8 | 120.8/bsm16,mb4 121.0/bsm16,mb8 123.3/bsm32,mb4 123.6/bsm32,mb8 146.8/bsm48,mb4 [2s]
+bs128 sglang-choice bsm48,mb4=247.3 | 246.6/bsm48,mb8 247.1/bsm64,mb8 247.3/bsm64,mb4 247.3/bsm48,mb4 248.2/bsm32,mb8 [2s]
+bs256 sglang-choice bsm64,mb4=366.0 | 366.0/bsm64,mb4 366.3/bsm64,mb8 381.9/bsm48,mb4 383.7/bsm48,mb8 396.5/bsm32,mb4 [2s]

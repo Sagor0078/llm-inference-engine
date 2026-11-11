@@ -1,0 +1,229 @@
+okc run 744ab6e0f1394749 on muse_decode_layer
+submission  /home/technonext/okc/decode_layer/submission.py
+status      ok
+passed      true
+speedup     1.2568019923673703
+speedup_ci  [1.2379499624818597 1.2756540222528807]
+score_us    17998.300557585335
+tests       13/13 passed
+
+scored shapes (µs; speed of light is the reference's bound)
+case                                                         sglang      yours  speedup        sol  
+batch=1 ctx=80000 dist=soft layer=sliding load=decode 1 page=1     171.46     116.18   1.476x      40.02  
+batch=1 ctx=80000 dist=soft layer=full load=decode 1 page=1     180.67     129.77   1.392x      44.18  
+batch=16 ctx=80000 dist=soft layer=sliding load=decode 16 page=1 spread=agentic     258.02     194.51   1.326x      76.72  
+batch=16 ctx=80000 dist=soft layer=full load=decode 16 page=1 spread=agentic     430.72     306.07   1.407x     137.46  
+batch=32 ctx=80000 dist=soft layer=sliding load=decode 32 page=1 spread=agentic     260.90     226.40   1.152x      84.51  
+batch=32 ctx=80000 dist=soft layer=full load=decode 32 page=1 spread=agentic     613.79     444.75   1.380x     208.10  
+batch=1 ctx=80000 dist=soft layer=sliding load=verify 1 page=1 q_len=8     268.27     172.55   1.555x      62.29  
+batch=1 ctx=80000 dist=soft layer=full load=verify 1 page=1 q_len=8     273.57     186.82   1.464x      66.44  
+batch=16 ctx=80000 dist=soft layer=sliding load=verify 16 page=1 q_len=8 spread=agentic     525.50     502.48   1.046x     126.61  
+batch=16 ctx=80000 dist=soft layer=full load=verify 16 page=1 q_len=8 spread=agentic     707.38     698.35   1.013x     188.68  
+batch=32 ctx=80000 dist=soft layer=sliding load=verify 32 page=1 q_len=8 spread=agentic     734.18     716.27   1.025x     143.81  
+batch=32 ctx=80000 dist=soft layer=full load=verify 32 page=1 q_len=8 spread=agentic    1089.36    1091.41   0.998x     267.18  
+
+profile 0: batch=1 ctx=80000 dist=soft layer=sliding load=decode 1 page=1
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...      55.6 µs  39.9%      2
+_swab_kernel                                                      44.2 µs  31.7%      4
+_router_kernel                                                     8.9 µs   6.4%      1
+_attn_boundary_kernel                                              4.8 µs   3.4%      1
+_ffn_boundary_kernel                                               4.3 µs   3.1%      1
+_attn_kernel                                                       4.2 µs   3.0%      1
+_finalize_kernel                                                   4.2 µs   3.0%      1
+_prologue_kernel                                                   3.2 µs   2.3%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.8 µs   2.0%      1
+_pre_expert_kernel                                                 2.3 µs   1.6%      1
+_combine_kernel                                                    2.0 µs   1.5%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       1.5 µs   1.1%      1
+... 1 more
+total                                                            139.4 µs
+
+profile 1: batch=1 ctx=80000 dist=soft layer=full load=decode 1 page=1
+kernel                                                           GPU time  share  calls
+_swab_kernel                                                      43.4 µs  32.0%      4
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...      40.2 µs  29.7%      2
+_attn_kernel                                                      15.0 µs  11.1%      1
+_router_kernel                                                     8.8 µs   6.5%      1
+_combine_kernel                                                    6.2 µs   4.6%      1
+_attn_boundary_kernel                                              4.7 µs   3.5%      1
+_ffn_boundary_kernel                                               4.2 µs   3.1%      1
+_finalize_kernel                                                   3.2 µs   2.4%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.6 µs   1.9%      1
+_pre_expert_kernel                                                 2.1 µs   1.5%      1
+_prologue_kernel                                                   1.9 µs   1.4%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       1.9 µs   1.4%      1
+... 1 more
+total                                                            135.5 µs
+
+profile 2: batch=16 ctx=80000 dist=soft layer=sliding load=decode 16 page=1 spread=agentic
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     105.3 µs  51.0%      2
+_swab_kernel                                                      59.2 µs  28.6%      4
+_attn_kernel                                                       8.2 µs   4.0%      1
+_router_kernel                                                     5.7 µs   2.8%      1
+_attn_boundary_kernel                                              4.2 µs   2.0%      1
+_ffn_boundary_kernel                                               4.1 µs   2.0%      1
+_finalize_kernel                                                   4.1 µs   2.0%      1
+void moe_align_block_size_kernel<int>(int const*, int*, i...       2.8 µs   1.4%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.7 µs   1.3%      1
+_prologue_kernel                                                   2.5 µs   1.2%      1
+_combine_kernel                                                    2.5 µs   1.2%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.2 µs   1.1%      1
+... 2 more
+total                                                            206.8 µs
+
+profile 3: batch=16 ctx=80000 dist=soft layer=full load=decode 16 page=1 spread=agentic
+kernel                                                           GPU time  share  calls
+_attn_kernel                                                     120.3 µs  37.5%      1
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     106.4 µs  33.2%      2
+_swab_kernel                                                      58.5 µs  18.2%      4
+_router_kernel                                                     5.9 µs   1.8%      1
+_combine_kernel                                                    5.0 µs   1.6%      1
+_ffn_boundary_kernel                                               4.1 µs   1.3%      1
+_attn_boundary_kernel                                              3.9 µs   1.2%      1
+_finalize_kernel                                                   3.6 µs   1.1%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.7 µs   0.8%      1
+void moe_align_block_size_kernel<int>(int const*, int*, i...       2.7 µs   0.8%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.4 µs   0.7%      1
+_pre_expert_kernel                                                 2.3 µs   0.7%      1
+... 2 more
+total                                                            320.7 µs
+
+profile 4: batch=32 ctx=80000 dist=soft layer=sliding load=decode 32 page=1 spread=agentic
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     158.8 µs  59.7%      2
+_swab_kernel                                                      60.0 µs  22.6%      4
+_attn_kernel                                                      11.6 µs   4.4%      1
+_router_kernel                                                     6.4 µs   2.4%      1
+_finalize_kernel                                                   4.3 µs   1.6%      1
+_ffn_boundary_kernel                                               4.2 µs   1.6%      1
+_attn_boundary_kernel                                              4.2 µs   1.6%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.9 µs   1.1%      1
+void moe_align_block_size_kernel<int>(int const*, int*, i...       2.8 µs   1.0%      1
+_combine_kernel                                                    2.6 µs   1.0%      1
+_prologue_kernel                                                   2.5 µs   0.9%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.4 µs   0.9%      1
+... 2 more
+total                                                            265.8 µs
+
+profile 5: batch=32 ctx=80000 dist=soft layer=full load=decode 32 page=1 spread=agentic
+kernel                                                           GPU time  share  calls
+_attn_kernel                                                     225.4 µs  51.9%      1
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     112.5 µs  25.9%      2
+_swab_kernel                                                      59.6 µs  13.7%      4
+_router_kernel                                                     6.4 µs   1.5%      1
+_finalize_kernel                                                   4.9 µs   1.1%      1
+_ffn_boundary_kernel                                               4.3 µs   1.0%      1
+_attn_boundary_kernel                                              4.1 µs   1.0%      1
+_combine_kernel                                                    3.8 µs   0.9%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.8 µs   0.6%      1
+void moe_align_block_size_kernel<int>(int const*, int*, i...       2.8 µs   0.6%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.4 µs   0.6%      1
+_pre_expert_kernel                                                 2.2 µs   0.5%      1
+... 2 more
+total                                                            434.3 µs
+
+profile 6: batch=1 ctx=80000 dist=soft layer=sliding load=verify 1 page=1 q_len=8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...      95.7 µs  52.4%      2
+_swab_kernel                                                      44.4 µs  24.3%      4
+_router_kernel                                                     8.9 µs   4.9%      1
+_attn_boundary_kernel                                              4.8 µs   2.6%      1
+_attn_kernel                                                       4.3 µs   2.3%      1
+_ffn_boundary_kernel                                               4.3 µs   2.3%      1
+_finalize_kernel                                                   4.2 µs   2.3%      1
+_moe_align_small_numel_kernel                                      3.6 µs   2.0%      1
+_combine_kernel                                                    3.3 µs   1.8%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.7 µs   1.5%      1
+_prologue_kernel                                                   2.4 µs   1.3%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.3 µs   1.3%      1
+... 1 more
+total                                                            182.8 µs
+
+profile 7: batch=1 ctx=80000 dist=soft layer=full load=verify 1 page=1 q_len=8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...      65.7 µs  38.3%      2
+_swab_kernel                                                      45.5 µs  26.5%      4
+_attn_kernel                                                      19.3 µs  11.3%      1
+_router_kernel                                                     8.9 µs   5.2%      1
+_combine_kernel                                                    6.8 µs   4.0%      1
+_attn_boundary_kernel                                              4.8 µs   2.8%      1
+_ffn_boundary_kernel                                               4.1 µs   2.4%      1
+_finalize_kernel                                                   4.0 µs   2.3%      1
+_moe_align_small_numel_kernel                                      3.5 µs   2.1%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       2.9 µs   1.7%      1
+_pre_expert_kernel                                                 2.2 µs   1.3%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.0 µs   1.2%      1
+... 1 more
+total                                                            171.5 µs
+
+profile 8: batch=16 ctx=80000 dist=soft layer=sliding load=verify 16 page=1 q_len=8 spread=agentic
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     367.6 µs  73.8%      2
+nvjet_sm90_tst_128x64_64x8_1x2_h_bz_TNT                           28.2 µs   5.7%      2
+_swab_kernel                                                      26.4 µs   5.3%      1
+nvjet_sm90_tst_96x64_64x10_4x2_h_bz_splitK_TNN                    14.8 µs   3.0%      1
+_attn_kernel                                                      11.1 µs   2.2%      1
+_router_kernel                                                     8.4 µs   1.7%      1
+_combine_kernel                                                    6.2 µs   1.2%      1
+_attn_boundary_kernel                                              5.4 µs   1.1%      1
+_ffn_boundary_kernel                                               5.3 µs   1.1%      1
+_finalize_kernel                                                   5.3 µs   1.1%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       3.8 µs   0.8%      1
+void cublasLt::splitKreduce_kernel<32, 16, int, float, __...       3.1 µs   0.6%      1
+... 5 more
+total                                                            498.0 µs
+
+profile 9: batch=16 ctx=80000 dist=soft layer=full load=verify 16 page=1 q_len=8 spread=agentic
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     366.1 µs  53.0%      2
+_attn_kernel                                                     204.2 µs  29.6%      1
+nvjet_sm90_tst_128x64_64x8_1x2_h_bz_TNT                           28.3 µs   4.1%      2
+_swab_kernel                                                      25.6 µs   3.7%      1
+nvjet_sm90_tst_96x64_64x10_4x2_h_bz_splitK_TNN                    15.0 µs   2.2%      1
+_router_kernel                                                     8.2 µs   1.2%      1
+_combine_kernel                                                    7.8 µs   1.1%      1
+_finalize_kernel                                                   5.5 µs   0.8%      1
+_ffn_boundary_kernel                                               5.3 µs   0.8%      1
+_attn_boundary_kernel                                              5.2 µs   0.8%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       3.7 µs   0.5%      1
+void cublasLt::splitKreduce_kernel<32, 16, int, float, __...       3.2 µs   0.5%      1
+... 5 more
+total                                                            690.2 µs
+
+profile 10: batch=32 ctx=80000 dist=soft layer=sliding load=verify 32 page=1 q_len=8 spread=agentic
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     572.1 µs  77.5%      2
+nvjet_sm90_tst_128x128_64x6_2x1_v_bz_TNT                          34.8 µs   4.7%      2
+nvjet_sm90_tst_128x64_64x8_1x2_h_bz_TNT                           31.2 µs   4.2%      1
+nvjet_sm90_tst_96x64_64x10_2x4_h_bz_TNN                           23.4 µs   3.2%      1
+_attn_kernel                                                      16.7 µs   2.3%      1
+_router_kernel                                                    10.4 µs   1.4%      1
+_combine_kernel                                                    8.5 µs   1.2%      1
+_attn_boundary_kernel                                              7.6 µs   1.0%      1
+_ffn_boundary_kernel                                               7.5 µs   1.0%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       6.0 µs   0.8%      1
+_finalize_kernel                                                   6.0 µs   0.8%      1
+_prologue_kernel                                                   3.1 µs   0.4%      1
+... 4 more
+total                                                            738.1 µs
+
+profile 11: batch=32 ctx=80000 dist=soft layer=full load=verify 32 page=1 q_len=8 spread=agentic
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     556.5 µs  49.6%      2
+_attn_kernel                                                     399.9 µs  35.7%      1
+nvjet_sm90_tst_128x64_64x8_1x2_h_bz_TNT                           41.0 µs   3.7%      1
+nvjet_sm90_tst_128x128_64x6_2x1_v_bz_TNT                          34.0 µs   3.0%      2
+nvjet_sm90_tst_96x64_64x10_2x4_h_bz_TNN                           22.6 µs   2.0%      1
+_router_kernel                                                    12.0 µs   1.1%      1
+_combine_kernel                                                    9.9 µs   0.9%      1
+void sglang::muse_spark::routing_kernel<sglang::muse_spar...       8.1 µs   0.7%      1
+_attn_boundary_kernel                                              7.7 µs   0.7%      1
+_ffn_boundary_kernel                                               7.7 µs   0.7%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       5.9 µs   0.5%      1
+_finalize_kernel                                                   5.6 µs   0.5%      1
+... 4 more
+total                                                           1121.3 µs
+GPU busy (kernels overlap: PDL or streams)                      1101.6 µs
+an overlapping kernel's time includes any wait for the one before it, so the rows add up to more

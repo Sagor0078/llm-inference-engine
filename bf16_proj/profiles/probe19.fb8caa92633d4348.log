@@ -1,0 +1,95 @@
+torch 2.14.1+cu130 cuda 13.0
+headers: /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/collective_builder.hpp | /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/kernel/tile_scheduler_params.h | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/collective_builder.hpp | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/kernel/tile_scheduler_params.h | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/collective_builder.hpp | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/kernel/tile_scheduler_params.h | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/include/commondx/detail/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include/cutlass/gemm/collective/collective_builder.hpp
+  /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/version.h: ['#define CUTLASS_MAJOR 4', '#define CUTLASS_MINOR 2', '#define CUTLASS_PATCH 1']
+  /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/version.h: ['#define CUTLASS_MAJOR 4', '#define CUTLASS_MINOR 5', '#define CUTLASS_PATCH 0']
+  /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/version.h: ['#define CUTLASS_MAJOR 3', '#define CUTLASS_MINOR 9', '#define CUTLASS_PATCH 2']
+  /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include/cutlass/version.h: ['#define CUTLASS_MAJOR 4', '#define CUTLASS_MINOR 1', '#define CUTLASS_PATCH 0']
+tilelang 0.1.12 @ /opt/sglang/lib/python3.12/site-packages/tilelang
+tvm 0.25.dev0 @ /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm
+cutlass 4.8.0 @ /opt/sglang/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass
+sgl_kernel 0.4.9 @ /opt/sglang/lib/python3.12/site-packages/sgl_kernel
+deep_gemm 0.2.1.post1+muse.cbe1727 @ /opt/sglang/lib/python3.12/site-packages/deep_gemm
+sgl_kernel gemm-ish: ['common_ops', 'cutlass_w4a8_moe_mm', 'es_fp8_blockwise_scaled_grouped_mm', 'es_sm100_mxfp8_blockscaled_grouped_mm', 'fp8_blockwise_scaled_grouped_mm', 'fp8_scaled_mm', 'gemm', 'gemma_fused_add_rmsnorm', 'gemma_rmsnorm', 'get_cutlass_w4a8_moe_mm_data', 'grammar', 'int8_scaled_mm']
+2026-10-31 17:22:04  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:06  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:06  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:09  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:09  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:11  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:12  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:14  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:15  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:17  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+pooler m128 cublas 29.0 | 30.2/128,64,4,s4,t256 e2e-06 c3s ; 31.6/64,64,4,s2,t128 e4e-06 c3s ; 40.3/128,64,3,s2,t256 e4e-06 c2s ; 30.6/64,128,3,s4,t128 e2e-06 c3s ; 33.4/256,64,3,s8,t256 e1e-06 c3s
+2026-10-31 17:22:17  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:20  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:20  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:22  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:23  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:23  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+qkv_gate m128 cublas 20.5 | 29.1/128,64,4,s8,t256 e1e-06 c2s ; 28.8/64,64,4,s4,t128 e2e-06 c3s ; 26.9/64,128,3,s4,t128 e2e-06 c0s
+2026-10-31 17:22:24  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:24  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:24  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:26  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:26  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:27  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+unpooler m128 cublas 23.4 | 30.8/128,64,4,s2,t256 e2e-06 c0s ; 28.3/64,64,4,s1,t128 e4e-06 c2s ; 34.8/128,64,4,s4,t256 e1e-06 c0s
+2026-10-31 17:22:27  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:29  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:30  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:32  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+o m128 cublas 11.2 | 17.1/128,64,4,s2,t256 e5e-07 c2s ; 12.8/64,64,4,s1,t128 e1e-06 c2s
+2026-10-31 17:22:32  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:35  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:35  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:38  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:38  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:40  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+pooler m256 cublas 33.5 | 39.7/128,64,3,s4,t256 e2e-06 c3s ; 53.2/128,64,3,s2,t256 e4e-06 c3s ; 45.1/64,64,3,s2,t128 e4e-06 c3s
+2026-10-31 17:22:41  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:43  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:43  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:46  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:46  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:48  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+pooler m16 cublas 24.8 | 23.7/64,128,4,s4,t128 e2e-06 c2s ; 24.1/128,128,4,s8,t128 e1e-06 c2s ; 23.3/128,128,4,s4,t128 e2e-06 c2s
+2026-10-31 17:22:49  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:51  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+2026-10-31 17:22:51  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `main` with `out_idx=None`
+2026-10-31 17:22:54  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `main`
+qkv_gate m16 cublas 17.8 | 18.6/64,128,4,s8,t128 e1e-06 c2s ; 18.6/128,128,4,s16,t128 e5e-07 c2s
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-upgik4a9/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-upgik4a9/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-upgik4a9/run/submission.py", line 152, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 cuda 13.0
+headers: /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/collective_builder.hpp | /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/kernel/tile_scheduler_params.h | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/collective_builder.hpp | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/kernel/tile_scheduler_params.h | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/collective_builder.hpp | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/kernel/tile_scheduler_params.h | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/include/commondx/detail/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include/cute/tensor.hpp | /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include/cutlass/gemm/collective/collective_builder.hpp
+  /opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/version.h: ['#define CUTLASS_MAJOR 4', '#define CUTLASS_MINOR 2', '#define CUTLASS_PATCH 1']
+  /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/version.h: ['#define CUTLASS_MAJOR 4', '#define CUTLASS_MINOR 5', '#define CUTLASS_PATCH 0']
+  /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/version.h: ['#define CUTLASS_MAJOR 3', '#define CUTLASS_MINOR 9', '#define CUTLASS_PATCH 2']
+  /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include/cutlass/version.h: ['#define CUTLASS_MAJOR 4', '#define CUTLASS_MINOR 1', '#define CUTLASS_PATCH 0']
+tilelang 0.1.12 @ /opt/sglang/lib/python3.12/site-packages/tilelang
+tvm 0.25.dev0 @ /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/tvm/python/tvm
+cutlass 4.8.0 @ /opt/sglang/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass
+sgl_kernel 0.4.9 @ /opt/sglang/lib/python3.12/site-packages/sgl_kernel
+deep_gemm 0.2.1.post1+muse.cbe1727 @ /opt/sglang/lib/python3.12/site-packages/deep_gemm
+sgl_kernel gemm-ish: ['common_ops', 'cutlass_w4a8_moe_mm', 'es_fp8_blockwise_scaled_grouped_mm', 'es_sm100_mxfp8_blockscaled_grouped_mm', 'fp8_blockwise_scaled_grouped_mm', 'fp8_scaled_mm', 'gemm', 'gemma_fused_add_rmsnorm', 'gemma_rmsnorm', 'get_cutlass_w4a8_moe_mm_data', 'grammar', 'int8_scaled_mm']
+nop 5.3
+read pooler sum0 31.7
+read qkv_gate sum0 24.1
+read o sum0 21.6
+pooler m128 cublas 29.0 | 30.2/128,64,4,s4,t256 e2e-06 c3s ; 31.6/64,64,4,s2,t128 e4e-06 c3s ; 40.3/128,64,3,s2,t256 e4e-06 c2s ; 30.6/64,128,3,s4,t128 e2e-06 c3s ; 33.4/256,64,3,s8,t256 e1e-06 c3s
+qkv_gate m128 cublas 20.5 | 29.1/128,64,4,s8,t256 e1e-06 c2s ; 28.8/64,64,4,s4,t128 e2e-06 c3s ; 26.9/64,128,3,s4,t128 e2e-06 c0s
+unpooler m128 cublas 23.4 | 30.8/128,64,4,s2,t256 e2e-06 c0s ; 28.3/64,64,4,s1,t128 e4e-06 c2s ; 34.8/128,64,4,s4,t256 e1e-06 c0s
+o m128 cublas 11.2 | 17.1/128,64,4,s2,t256 e5e-07 c2s ; 12.8/64,64,4,s1,t128 e1e-06 c2s
+pooler m256 cublas 33.5 | 39.7/128,64,3,s4,t256 e2e-06 c3s ; 53.2/128,64,3,s2,t256 e4e-06 c3s ; 45.1/64,64,3,s2,t128 e4e-06 c3s
+pooler m16 cublas 24.8 | 23.7/64,128,4,s4,t128 e2e-06 c2s ; 24.1/128,128,4,s8,t128 e1e-06 c2s ; 23.3/128,128,4,s4,t128 e2e-06 c2s
+qkv_gate m16 cublas 17.8 | 18.6/64,128,4,s8,t128 e1e-06 c2s ; 18.6/128,128,4,s16,t128 e5e-07 c2s
+total 56s

@@ -1,0 +1,53 @@
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-j7sxq_0d/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-j7sxq_0d/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-j7sxq_0d/run/submission.py", line 170, in prepare
+    raise RuntimeError("STRESS\n" + "\n".join(lines))
+RuntimeError: STRESS
+torch 2.14.1+cu130 triton 3.8.0
+P0 pool m128 cfg(128, 64, 64, 8, 4, 4, False) bad 95/1500 worst 1.4e-01 wsclean 1 cntclean 1 [1s]
+P0 pool m100 cfg(128, 64, 64, 8, 4, 4, False) bad 63/1500 worst 1.5e-01 wsclean 1 cntclean 1 [1s]
+P0 qkv_ m1 cfg(16, 64, 128, 4, 3, 7, True) bad 0/1500 worst 1.6e-03 wsclean 1 cntclean 1 [2s]
+P0 qkv_ m32 cfg(32, 64, 128, 4, 3, 7, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [2s]
+P0 pool m8 cfg(16, 64, 128, 4, 3, 4, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [2s]
+P0 pool m32 cfg(32, 64, 128, 4, 3, 4, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [2s]
+P0 unpo m1 cfg(16, 64, 128, 4, 4, 8, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [2s]
+P0 unpo m8 cfg(16, 64, 128, 4, 4, 8, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [3s]
+P0 rout m1 cfg(16, 32, 128, 4, 4, 16, False) bad 0/1500 worst 2.9e-06 wsclean 1 cntclean 1 [3s]
+P0 rout m16 cfg(16, 32, 128, 4, 4, 16, False) bad 0/1500 worst 2.9e-06 wsclean 1 cntclean 1 [3s]
+P0 rout m32 cfg(32, 64, 128, 4, 4, 33, False) bad 0/1500 worst 3.0e-06 wsclean 1 cntclean 1 [3s]
+P0 rout m128 cfg(64, 32, 128, 4, 3, 16, False) bad 0/1500 worst 3.1e-06 wsclean 1 cntclean 1 [4s]
+P0 rout m256 cfg(64, 64, 128, 4, 4, 8, False) bad 0/1500 worst 3.8e-06 wsclean 1 cntclean 1 [4s]
+P0 rout m1000 cfg(64, 64, 128, 4, 4, 4, False) bad 0/1500 worst 5.9e-06 wsclean 1 cntclean 1 [4s]
+P1 pool m128 cfg(128, 64, 64, 8, 4, 4, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [5s]
+P1 pool m100 cfg(128, 64, 64, 8, 4, 4, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [5s]
+P1 qkv_ m1 cfg(16, 64, 128, 4, 3, 7, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [5s]
+P1 qkv_ m32 cfg(32, 64, 128, 4, 3, 7, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [6s]
+P1 pool m8 cfg(16, 64, 128, 4, 3, 4, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [6s]
+P1 pool m32 cfg(32, 64, 128, 4, 3, 4, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [6s]
+P1 unpo m1 cfg(16, 64, 128, 4, 4, 8, False) bad 0/1500 worst 1.6e-03 wsclean 1 cntclean 1 [6s]
+P1 unpo m8 cfg(16, 64, 128, 4, 4, 8, False) bad 0/1500 worst 1.8e-03 wsclean 1 cntclean 1 [6s]
+P1 rout m1 cfg(16, 32, 128, 4, 4, 16, False) bad 0/1500 worst 2.7e-06 wsclean 1 cntclean 1 [7s]
+P1 rout m16 cfg(16, 32, 128, 4, 4, 16, False) bad 0/1500 worst 3.0e-06 wsclean 1 cntclean 1 [7s]
+P1 rout m32 cfg(32, 64, 128, 4, 4, 33, False) bad 0/1500 worst 2.9e-06 wsclean 1 cntclean 1 [7s]
+P1 rout m128 cfg(64, 32, 128, 4, 3, 16, False) bad 0/1500 worst 3.2e-06 wsclean 1 cntclean 1 [7s]
+P1 rout m256 cfg(64, 64, 128, 4, 4, 8, False) bad 0/1500 worst 3.9e-06 wsclean 1 cntclean 1 [8s]
+P1 rout m1000 cfg(64, 64, 128, 4, 4, 4, False) bad 0/1500 worst 5.9e-06 wsclean 1 cntclean 1 [8s]
+P2 pool m128 cfg(128, 64, 64, 8, 4, 4, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [8s]
+P2 pool m100 cfg(128, 64, 64, 8, 4, 4, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [9s]
+P2 qkv_ m1 cfg(16, 64, 128, 4, 3, 7, True) bad 0/1500 worst 1.6e-03 wsclean 1 cntclean 1 [9s]
+P2 qkv_ m32 cfg(32, 64, 128, 4, 3, 7, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [9s]
+P2 pool m8 cfg(16, 64, 128, 4, 3, 4, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [10s]
+P2 pool m32 cfg(32, 64, 128, 4, 3, 4, True) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [10s]
+P2 unpo m1 cfg(16, 64, 128, 4, 4, 8, False) bad 0/1500 worst 1.6e-03 wsclean 1 cntclean 1 [10s]
+P2 unpo m8 cfg(16, 64, 128, 4, 4, 8, False) bad 0/1500 worst 1.7e-03 wsclean 1 cntclean 1 [10s]
+P2 rout m1 cfg(16, 32, 128, 4, 4, 16, False) bad 0/1500 worst 2.7e-06 wsclean 1 cntclean 1 [10s]
+P2 rout m16 cfg(16, 32, 128, 4, 4, 16, False) bad 0/1500 worst 3.1e-06 wsclean 1 cntclean 1 [11s]
+P2 rout m32 cfg(32, 64, 128, 4, 4, 33, False) bad 0/1500 worst 2.9e-06 wsclean 1 cntclean 1 [11s]
+P2 rout m128 cfg(64, 32, 128, 4, 3, 16, False) bad 0/1500 worst 3.1e-06 wsclean 1 cntclean 1 [11s]
+P2 rout m256 cfg(64, 64, 128, 4, 4, 8, False) bad 0/1500 worst 3.9e-06 wsclean 1 cntclean 1 [12s]
+P2 rout m1000 cfg(64, 64, 128, 4, 4, 4, False) bad 0/1500 worst 6.1e-06 wsclean 1 cntclean 1 [12s]

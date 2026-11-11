@@ -1,0 +1,23 @@
+bs1 v2 56.7 | triton 67.2/T bn128,bk128,w4,st4,bm16,s4/4 67.5/T bn128,bk128,w4,st3,bm16,s4/4 70.9/T bn64,bk256,w4,st3,bm16,s2/2 71.4/T bn128,bk128,w4,st3,bm16,s8/4 | bad 0  [14s]
+bs8 v2 69.1 | triton 84.1/T bn64,bk256,w4,st4,bm16,s2/2 86.2/T bn128,bk128,w4,st3,bm16,s8/4 86.3/T bn64,bk256,w4,st3,bm16,s4/4 86.7/T bn128,bk128,w4,st4,bm16,s8/4 | bad 0  [15s]
+bs16 v2 72.3 | triton 85.5/T bn64,bk256,w4,st4,bm16,s2/2 87.7/T bn128,bk128,w4,st3,bm16,s8/4 87.9/T bn64,bk256,w4,st3,bm16,s4/4 88.0/T bn128,bk128,w4,st3,bm16,s4/4 | bad 0  [16s]
+bs32 v2 113.7 | triton 125.5/T bn128,bk128,w4,st3,bm16,s2/2 126.3/T bn128,bk128,w4,st4,bm16,s2/2 130.6/T bn128,bk128,w4,st3,bm16,s4/4 131.7/T bn128,bk128,w4,st4,bm16,s4/4 | bad 0  [17s]
+bs128 v2 238.3 | triton 297.8/T bn128,bk128,w4,st3,bm64,s2/2 313.9/T bn128,bk128,w4,st3,bm64,s1/1 324.8/T bn128,bk128,w4,st4,bm64,s2/2 338.3/T bn128,bk128,w4,st4,bm64,s1/1 | bad 30 T bn128,bk128,w8,st4,bm128,s1/1OutOfResourcout of resource: shared memory, Required: 245760,  [48s]
+bs256 v2 368.5 | triton 408.5/T bn128,bk128,w4,st3,bm64,s1/1 425.4/T bn128,bk128,w4,st3,bm64,s2/2 454.1/T bn128,bk128,w4,st4,bm64,s1/1 467.5/T bn128,bk128,w4,st4,bm64,s2/2 | bad 30 T bn128,bk128,w8,st4,bm128,s1/1OutOfResourcout of resource: shared memory, Required: 245760,  [54s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-ibkozgzg/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-ibkozgzg/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-ibkozgzg/run/submission.py", line 615, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+nop 5.2
+bs1 v2 56.7 | triton 67.2/T bn128,bk128,w4,st4,bm16,s4/4 67.5/T bn128,bk128,w4,st3,bm16,s4/4 70.9/T bn64,bk256,w4,st3,bm16,s2/2 71.4/T bn128,bk128,w4,st3,bm16,s8/4 | bad 0  [14s]
+bs8 v2 69.1 | triton 84.1/T bn64,bk256,w4,st4,bm16,s2/2 86.2/T bn128,bk128,w4,st3,bm16,s8/4 86.3/T bn64,bk256,w4,st3,bm16,s4/4 86.7/T bn128,bk128,w4,st4,bm16,s8/4 | bad 0  [15s]
+bs16 v2 72.3 | triton 85.5/T bn64,bk256,w4,st4,bm16,s2/2 87.7/T bn128,bk128,w4,st3,bm16,s8/4 87.9/T bn64,bk256,w4,st3,bm16,s4/4 88.0/T bn128,bk128,w4,st3,bm16,s4/4 | bad 0  [16s]
+bs32 v2 113.7 | triton 125.5/T bn128,bk128,w4,st3,bm16,s2/2 126.3/T bn128,bk128,w4,st4,bm16,s2/2 130.6/T bn128,bk128,w4,st3,bm16,s4/4 131.7/T bn128,bk128,w4,st4,bm16,s4/4 | bad 0  [17s]
+bs128 v2 238.3 | triton 297.8/T bn128,bk128,w4,st3,bm64,s2/2 313.9/T bn128,bk128,w4,st3,bm64,s1/1 324.8/T bn128,bk128,w4,st4,bm64,s2/2 338.3/T bn128,bk128,w4,st4,bm64,s1/1 | bad 30 T bn128,bk128,w8,st4,bm128,s1/1OutOfResourcout of resource: shared memory, Required: 245760,  [48s]
+bs256 v2 368.5 | triton 408.5/T bn128,bk128,w4,st3,bm64,s1/1 425.4/T bn128,bk128,w4,st3,bm64,s2/2 454.1/T bn128,bk128,w4,st4,bm64,s1/1 467.5/T bn128,bk128,w4,st4,bm64,s2/2 | bad 30 T bn128,bk128,w8,st4,bm128,s1/1OutOfResourcout of resource: shared memory, Required: 245760,  [54s]

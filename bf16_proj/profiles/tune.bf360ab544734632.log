@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-l_obbmtx/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-l_obbmtx/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-l_obbmtx/run/submission.py", line 98, in prepare
+    lines.append(f"nop {bench(lambda: nop.add_(1)):.1f}")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-l_obbmtx/run/submission.py", line 87, in bench
+    torch.sum(flush, out=sink)
+TypeError: sum() received an invalid combination of arguments - got (Tensor, out=Tensor), but expected one of:
+ * (Tensor input, *, torch.dtype dtype = None)
+ * (Tensor input, tuple of ints dim, bool keepdim = False, *, torch.dtype dtype = None, Tensor out = None)
+

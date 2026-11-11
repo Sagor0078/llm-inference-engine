@@ -1,0 +1,41 @@
+unpooler_slice m8 v5 9.5 | 9.4/w4r1u4c8 e2e-03 ; 9.5/w8r1u2c8 e2e-03 ; 9.9/w8r1u2c4 e2e-03 ; 10.2/w8r2u2c4 e2e-03 ; 10.2/w4r2u2c8 e2e-03 ; 10.4/w8r2u4c2 e2e-03
+pooler m16 v5 23.3 | 28.1/w8r2u4c2 e2e-03 ; 30.0/w8r1u4c2 e2e-03 ; 31.7/w8r4u2c2 e2e-03 ; 33.0/w4r4u4c2 e2e-03 ; 33.0/w8r4u4c1 e2e-03 ; 35.0/w8r2u2c4 e2e-03 ; 35.4/w4r2u4c4 e2e-03
+qkv_gate m16 v5 16.5 | 20.1/w4r2u4c4 e2e-03 ; 20.1/w8r2u2c4 e2e-03 ; 21.2/w8r2u4c2 e2e-03 ; 26.6/w8r1u4c2 e2e-03 ; 27.2/w8r4u2c2 e2e-03 ; 29.5/w4r4u4c2 e2e-03 ; 30.0/w8r4u4c1 e2e-03
+o m16 v5 9.9 | 14.1/w8r2u4c1 e2e-03 ; 14.2/w4r2u4c1 e2e-03 ; 17.3/w8r4u2c1 e2e-03 ; 17.9/w4r4u4c1 e2e-03 ; 18.7/w4r4u2c2 e2e-03 ; 20.0/w8r2u2c2 e2e-03
+unpooler m16 v5 21.6 | 26.2/w8r2u4c1 e2e-03 ; 27.1/w4r2u4c2 e2e-03 ; 30.7/w4r4u4c2 e2e-03 ; 30.8/w8r4u4c1 e2e-03 ; 34.6/w8r2u2c2 e2e-03 ; 40.0/w8r4u2c2 e2e-03
+pooler m32 v5 23.8 | 46.0/w8r1u4c2 e2e-03 ; 54.6/w8r4u2c2 e2e-03 ; 57.6/w8r2u4c2 e2e-03 ; 77.3/w4r2u4c4 e2e-03 ; 77.8/w8r2u2c4 e2e-03
+qkv_gate m32 v5 17.0 | 40.0/w8r1u4c2 e2e-03 ; 51.0/w8r4u2c2 e2e-03 ; 53.7/w4r2u4c4 e2e-03 ; 54.7/w8r2u4c2 e2e-03 ; 55.1/w8r2u2c4 e2e-03
+o m32 v5 10.2 | 26.1/w4r2u4c1 e2e-03 ; 39.3/w8r4u2c1 e2e-03 ; 41.2/w8r2u4c1 e2e-03 ; 42.5/w4r4u2c2 e2e-03 ; 47.0/w8r2u2c2 e2e-03
+unpooler m32 v5 22.1 | 56.2/w8r2u4c1 e2e-03 ; 57.3/w4r2u4c2 e2e-03 ; 59.5/w8r2u2c2 e2e-03 ; 85.4/w8r4u2c2 e2e-03
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-7v28z7a1/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-7v28z7a1/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-7v28z7a1/run/submission.py", line 533, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+compile 51s
+nop 5.2
+unpooler_slice m8 v5 9.5 | 9.4/w4r1u4c8 e2e-03 ; 9.5/w8r1u2c8 e2e-03 ; 9.9/w8r1u2c4 e2e-03 ; 10.2/w8r2u2c4 e2e-03 ; 10.2/w4r2u2c8 e2e-03 ; 10.4/w8r2u4c2 e2e-03
+pooler m16 v5 23.3 | 28.1/w8r2u4c2 e2e-03 ; 30.0/w8r1u4c2 e2e-03 ; 31.7/w8r4u2c2 e2e-03 ; 33.0/w4r4u4c2 e2e-03 ; 33.0/w8r4u4c1 e2e-03 ; 35.0/w8r2u2c4 e2e-03 ; 35.4/w4r2u4c4 e2e-03
+qkv_gate m16 v5 16.5 | 20.1/w4r2u4c4 e2e-03 ; 20.1/w8r2u2c4 e2e-03 ; 21.2/w8r2u4c2 e2e-03 ; 26.6/w8r1u4c2 e2e-03 ; 27.2/w8r4u2c2 e2e-03 ; 29.5/w4r4u4c2 e2e-03 ; 30.0/w8r4u4c1 e2e-03
+o m16 v5 9.9 | 14.1/w8r2u4c1 e2e-03 ; 14.2/w4r2u4c1 e2e-03 ; 17.3/w8r4u2c1 e2e-03 ; 17.9/w4r4u4c1 e2e-03 ; 18.7/w4r4u2c2 e2e-03 ; 20.0/w8r2u2c2 e2e-03
+unpooler m16 v5 21.6 | 26.2/w8r2u4c1 e2e-03 ; 27.1/w4r2u4c2 e2e-03 ; 30.7/w4r4u4c2 e2e-03 ; 30.8/w8r4u4c1 e2e-03 ; 34.6/w8r2u2c2 e2e-03 ; 40.0/w8r4u2c2 e2e-03
+pooler m32 v5 23.8 | 46.0/w8r1u4c2 e2e-03 ; 54.6/w8r4u2c2 e2e-03 ; 57.6/w8r2u4c2 e2e-03 ; 77.3/w4r2u4c4 e2e-03 ; 77.8/w8r2u2c4 e2e-03
+qkv_gate m32 v5 17.0 | 40.0/w8r1u4c2 e2e-03 ; 51.0/w8r4u2c2 e2e-03 ; 53.7/w4r2u4c4 e2e-03 ; 54.7/w8r2u4c2 e2e-03 ; 55.1/w8r2u2c4 e2e-03
+o m32 v5 10.2 | 26.1/w4r2u4c1 e2e-03 ; 39.3/w8r4u2c1 e2e-03 ; 41.2/w8r2u4c1 e2e-03 ; 42.5/w4r4u2c2 e2e-03 ; 47.0/w8r2u2c2 e2e-03
+unpooler m32 v5 22.1 | 56.2/w8r2u4c1 e2e-03 ; 57.3/w4r2u4c2 e2e-03 ; 59.5/w8r2u2c2 e2e-03 ; 85.4/w8r4u2c2 e2e-03
+odd m2 pooler err 1.7e-03
+odd m2 o err 1.7e-03
+odd m5 pooler err 1.6e-03
+odd m5 o err 1.6e-03
+odd m7 pooler err 1.7e-03
+odd m7 o err 1.7e-03
+odd m13 pooler err 1.7e-03
+odd m13 o err 1.7e-03
+odd m27 pooler err 1.7e-03
+odd m27 o err 1.7e-03
+total 55s

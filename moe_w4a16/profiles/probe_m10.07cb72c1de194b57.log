@@ -1,0 +1,29 @@
+bs1 v2 57.5 | triton 66.9/Tbn128,w4,s4/4 71.6/Tbn128,w4,s8/4 75.1/Rbn128,w4,s4/4 80.2/Rbn128,w4,s8/4 | bad 0  [8s]
+bs8 v2 68.7 | triton 86.0/Tbn128,w4,s8/4 86.6/Tbn128,w4,s4/4 89.5/Rbn64,w4,s2/2 90.6/Tbn64,w4,s2/2 | bad 0  [9s]
+bs16 v2 73.6 | triton 88.2/Tbn128,w4,s8/4 88.5/Tbn128,w4,s4/4 91.2/Rbn64,w4,s2/2 92.7/Tbn64,w4,s2/2 | bad 0  [10s]
+bs32 v2 114.4 | triton 126.5/Tbn128,w4,s2/2 131.3/Tbn128,w4,s4/4 138.0/Tbn128,w4,s8/4 143.0/Rbn64,w4,s1/1 | bad 0  [12s]
+bs128 v2 238.2 | triton 299.0/Tbn128,w4,s2/2 315.0/Tbn128,w4,s1/1 316.5/Tbn64,w4,s2/2 335.5/Tbn64,w4,s1/1 | bad 0  [26s]
+bs256 v2 373.1 | triton 409.7/Tbn128,w4,s1/1 426.5/Tbn128,w4,s2/2 469.9/Tbn64,w4,s1/1 476.3/Tbn64,w4,s2/2 | bad 0  [31s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-eay74vrn/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-eay74vrn/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-eay74vrn/run/submission.py", line 616, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+nop 5.2
+bs1 v2 57.5 best-tiled 66.9 best-rowmajor 75.1
+bs1 v2 57.5 | triton 66.9/Tbn128,w4,s4/4 71.6/Tbn128,w4,s8/4 75.1/Rbn128,w4,s4/4 80.2/Rbn128,w4,s8/4 | bad 0  [8s]
+bs8 v2 68.7 best-tiled 86.0 best-rowmajor 89.5
+bs8 v2 68.7 | triton 86.0/Tbn128,w4,s8/4 86.6/Tbn128,w4,s4/4 89.5/Rbn64,w4,s2/2 90.6/Tbn64,w4,s2/2 | bad 0  [9s]
+bs16 v2 73.6 best-tiled 88.2 best-rowmajor 91.2
+bs16 v2 73.6 | triton 88.2/Tbn128,w4,s8/4 88.5/Tbn128,w4,s4/4 91.2/Rbn64,w4,s2/2 92.7/Tbn64,w4,s2/2 | bad 0  [10s]
+bs32 v2 114.4 best-tiled 126.5 best-rowmajor 143.0
+bs32 v2 114.4 | triton 126.5/Tbn128,w4,s2/2 131.3/Tbn128,w4,s4/4 138.0/Tbn128,w4,s8/4 143.0/Rbn64,w4,s1/1 | bad 0  [12s]
+bs128 v2 238.2 best-tiled 299.0 best-rowmajor 341.9
+bs128 v2 238.2 | triton 299.0/Tbn128,w4,s2/2 315.0/Tbn128,w4,s1/1 316.5/Tbn64,w4,s2/2 335.5/Tbn64,w4,s1/1 | bad 0  [26s]
+bs256 v2 373.1 best-tiled 409.7 best-rowmajor 485.4
+bs256 v2 373.1 | triton 409.7/Tbn128,w4,s1/1 426.5/Tbn128,w4,s2/2 469.9/Tbn64,w4,s1/1 476.3/Tbn64,w4,s2/2 | bad 0  [31s]

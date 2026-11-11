@@ -1,0 +1,25 @@
+bs1 v2 56.5 | cuda 78.6/nt1,s4/4,err5.8e-03 81.9/nt1,s8/8,err5.8e-03 82.5/nt1,s8/4,err5.8e-03 94.5/nt2,s8/8,err5.8e-03 | bad 0  [39s]
+bs8 v2 68.0 | cuda 98.7/nt1,s8/4,err5.7e-03 101.2/nt1,s8/8,err5.7e-03 101.9/nt1,s4/4,err5.7e-03 108.0/nt2,s4/4,err5.7e-03 | bad 0  [41s]
+bs16 v2 72.3 | cuda 116.2/nt2,s4/4,err5.7e-03 122.5/nt2,s8/4,err5.7e-03 125.2/nt2,s8/8,err5.7e-03 129.2/nt4,s4/4,err5.7e-03 | bad 0  [42s]
+bs32 v2 114.2 | cuda 187.6/nt2,s2/2,err5.8e-03 191.1/nt2,s4/4,err5.8e-03 192.6/nt4,s4/4,err5.8e-03 196.0/nt4,s8/8,err5.8e-03 | bad 0  [44s]
+bs128 v2 239.6 | cuda 393.2/nt4,s2/2,err5.7e-03 415.1/nt4,s1/1,err5.7e-03 539.3/nt8,s2/2,err5.7e-03 567.2/nt8,s1/1,err5.7e-03 | bad 0  [50s]
+bs256 v2 371.6 | cuda 626.9/nt4,s1/1,err5.7e-03 651.0/nt4,s2/2,err5.7e-03 800.8/nt8,s2/2,err5.7e-03 833.7/nt8,s1/1,err5.7e-03 | bad 0  [57s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-rxs8dvom/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-rxs8dvom/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-rxs8dvom/run/submission.py", line 686, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+compile 37s
+pack + prep [38s]
+nop 4.9
+bs1 v2 56.5 | cuda 78.6/nt1,s4/4,err5.8e-03 81.9/nt1,s8/8,err5.8e-03 82.5/nt1,s8/4,err5.8e-03 94.5/nt2,s8/8,err5.8e-03 | bad 0  [39s]
+bs8 v2 68.0 | cuda 98.7/nt1,s8/4,err5.7e-03 101.2/nt1,s8/8,err5.7e-03 101.9/nt1,s4/4,err5.7e-03 108.0/nt2,s4/4,err5.7e-03 | bad 0  [41s]
+bs16 v2 72.3 | cuda 116.2/nt2,s4/4,err5.7e-03 122.5/nt2,s8/4,err5.7e-03 125.2/nt2,s8/8,err5.7e-03 129.2/nt4,s4/4,err5.7e-03 | bad 0  [42s]
+bs32 v2 114.2 | cuda 187.6/nt2,s2/2,err5.8e-03 191.1/nt2,s4/4,err5.8e-03 192.6/nt4,s4/4,err5.8e-03 196.0/nt4,s8/8,err5.8e-03 | bad 0  [44s]
+bs128 v2 239.6 | cuda 393.2/nt4,s2/2,err5.7e-03 415.1/nt4,s1/1,err5.7e-03 539.3/nt8,s2/2,err5.7e-03 567.2/nt8,s1/1,err5.7e-03 | bad 0  [50s]
+bs256 v2 371.6 | cuda 626.9/nt4,s1/1,err5.7e-03 651.0/nt4,s2/2,err5.7e-03 800.8/nt8,s2/2,err5.7e-03 833.7/nt8,s1/1,err5.7e-03 | bad 0  [57s]

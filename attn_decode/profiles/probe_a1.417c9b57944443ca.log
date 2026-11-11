@@ -1,0 +1,126 @@
+B32 full L8 sglang 393.6 | 411.9/bn64,w4,st2,bf16,ms256 422.6/bn128,w4,st2,bf16,ms256 464.6/bn64,w4,st3,bf16,ms256 478.4/bn128,w4,st3,bf16,ms256 506.1/bn32,w4,st3,bf16,ms256 | bad 0  [10s]
+B32 full L1 sglang 388.0 | 248.2/bn128,w4,st3,bf16,pair,ms256 253.6/bn128,w4,st2,bf16,pair,ms256 275.1/bn128,w4,st2,bf16,ms256 289.0/bn64,w4,st3,bf16,pair,ms256 290.1/bn64,w4,st3,fp8,pair,ms256 | bad 0  [29s]
+B1 sliding L1 sglang 24.9 | 13.0/bn64,w4,st2,fp8,ms256 13.0/bn64,w4,st2,fp8,ms64 13.0/bn64,w4,st3,fp8,ms64 13.0/bn64,w4,st3,fp8,ms256 13.1/bn64,w4,st2,bf16,ms64 | bad 0  [48s]
+B32 sliding L8 sglang 38.8 | 33.2/bn64,w4,st2,bf16,ms256 34.3/bn32,w4,st2,bf16,ms256 35.2/bn32,w4,st3,bf16,ms256 35.5/bn128,w4,st2,bf16,ms256 35.7/bn64,w4,st3,bf16,ms256 | bad 0  [57s]
+B1 full L1 sglang 34.9 | 27.3/bn128,w4,st3,fp8,ms256 28.1/bn128,w4,st3,bf16,ms256 28.4/bn128,w4,st2,fp8,ms256 29.0/bn128,w4,st3,fp8,pair,ms256 29.2/bn128,w4,st2,bf16,ms256 | bad 0  [58s]
+B1 full L8 sglang 40.0 | 33.6/bn128,w4,st2,bf16,ms256 33.6/bn64,w4,st3,bf16,ms256 35.7/bn64,w4,st2,bf16,ms256 37.6/bn128,w4,st3,bf16,ms256 37.7/bn64,w4,st3,fp8,ms256 | bad 0  [58s]
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 420, in kernel_fn
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0
+nop 5.0
+B32 full L8 sglang 393.6 | 411.9/bn64,w4,st2,bf16,ms256 422.6/bn128,w4,st2,bf16,ms256 464.6/bn64,w4,st3,bf16,ms256 478.4/bn128,w4,st3,bf16,ms256 506.1/bn32,w4,st3,bf16,ms256 | bad 0  [10s]
+B32 full L1 sglang 388.0 | 248.2/bn128,w4,st3,bf16,pair,ms256 253.6/bn128,w4,st2,bf16,pair,ms256 275.1/bn128,w4,st2,bf16,ms256 289.0/bn64,w4,st3,bf16,pair,ms256 290.1/bn64,w4,st3,fp8,pair,ms256 | bad 0  [29s]
+B1 sliding L1 sglang 24.9 | 13.0/bn64,w4,st2,fp8,ms256 13.0/bn64,w4,st2,fp8,ms64 13.0/bn64,w4,st3,fp8,ms64 13.0/bn64,w4,st3,fp8,ms256 13.1/bn64,w4,st2,bf16,ms64 | bad 0  [48s]
+B32 sliding L8 sglang 38.8 | 33.2/bn64,w4,st2,bf16,ms256 34.3/bn32,w4,st2,bf16,ms256 35.2/bn32,w4,st3,bf16,ms256 35.5/bn128,w4,st2,bf16,ms256 35.7/bn64,w4,st3,bf16,ms256 | bad 0  [57s]
+B1 full L1 sglang 34.9 | 27.3/bn128,w4,st3,fp8,ms256 28.1/bn128,w4,st3,bf16,ms256 28.4/bn128,w4,st2,fp8,ms256 29.0/bn128,w4,st3,fp8,pair,ms256 29.2/bn128,w4,st2,bf16,ms256 | bad 0  [58s]
+B1 full L8 sglang 40.0 | 33.6/bn128,w4,st2,bf16,ms256 33.6/bn64,w4,st3,bf16,ms256 35.7/bn64,w4,st2,bf16,ms256 37.6/bn128,w4,st3,bf16,ms256 37.7/bn64,w4,st3,fp8,ms256 | bad 0  [58s]
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-1oevi7mt/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-1oevi7mt/run/submission.py", line 356, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe

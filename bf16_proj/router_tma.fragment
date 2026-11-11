@@ -1,0 +1,18 @@
+
+@triton.jit(do_not_specialize=["M", "SPLIT_K"])
+def _router_tma(hd, ld, xd, out, ws, cnt, M, N: tl.constexpr, K: tl.constexpr, SPLIT_K,
+                BM: tl.constexpr, BN: tl.constexpr, BK: tl.constexpr):
+    pn, pk, pm = tl.program_id(0), tl.program_id(1), tl.program_id(2)
+    chunks = K // BK
+    c0, c1 = pk * chunks // SPLIT_K, (pk + 1) * chunks // SPLIT_K
+    acc = tl.zeros((BN, BM), tl.float32)
+    for c in range(c0, c1):
+        x = xd.load([pm * BM, c * BK])
+        h = hd.load([pn * BN, c * BK])
+        l = ld.load([pn * BN, c * BK])
+        acc = tl.dot(h, tl.trans(x), acc)
+        acc = tl.dot(l, tl.trans(x), acc)
+    rn = pn * BN + tl.arange(0, BN)
+    rm = pm * BM + tl.arange(0, BM)
+    off = rm[None, :] * N + rn[:, None]
+    _finish(acc, out + off, ws + off, rm[None, :] < M, cnt, pm * tl.num_programs(0) + pn, SPLIT_K)

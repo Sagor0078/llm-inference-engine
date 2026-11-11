@@ -1,0 +1,2 @@
+tokens 753: marlin 674.1 us | grouped (excl. dequant) 1812.1 us, incl. dequant 4139.6 us, rel err vs marlin nan [6s]
+tokens 3012: marlin 2736.9 us | grouped (excl. dequant) 6716.5 us, incl. dequant 9011.4 us, rel err vs marlin nan [50s]

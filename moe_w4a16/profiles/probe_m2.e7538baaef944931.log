@@ -1,0 +1,20 @@
+bs1 full 85.8 | map=7.2[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=5.7[1k:_moe_align_small_numel_kernel] | gemm1=30.9[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.5[1k:sglang::act_and_mul_kernel] | gemm2=23.3[1k:sglang::device::marlin_moe::Marlin] | finalize=34.2[14k::native::vectorized_elementwise_kernel,at::native::elementwise_kernel,at::native::reduce_kernel,t::native::unrolled_elementwise_kernel]
+bs8 full 105.0 | map=7.0[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=7.7[1k:_moe_align_small_numel_kernel] | gemm1=39.1[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.2[1k:sglang::act_and_mul_kernel] | gemm2=27.0[1k:sglang::device::marlin_moe::Marlin] | finalize=40.5[14k::native::vectorized_elementwise_kernel,at::native::elementwise_kernel,at::native::reduce_kernel,t::native::unrolled_elementwise_kernel]
+bs16 full 126.7 | map=7.3[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=8.3[2k:count_and_sort_expert_tokens_kernel,moe_align_block_size_kernel] | gemm1=52.4[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.3[1k:sglang::act_and_mul_kernel] | gemm2=31.7[1k:sglang::device::marlin_moe::Marlin] | finalize=43.5[14k::native::vectorized_elementwise_kernel,at::native::elementwise_kernel,at::native::reduce_kernel,t::native::unrolled_elementwise_kernel]
+bs32 full 121.2 | map=8.4[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=8.6[2k:count_and_sort_expert_tokens_kernel,moe_align_block_size_kernel] | gemm1=69.2[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.5[1k:sglang::act_and_mul_kernel] | gemm2=41.8[1k:sglang::device::marlin_moe::Marlin] | finalize=9.0[1k:_post_expert_norm_weighted_sum_kernel]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-p1ep6emj/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-p1ep6emj/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-p1ep6emj/run/submission.py", line 238, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130
+nop 5.1
+bs1 full 85.8 | map=7.2[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=5.7[1k:_moe_align_small_numel_kernel] | gemm1=30.9[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.5[1k:sglang::act_and_mul_kernel] | gemm2=23.3[1k:sglang::device::marlin_moe::Marlin] | finalize=34.2[14k::native::vectorized_elementwise_kernel,at::native::elementwise_kernel,at::native::reduce_kernel,t::native::unrolled_elementwise_kernel]
+bs8 full 105.0 | map=7.0[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=7.7[1k:_moe_align_small_numel_kernel] | gemm1=39.1[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.2[1k:sglang::act_and_mul_kernel] | gemm2=27.0[1k:sglang::device::marlin_moe::Marlin] | finalize=40.5[14k::native::vectorized_elementwise_kernel,at::native::elementwise_kernel,at::native::reduce_kernel,t::native::unrolled_elementwise_kernel]
+bs16 full 126.7 | map=7.3[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=8.3[2k:count_and_sort_expert_tokens_kernel,moe_align_block_size_kernel] | gemm1=52.4[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.3[1k:sglang::act_and_mul_kernel] | gemm2=31.7[1k:sglang::device::marlin_moe::Marlin] | finalize=43.5[14k::native::vectorized_elementwise_kernel,at::native::elementwise_kernel,at::native::reduce_kernel,t::native::unrolled_elementwise_kernel]
+bs32 full 121.2 | map=8.4[2k:at::native::index_elementwise_kernel,t::native::unrolled_elementwise_kernel] | align=8.6[2k:count_and_sort_expert_tokens_kernel,moe_align_block_size_kernel] | gemm1=69.2[1k:sglang::device::marlin_moe::Marlin] | silu_mul=6.5[1k:sglang::act_and_mul_kernel] | gemm2=41.8[1k:sglang::device::marlin_moe::Marlin] | finalize=9.0[1k:_post_expert_norm_weighted_sum_kernel]

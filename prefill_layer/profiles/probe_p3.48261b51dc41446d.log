@@ -1,0 +1,15 @@
+tokens 3012: routed rows 7264 | grouped_mm gemm1 644.9 + gemm2 348.8 us = 993.7 (736 TFLOPS; expert-0 rel err 0.0e+00) | whole Marlin path 2733.9 us [1s]
+tokens 16384: routed rows 34560 | grouped_mm gemm1 3088.9 + gemm2 1540.7 us = 4629.6 (751 TFLOPS; expert-0 rel err 1.7e-03) | whole Marlin path 13609.9 us [1s]
+Traceback (most recent call last):
+  File "/tmp/muse_prefill_layer-hjkok2uo/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_prefill_layer-hjkok2uo/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_prefill_layer-hjkok2uo/run/submission.py", line 305, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+dequant exact: True; time all experts 1483.5 us
+tokens 3012: routed rows 7264 | grouped_mm gemm1 644.9 + gemm2 348.8 us = 993.7 (736 TFLOPS; expert-0 rel err 0.0e+00) | whole Marlin path 2733.9 us [1s]
+tokens 16384: routed rows 34560 | grouped_mm gemm1 3088.9 + gemm2 1540.7 us = 4629.6 (751 TFLOPS; expert-0 rel err 1.7e-03) | whole Marlin path 13609.9 us [1s]

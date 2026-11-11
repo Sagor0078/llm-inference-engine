@@ -1,0 +1,16 @@
+tokens 753 local_routes 1545 marlin 674.2 | triton 872.9/bm64,bn128,bk128,w4,st3 876.7/bm128,bn64,bk128,w4,st2 908.8/bm128,bn128,bk128,w8,st3 940.3/bm128,bn64,bk128,w8,st3 | bad 0  [49s]
+tokens 3012 local_routes 7249 marlin 2720.5 | triton 4897.2/bm64,bn128,bk64,w4,st2 | bad 0  [291s]
+Traceback (most recent call last):
+  File "/tmp/muse_prefill_layer-8bdzu0_7/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_prefill_layer-8bdzu0_7/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_prefill_layer-8bdzu0_7/run/submission.py", line 597, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+repack [0s]
+tokens 753 local_routes 1545 marlin 674.2 | triton 872.9/bm64,bn128,bk128,w4,st3 876.7/bm128,bn64,bk128,w4,st2 908.8/bm128,bn128,bk128,w8,st3 940.3/bm128,bn64,bk128,w8,st3 | bad 0  [49s]
+tokens 3012 local_routes 7249 marlin 2720.5 | triton 4897.2/bm64,bn128,bk64,w4,st2 | bad 0  [291s]
+TIME BUDGET HIT

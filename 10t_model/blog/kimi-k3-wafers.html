@@ -1,0 +1,504 @@
+<title>Kimi K3 Wafer Math</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap">
+<style>
+/* Layout: one Substack-style reading column; whiteboard math blocks and hand-drawn figures break out slightly wider. */
+:root {
+  --bg: #fffefb;
+  --fg: #23211d;
+  --muted: #6b675f;
+  --rule: #e7e3da;
+  --panel: #f6f4ee;
+  --marker: #e03131;            /* the red whiteboard marker */
+  --ink: #1e1e1e;               /* Excalidraw stroke */
+  --blue: #1971c2;  --blue-fill: #74c0fc;
+  --orange: #e8590c; --orange-fill: #ffa94d;
+  --green: #2f9e44;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-hand: "Kalam", "Comic Sans MS", "Segoe Print", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514; --fg: #e9e6df; --muted: #a29d93; --rule: #2f2e2b; --panel: #1e1d1b;
+    --marker: #ff6b6b; --ink: #dedad2;
+    --blue: #4dabf7; --blue-fill: #1c7ed6; --orange: #ff922b; --orange-fill: #d9480f; --green: #51cf66;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514; --fg: #e9e6df; --muted: #a29d93; --rule: #2f2e2b; --panel: #1e1d1b;
+  --marker: #ff6b6b; --ink: #dedad2;
+  --blue: #4dabf7; --blue-fill: #1c7ed6; --orange: #ff922b; --orange-fill: #d9480f; --green: #51cf66;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 19px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 680px; margin: 0 auto; }
+.masthead {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding-block: 18px; border-bottom: 1px solid var(--rule);
+  font-family: var(--font-ui); font-size: 15px;
+}
+.masthead .pub { font-weight: 600; letter-spacing: .01em; }
+.masthead .tag { color: var(--muted); font-size: 13px; }
+
+header.post { padding-block: 40px 8px; }
+h1 {
+  font-size: clamp(30px, 6vw, 42px); line-height: 1.15; font-weight: 700;
+  margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em;
+}
+.dek { font-size: 21px; color: var(--muted); margin: 0 0 24px; line-height: 1.45; text-wrap: pretty; }
+.byline {
+  display: flex; align-items: center; gap: 12px; padding-block: 14px;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  font-family: var(--font-ui); font-size: 14px; color: var(--muted);
+}
+.avatar {
+  width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--panel); border: 1.5px solid var(--ink); color: var(--fg);
+  font-family: var(--font-hand); font-weight: 700; font-size: 18px; flex: none;
+}
+.byline b { color: var(--fg); font-weight: 600; }
+
+article p, article li { text-wrap: pretty; }
+article p { margin: 0 0 1.1em; }
+article a { color: inherit; text-decoration-color: var(--marker); text-underline-offset: 3px; }
+h2 {
+  font-size: 27px; line-height: 1.25; margin: 2em 0 .6em; font-weight: 700; text-wrap: balance;
+}
+h2 .num { color: var(--marker); font-family: var(--font-hand); font-weight: 700; margin-right: .25em; }
+h2 .uline { display: inline-block; position: relative; }
+h2 .uline svg { position: absolute; left: -2%; bottom: -10px; width: 104%; height: 12px; overflow: visible; }
+h2 .uline path { fill: none; stroke: var(--marker); stroke-width: 2.4; stroke-linecap: round; }
+h3 { font-family: var(--font-ui); font-size: 15px; text-transform: uppercase; letter-spacing: .06em; margin: 1.8em 0 .6em; color: var(--muted); }
+
+.specs {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px;
+  background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+  margin: 1.4em 0 1.6em; font-family: var(--font-ui);
+}
+.specs div { background: var(--bg); padding: 12px 14px; min-width: 0; }
+.specs dt { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.specs dd { margin: 2px 0 0; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* whiteboard math: label, working, result */
+.board {
+  font-family: var(--font-mono); font-size: 15.5px; line-height: 1.5;
+  background: var(--panel); border-radius: 6px; padding: 16px 18px; margin: 1.2em 0 1.4em;
+  display: grid; gap: 10px; overflow-x: auto;
+}
+.board .row { display: grid; grid-template-columns: 11.5em 1fr; gap: 4px 14px; align-items: baseline; }
+.board .lbl { color: var(--muted); font-family: var(--font-hand); font-size: 18px; }
+.board .res { color: var(--marker); font-weight: 500; white-space: nowrap; }
+@media (max-width: 520px) { .board .row { grid-template-columns: 1fr; } }
+
+figure { margin: 1.8em 0 2em; }
+.fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+figure svg.sketch { display: block; width: 100%; min-width: 540px; height: auto; }
+figcaption { font-family: var(--font-ui); font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+.calc {
+  border: 1.5px solid var(--ink); border-radius: 10px; padding: 18px; margin: 1.4em 0 1.8em;
+  font-family: var(--font-ui); font-size: 15px; display: grid; gap: 14px;
+}
+.calc label { font-weight: 600; display: block; margin-bottom: 6px; }
+.calc input[type=range] { width: 100%; accent-color: var(--marker); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button {
+  font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--fg);
+}
+.chips button[aria-pressed="true"] { border-color: var(--marker); color: var(--marker); }
+.chips button:focus-visible, .calc input:focus-visible { outline: 2px solid var(--marker); outline-offset: 2px; }
+.out { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.out div { min-width: 0; }
+.out span { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.out b { font-family: var(--font-mono); font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.out .big b { color: var(--marker); }
+@media (max-width: 520px) { .out { grid-template-columns: 1fr 1fr; } }
+
+.tbl { overflow-x: auto; margin: 1.2em 0 1.6em; }
+table { border-collapse: collapse; width: 100%; font-family: var(--font-ui); font-size: 15px; min-width: 520px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+td.n, th.n { text-align: right; }
+tr.hl td { font-weight: 600; }
+
+blockquote {
+  margin: 1.4em 0; padding: 2px 0 2px 18px; border-left: 3px solid var(--marker);
+  font-style: italic; color: var(--fg);
+}
+.note { font-family: var(--font-ui); font-size: 14px; color: var(--muted); }
+.end { margin-top: 3em; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--font-ui); font-size: 14px; color: var(--muted); }
+.end ol { padding-left: 1.2em; margin: .4em 0 0; }
+.end li { margin-bottom: .4em; }
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <span class="pub">Wafer Math</span>
+    <span class="tag">notes on serving big models</span>
+  </div>
+
+  <header class="post">
+    <h1>How a 3-trillion-parameter model fits on 59 wafers</h1>
+    <p class="dek">Working through the Cerebras whiteboard for Kimi K3 on WSE-3T, one marker line at a time: weights, KV cache, layer mapping. Then the same math for 10 trillion.</p>
+    <div class="byline">
+      <div class="avatar" aria-hidden="true">S</div>
+      <div><b>Sagor0078</b><br>Nov 2, 2026 · 8 min read</div>
+    </div>
+  </header>
+
+  <article>
+    <p>In <a href="https://youtu.be/efqQMmvSsVE">“Deploying Trillion-parameter Frontier Models”</a>, Cerebras CTO Sean Lie stands at a whiteboard with three red headings on it: <b>#1 Weights</b>, <b>#2 KV cache (dense)</b> and <b>#3 Layer mapping</b>. Under each is a line of arithmetic with the answer left blank. This post fills in the blanks.</p>
+
+    <p>The point of the exercise is simple. A Cerebras wafer has no HBM. Everything lives in on-chip SRAM, 44 GB per WSE-3T wafer. So the question “how do you serve a 3T model?” turns into a packing problem: how many 44 GB boxes do you need, and what goes in each one?</p>
+
+    <h2>The setup</h2>
+    <p>Top right of the board, in a bracket, are the facts everything else hangs on:</p>
+
+    <dl class="specs">
+      <div><dt>Model</dt><dd>Kimi K3 · ~3T</dd></div>
+      <div><dt>Layers</dt><dd>69 linear + 24 dense</dd></div>
+      <div><dt>Context</dt><dd>256K tokens</dd></div>
+      <div><dt>Weights</dt><dd>4-bit</dd></div>
+      <div><dt>KV cache</dt><dd>8-bit</dd></div>
+      <div><dt>Per wafer</dt><dd>44 GB SRAM</dd></div>
+    </dl>
+
+    <p>Down the left side, the 93 layers are drawn as repeating groups: three <b>linear</b> attention layers, then one <b>dense</b> (full-attention) layer, then “21 more groups.” The distinction matters for memory. A linear-attention layer carries a fixed-size state per request, no matter how long the context gets. A dense layer keeps a key and value for every token it has seen, so its KV cache grows with the context.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-layers" viewBox="0 0 640 380" role="img" aria-label="Layer stack: groups of three linear layers followed by one dense layer, repeated; 93 layers in total, 69 linear and 24 dense."></svg></div>
+      <figcaption>Fig. 1. The layer stack, as drawn on the board. Only the orange layers need a KV cache.</figcaption>
+    </figure>
+
+    <h2><span class="num">#1</span><span class="uline">Weights<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1 7 C 22 3, 48 10, 70 5 S 94 6, 99 4"/></svg></span></h2>
+
+    <p>Two lines on the board. First the total, then the per-layer share.</p>
+
+    <div class="board" role="group" aria-label="Weights calculation">
+      <div class="row"><span class="lbl">total model size</span><span>3×10¹² params × 4 bits ÷ 8 bits/byte = <span class="res">1,500 GB</span></span></div>
+      <div class="row"><span class="lbl">GB / layer</span><span>1,500 GB ÷ 93 layers = <span class="res">16.1 GB</span></span></div>
+    </div>
+
+    <p>1.5 TB is far more than a wafer, but 16.1 GB per layer is well under 44 GB. That is the fact the whole design rests on. Every layer fits whole on one wafer, so no layer has to be split, the weights never move, and the only thing that travels between wafers is the activation for each token.</p>
+
+    <h2><span class="num">#2</span><span class="uline">KV cache (dense)<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1 6 C 25 9, 45 3, 66 7 S 92 4, 99 6"/></svg></span></h2>
+
+    <p>Give each dense layer its own wafer and whatever SRAM is left after the weights becomes KV cache.</p>
+
+    <div class="board" role="group" aria-label="KV cache calculation">
+      <div class="row"><span class="lbl">memory for KV</span><span>44 GB − 16.1 GB = <span class="res">27.9 GB</span></span></div>
+      <div class="row"><span class="lbl">KV size of each req</span><span>bytes per token × 256K tokens = <span class="res" id="b-req">10.7 GB</span></span></div>
+      <div class="row"><span class="lbl"># of concurrent req</span><span>27.9 GB ÷ <span id="b-req2">10.7 GB</span> = <span class="res" id="b-conc">2</span></span></div>
+    </div>
+
+    <p>The middle line is the one I can’t fully read. The presenter’s arm covers part of it; what’s visible looks like “40k ×”. If that means about 40 KB per token for one dense layer, a 256K-token request needs 10.7 GB of KV on each dense wafer, and only two of them fit. With a compact latent KV cache of the kind DeepSeek V3 and Kimi K2 use (576 bytes per token per layer at 8-bit), the same wafer holds 184. Try it:</p>
+
+    <div class="calc" aria-label="KV cache calculator">
+      <div>
+        <label for="kvb">KV bytes per token, per dense layer: <span id="kvb-val">40 KB</span></label>
+        <input type="range" id="kvb" min="0" max="1000" step="1" value="0">
+      </div>
+      <div class="chips" role="group" aria-label="Presets">
+        <button type="button" data-b="576">Latent KV · 576 B</button>
+        <button type="button" data-b="2048">GQA, 8 heads · 2 KB</button>
+        <button type="button" data-b="16384">GQA, 64 heads · 16 KB</button>
+        <button type="button" data-b="40960">Board reading · 40 KB</button>
+      </div>
+      <div class="out">
+        <div><span>KV per request, per wafer</span><b id="o-req">–</b></div>
+        <div class="big"><span>Concurrent 256K requests</span><b id="o-conc">–</b></div>
+        <div><span>KV per request, all 24 layers</span><b id="o-all">–</b></div>
+      </div>
+    </div>
+
+    <p>Concurrency is set by the dense wafers alone. Each one holds the KV for its own layer for every request in flight, so the number of requests that fit on one dense wafer is the number the whole pipeline can serve at full context. Shorter requests fit more.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-wafers" viewBox="0 0 640 360" role="img" aria-label="Two wafers drawn to scale. A linear wafer holds two 16.1 GB layers with 11.8 GB free. A dense wafer holds one 16.1 GB layer and 27.9 GB of KV cache."></svg></div>
+      <figcaption>Fig. 2. What goes in each 44 GB wafer, drawn to scale. Linear layers pair up; a dense layer takes a wafer and fills the rest with KV cache.</figcaption>
+    </figure>
+
+    <h2><span class="num">#3</span><span class="uline">Layer mapping<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1 5 C 20 8, 40 4, 62 7 S 90 3, 99 6"/></svg></span></h2>
+
+    <p>Linear layers don’t need KV room, so two fit on a wafer (2 × 16.1 = 32.2 GB of 44). Dense layers get one wafer each.</p>
+
+    <div class="board" role="group" aria-label="Layer mapping calculation">
+      <div class="row"><span class="lbl">linear layers</span><span>69 layers ÷ 2 per wafer = 34.5 → <span class="res">35 wafers</span></span></div>
+      <div class="row"><span class="lbl">dense layers</span><span>24 layers ÷ 1 per wafer = <span class="res">24 wafers</span></span></div>
+      <div class="row"><span class="lbl">TOTAL # WAFERS</span><span>35 + 24 = <span class="res">59 wafers</span></span></div>
+    </div>
+
+    <p>That matches the 59 Cerebras quotes. One detail the board skips: layers come in groups of three linear and one dense, and three doesn’t divide by two. To reach 35, the odd linear layer of one group has to share a wafer with the first linear layer of the next group, on the far side of a dense layer. The token goes out to the dense wafer and comes back.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-pipe" viewBox="0 0 640 340" role="img" aria-label="Eight layers L1 L2 L3 D L4 L5 L6 D mapped onto five wafers. Wafer B holds L3 and L4, so a token visits it before and after the dense wafer C."></svg></div>
+      <figcaption>Fig. 3. Two groups of the pipeline. Wafer B holds L3 and L4, so each token passes through it twice. Without that sharing, each group needs two linear wafers and the total is about 70, not 59.</figcaption>
+    </figure>
+
+    <p>Each hop between wafers is about 2 µs over RDMA. A token crossing 59 wafers spends roughly 116 µs on the network before any compute, which still leaves room for the 1,000–2,000 tokens per second Cerebras reports. Pipeline depth also gives concurrency for free: with one micro-batch per stage, 59 stages means 59 batches in flight.</p>
+
+    <h2>What about 10 trillion parameters?</h2>
+
+    <p>Apply the same three steps to 10T. There is no public 10T configuration, so I kept Kimi K3’s mix of one dense layer in four and tried three depths, with latent KV at 576 bytes per token.</p>
+
+    <div class="board" role="group" aria-label="10T weights calculation">
+      <div class="row"><span class="lbl">total model size</span><span>10×10¹² × 4 bits ÷ 8 = <span class="res">5,000 GB</span></span></div>
+      <div class="row"><span class="lbl">floor, weights only</span><span>5,000 GB ÷ 44 GB = 113.6 → <span class="res">114 wafers</span></span></div>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Layers</th><th class="n">GB / layer</th><th class="n">KV room / dense wafer</th><th class="n">Wafers</th><th class="n">256K requests</th><th class="n">Hop latency</th></tr></thead>
+        <tbody>
+          <tr><td>Kimi K3 · 93 (69 + 24)</td><td class="n">16.1</td><td class="n">27.9 GB</td><td class="n">59</td><td class="n">184</td><td class="n">116 µs</td></tr>
+          <tr><td>10T · 93 (70 + 23)</td><td class="n">53.8, split ×2</td><td class="n">34.2 GB</td><td class="n">186</td><td class="n">226</td><td class="n">370 µs</td></tr>
+          <tr class="hl"><td>10T · 128 (96 + 32)</td><td class="n">39.1</td><td class="n">4.9 GB</td><td class="n">128</td><td class="n">32</td><td class="n">254 µs</td></tr>
+          <tr><td>10T · 192 (144 + 48)</td><td class="n">26.0</td><td class="n">18.0 GB</td><td class="n">192</td><td class="n">118</td><td class="n">382 µs</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-grid" viewBox="0 0 640 250" role="img" aria-label="Wafer counts compared: Kimi K3 uses 59 wafers, 35 linear and 24 dense. A 10T model with 128 layers uses 128 wafers, 96 linear and 32 dense."></svg></div>
+      <figcaption>Fig. 4. One square per wafer. Blue holds linear layers, orange holds a dense layer and its KV cache.</figcaption>
+    </figure>
+
+    <p>Three things change at 10T.</p>
+    <ul>
+      <li><b>Linear layers stop pairing up.</b> At 26–54 GB a layer, two no longer fit in 44 GB, so the trick that saved 34 wafers on K3 is gone. Every linear layer costs a full wafer.</li>
+      <li><b>The cheapest layout starves the KV cache.</b> At 128 layers each layer is 39 GB, which leaves under 5 GB per dense wafer. That is 32 full-context requests, down from 184.</li>
+      <li><b>You buy concurrency with wafers.</b> Going deeper (192 layers) or splitting fat layers across two wafers frees KV room again, at 190 wafers or so. Roughly three times K3’s footprint for three times the parameters, with the network hops growing in step.</li>
+    </ul>
+
+    <blockquote>On a wafer-scale machine the whole sizing exercise is three lines of arithmetic. The hard part is choosing which number to give up: wafers, context length or concurrency.</blockquote>
+
+    <div class="end">
+      <b>Assumptions and sources</b>
+      <ol>
+        <li>Board numbers, the 59-wafer total and the 2 µs hop come from the video and Cerebras’ post <a href="https://www.cerebras.ai/blog/how-we-deploy-trillion-parameter-frontier-models-on-cerebras">“How we deploy trillion-parameter frontier models on Cerebras”</a>.</li>
+        <li>The per-token KV figure on the board is partly hidden; “40 KB” is my reading. Latent KV (576 B) is an assumption borrowed from DeepSeek V3 and Kimi K2, not a published K3 figure.</li>
+        <li>Weights are split evenly over layers; embeddings, norms and router weights are ignored. Concurrency counts KV only, so activations and linear-attention state lower it in practice.</li>
+        <li>The 10T configurations are hypothetical. The calculator that produced the table is <code>10t_model/calc.py</code>.</li>
+      </ol>
+    </div>
+  </article>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.js"></script>
+<script>
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const KV_ROOM = 44 - 1500 / 93;          // GB per dense wafer
+  const CTX = 256 * 1024;
+
+  function colors() {
+    const s = getComputedStyle(document.documentElement);
+    const v = n => s.getPropertyValue(n).trim();
+    return { ink: v("--ink"), muted: v("--muted"), red: v("--marker"), blue: v("--blue"),
+      blueFill: v("--blue-fill"), orange: v("--orange"), orangeFill: v("--orange-fill"),
+      green: v("--green"), bg: v("--bg") };
+  }
+
+  // Small drawing API over rough.js, with plain-SVG fallback if the library didn't load.
+  function sketch(svg) {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const rc = window.rough ? window.rough.svg(svg) : null;
+    const c = colors();
+    let seed = 7;
+    const base = o => Object.assign({ seed: seed++, roughness: 1.1, bowing: 1, stroke: c.ink,
+      strokeWidth: 1.6, hachureGap: 6, fillWeight: 1.1, fillStyle: "hachure" }, o || {});
+    const el = (tag, attrs) => { const e = document.createElementNS(NS, tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]); svg.appendChild(e); return e; };
+    const plain = (tag, attrs, o) => el(tag, Object.assign({ stroke: o.stroke, "stroke-width": o.strokeWidth,
+      fill: o.fill || "none", "stroke-dasharray": o.strokeLineDash ? o.strokeLineDash.join(" ") : "" }, attrs));
+    return {
+      c,
+      rect(x, y, w, h, o) { o = base(o); rc ? svg.appendChild(rc.rectangle(x, y, w, h, o))
+        : plain("rect", { x, y, width: w, height: h, rx: 3 }, o); },
+      line(x1, y1, x2, y2, o) { o = base(o); rc ? svg.appendChild(rc.line(x1, y1, x2, y2, o))
+        : plain("line", { x1, y1, x2, y2 }, o); },
+      path(d, o) { o = base(o); rc ? svg.appendChild(rc.path(d, o)) : plain("path", { d }, o); },
+      head(x, y, fromX, fromY, o) {           // arrowhead at (x,y) pointing away from (fromX,fromY)
+        const a = Math.atan2(y - fromY, x - fromX), L = 10;
+        for (const s of [-0.45, 0.45]) this.line(x, y, x - L * Math.cos(a + s), y - L * Math.sin(a + s), o);
+      },
+      arrow(x1, y1, x2, y2, o) { this.line(x1, y1, x2, y2, o); this.head(x2, y2, x1, y1, o); },
+      curve(x1, y1, cx, cy, x2, y2, o) { this.path(`M${x1} ${y1} Q${cx} ${cy} ${x2} ${y2}`, o); this.head(x2, y2, cx, cy, o); },
+      text(x, y, str, o) {
+        o = Object.assign({ size: 17, anchor: "start", color: c.ink, weight: 400 }, o || {});
+        const t = el("text", { x, y, "font-family": "Kalam, 'Comic Sans MS', cursive", "font-size": o.size,
+          "text-anchor": o.anchor, fill: o.color, "font-weight": o.weight });
+        t.textContent = str; return t;
+      },
+    };
+  }
+
+  function drawLayers() {
+    const d = sketch(document.getElementById("fig-layers")), c = d.c;
+    const x = 40, w = 150, h = 30, step = 38;
+    let y = 16;
+    const kinds = ["linear", "linear", "linear", "dense", "linear", "linear", "linear", "dense"];
+    kinds.forEach((k, i) => {
+      const dense = k === "dense";
+      d.rect(x, y, w, h, { stroke: dense ? c.orange : c.blue, fill: dense ? c.orangeFill : c.blueFill });
+      d.text(x + w / 2, y + 21, k, { anchor: "middle", weight: 700, color: dense ? c.orange : c.blue });
+      if (i === 3) y += 14;                  // gap between the two groups
+      y += step;
+    });
+    d.text(x + w / 2, y + 4, "⋮", { anchor: "middle", size: 22 });
+    d.text(x + w / 2, y + 30, "+ 21 more groups", { anchor: "middle", size: 18, color: c.red, weight: 700 });
+
+    // brace for one group
+    d.path(`M210 16 Q222 16 222 40 L222 75 Q222 88 232 88 Q222 88 222 101 L222 136 Q222 160 210 160`, { strokeWidth: 1.4 });
+    d.text(242, 84, "one group =", { size: 17 });
+    d.text(242, 106, "3 linear + 1 dense", { size: 17, weight: 700 });
+
+    // notes
+    d.arrow(420, 205, 200, 196, { stroke: c.blue });
+    d.text(430, 200, "linear attention:", { size: 17, color: c.blue, weight: 700 });
+    d.text(430, 222, "fixed-size state, no KV", { size: 16, color: c.blue });
+    d.arrow(420, 300, 200, 309, { stroke: c.orange });
+    d.text(430, 296, "dense (full attention):", { size: 17, color: c.orange, weight: 700 });
+    d.text(430, 318, "KV grows with context", { size: 16, color: c.orange });
+
+    d.rect(424, 20, 196, 92, { strokeWidth: 1.2, fill: "none", strokeLineDash: [6, 6], roughness: 0.8 });
+    d.text(522, 52, "93 layers", { anchor: "middle", size: 22, weight: 700 });
+    d.text(522, 80, "69 linear + 24 dense", { anchor: "middle", size: 17 });
+    d.text(522, 100, "16.1 GB each @ 4-bit", { anchor: "middle", size: 15, color: c.muted });
+  }
+
+  function drawWafers() {
+    const d = sketch(document.getElementById("fig-wafers")), c = d.c;
+    const px = 5.6, top = 60, H = 44 * px;   // 44 GB tall
+    function wafer(x, title, blocks, foot) {
+      d.text(x + 100, 30, title, { anchor: "middle", size: 21, weight: 700 });
+      d.rect(x - 10, top - 10, 220, H + 20, { strokeWidth: 2.2, roughness: 1.4 });
+      let y = top + H;
+      blocks.forEach(b => {
+        const h = b.gb * px; y -= h;
+        d.rect(x, y, 200, h, b.style);
+        d.text(x + 100, y + h / 2 + 2, b.label, { anchor: "middle", size: 16, weight: 700, color: b.color });
+        d.text(x + 100, y + h / 2 + 21, b.gb.toFixed(1) + " GB", { anchor: "middle", size: 14, color: b.color });
+      });
+      d.text(x + 100, top + H + 42, foot, { anchor: "middle", size: 16, color: c.muted });
+    }
+    const L = 1500 / 93;
+    wafer(60, "linear wafer", [
+      { gb: L, label: "linear layer", color: c.blue, style: { stroke: c.blue, fill: c.blueFill } },
+      { gb: L, label: "linear layer", color: c.blue, style: { stroke: c.blue, fill: c.blueFill } },
+      { gb: 44 - 2 * L, label: "free", color: c.muted, style: { stroke: c.muted, fill: "none", strokeLineDash: [5, 6], roughness: 0.6 } },
+    ], "2 layers · 32.2 GB");
+    wafer(370, "dense wafer", [
+      { gb: L, label: "dense layer", color: c.orange, style: { stroke: c.orange, fill: c.orangeFill } },
+      { gb: 44 - L, label: "KV cache", color: c.red, style: { stroke: c.red, fill: c.red, fillStyle: "cross-hatch", hachureGap: 11, fillWeight: 0.7 } },
+    ], "1 layer + 27.9 GB of KV");
+    d.text(320, top + H / 2 - 6, "44 GB", { anchor: "middle", size: 19, weight: 700, color: c.red });
+    d.text(320, top + H / 2 + 16, "SRAM", { anchor: "middle", size: 15, color: c.muted });
+    d.arrow(320, top + H / 2 - 30, 320, top + 2, { stroke: c.red, strokeWidth: 1.3 });
+    d.arrow(320, top + H / 2 + 30, 320, top + H - 2, { stroke: c.red, strokeWidth: 1.3 });
+  }
+
+  function drawPipe() {
+    const d = sketch(document.getElementById("fig-pipe")), c = d.c;
+    // layer sequence
+    const seq = ["L1", "L2", "L3", "D", "L4", "L5", "L6", "D"];
+    const lw = 56, lg = 14, lx = (640 - (8 * lw + 7 * lg)) / 2;
+    d.text(lx, 22, "layer order", { size: 15, color: c.muted });
+    seq.forEach((s, i) => {
+      const dn = s === "D", x = lx + i * (lw + lg);
+      d.rect(x, 32, lw, 32, { stroke: dn ? c.orange : c.blue, fill: dn ? c.orangeFill : c.blueFill });
+      d.text(x + lw / 2, 54, s, { anchor: "middle", weight: 700, color: dn ? c.orange : c.blue });
+      if (i < 7) d.arrow(x + lw + 2, 48, x + lw + lg - 2, 48, { strokeWidth: 1.1, roughness: 0.6 });
+    });
+
+    // wafers
+    const ww = 100, wg = 22, wx = (640 - (5 * ww + 4 * wg)) / 2, wy = 120, wh = 70;
+    const W = [["A", "L1 · L2", false], ["B", "L3 · L4", false], ["C", "D", true], ["D", "L5 · L6", false], ["E", "D", true]];
+    const cx = i => wx + i * (ww + wg) + ww / 2;
+    d.text(wx, wy - 14, "wafers", { size: 15, color: c.muted });
+    W.forEach(([n, lab, dn], i) => {
+      const x = wx + i * (ww + wg);
+      d.rect(x, wy, ww, wh, { strokeWidth: 2, stroke: i === 1 ? c.red : c.ink,
+        fill: dn ? c.orangeFill : c.blueFill, fillStyle: "hachure", hachureGap: 9 });
+      d.text(x + ww / 2, wy + 28, "wafer " + n, { anchor: "middle", size: 15, color: c.muted });
+      d.text(x + ww / 2, wy + 52, lab, { anchor: "middle", size: 18, weight: 700, color: dn ? c.orange : c.blue });
+    });
+    // hops
+    const mid = wy + wh / 2, bot = wy + wh;
+    d.arrow(cx(0) + ww / 2 + 2, mid, cx(1) - ww / 2 - 2, mid, { stroke: c.ink });
+    d.arrow(cx(1) + ww / 2 + 2, mid, cx(2) - ww / 2 - 2, mid, { stroke: c.ink });
+    d.curve(cx(2) - 10, bot + 4, (cx(1) + cx(2)) / 2, bot + 60, cx(1) + 12, bot + 4, { stroke: c.red, strokeWidth: 2 });
+    d.curve(cx(1) + 30, bot + 4, cx(2), bot + 130, cx(3) - 20, bot + 4, { stroke: c.red, strokeWidth: 2 });
+    d.arrow(cx(3) + ww / 2 + 2, mid, cx(4) - ww / 2 - 2, mid, { stroke: c.ink });
+    d.text(cx(0) + 40, bot + 42, "back to B for L4", { anchor: "middle", size: 15, color: c.red });
+    d.text(cx(3) + 50, bot + 80, "then on to wafer D", { anchor: "middle", size: 15, color: c.red });
+    d.text(320, 330, "each arrow ≈ one 2 µs hop · activations move, weights stay", { anchor: "middle", size: 15, color: c.muted });
+  }
+
+  function drawGrid() {
+    const d = sketch(document.getElementById("fig-grid")), c = d.c;
+    const sz = 13, gap = 5, per = 30, x0 = 30;
+    function block(y, title, lin, den) {
+      d.text(x0, y, title, { size: 18, weight: 700 });
+      const n = lin + den, rows = Math.ceil(n / per);
+      for (let i = 0; i < n; i++) {
+        const dn = i >= lin, x = x0 + (i % per) * (sz + gap), yy = y + 12 + Math.floor(i / per) * (sz + gap);
+        d.rect(x, yy, sz, sz, { roughness: 0.9, strokeWidth: 1.1, stroke: dn ? c.orange : c.blue,
+          fill: dn ? c.orangeFill : c.blueFill, fillStyle: "solid" });
+      }
+      return y + 12 + rows * (sz + gap);
+    }
+    let y = block(24, "Kimi K3 · 3T → 59 wafers", 35, 24);
+    y = block(y + 36, "10T · 128 layers → 128 wafers", 96, 32);
+    d.rect(450, 8, 14, 14, { stroke: c.blue, fill: c.blueFill, fillStyle: "solid", roughness: 0.8 });
+    d.text(470, 20, "linear", { size: 15, color: c.muted });
+    d.rect(530, 8, 14, 14, { stroke: c.orange, fill: c.orangeFill, fillStyle: "solid", roughness: 0.8 });
+    d.text(550, 20, "dense + KV", { size: 15, color: c.muted });
+  }
+
+  function drawAll() { drawLayers(); drawWafers(); drawPipe(); drawGrid(); }
+
+  // KV calculator: slider is log-scale from 256 B to 64 KB
+  const MIN = 256, MAX = 65536;
+  const slider = document.getElementById("kvb");
+  const toBytes = v => Math.round(MIN * Math.pow(MAX / MIN, v / 1000));
+  const toSlider = b => Math.round(1000 * Math.log(b / MIN) / Math.log(MAX / MIN));
+  const fmtB = b => b >= 1024 ? (b / 1024).toFixed(b >= 10240 ? 0 : 1) + " KB" : b + " B";
+  const fmtGB = g => g >= 1 ? g.toFixed(1) + " GB" : Math.round(g * 1000) + " MB";
+  function update(bytes) {
+    const req = bytes * CTX / 1e9, conc = Math.floor(KV_ROOM / req);
+    document.getElementById("kvb-val").textContent = fmtB(bytes);
+    document.getElementById("o-req").textContent = fmtGB(req);
+    document.getElementById("o-conc").textContent = conc.toLocaleString();
+    document.getElementById("o-all").textContent = fmtGB(req * 24);
+    document.getElementById("b-req").textContent = fmtGB(req);
+    document.getElementById("b-req2").textContent = fmtGB(req);
+    document.getElementById("b-conc").textContent = conc.toLocaleString();
+    document.querySelectorAll(".chips button").forEach(b =>
+      b.setAttribute("aria-pressed", String(Math.abs(+b.dataset.b - bytes) / bytes < 0.02)));
+  }
+  slider.addEventListener("input", () => update(toBytes(+slider.value)));
+  document.querySelectorAll(".chips button").forEach(b => b.addEventListener("click", () => {
+    slider.value = toSlider(+b.dataset.b); update(+b.dataset.b);
+  }));
+  slider.value = toSlider(40960); update(40960);
+
+  drawAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawAll);
+  new MutationObserver(drawAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>

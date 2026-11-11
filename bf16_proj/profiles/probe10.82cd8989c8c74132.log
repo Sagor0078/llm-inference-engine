@@ -1,0 +1,32 @@
+cudnn_handle created for device_id = 0
+
+qkv_ m128 | torch=20.51 dg_nt=20.38 dg_lt=20.42 fi_mm=20.51 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=20.54 [2s]
+o m128 | torch=10.82 dg_nt=10.82 dg_lt=10.85 fi_mm=10.82 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=10.82 [2s]
+pool m128 | torch=28.42 dg_nt=28.45 dg_lt=28.35 fi_mm=28.38 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=28.45 [3s]
+unpo m128 | torch=23.65 dg_nt=23.65 dg_lt=23.58 fi_mm=24.03 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=23.33 [3s]
+qkv_ m256 | torch=23.14 dg_nt=23.04 dg_lt=22.88 fi_mm=23.01 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=22.98 [3s]
+o m256 | torch=12.58 dg_nt=12.67 dg_lt=12.51 fi_mm=12.48 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=12.54 [3s]
+pool m256 | torch=35.30 dg_nt=33.50 dg_lt=35.33 fi_mm=35.49 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=33.57 [3s]
+unpo m256 | torch=27.87 dg_nt=27.94 dg_lt=27.94 fi_mm=27.94 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=27.90 [3s]
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-3g5su9jc/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-3g5su9jc/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-3g5su9jc/run/submission.py", line 79, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+deep_gemm.bf16_gemm_nt(a, b, d, c=None, compiled_dims='', alpha=None) | 
+deep_gemm.cublaslt_gemm_nt(a, b, d, c=None) | 
+flashinfer.mm_bf16(a: torch.Tensor, b: torch.Tensor, bias: Optional[torch.Tensor] = None, pdl: bool = False, out: Optional[torch.Tensor] = None, out_dtype: torch.dtype = torch.bfloat16, backend: Literal['cudnn', 'cutlass', 'tgv', 'cublaslt', 'tinygemm', 'cutile', 'cute-dsl', 'auto'] = 'cudnn') -> torch.Tensor | MM BF16      Parameters     ----------     a: torch.Tensor         Input tensor, shape (m, k), bf16 in row-major layout.      b: torch.Tensor         Weight tensor, shape (k, n), bf16 in column-major layout.      bias: Optional[torch.Tensor]         Optional bias tensor, shape (n,). Enabled for TGV,
+nop 4.80
+qkv_ m128 | torch=20.51 dg_nt=20.38 dg_lt=20.42 fi_mm=20.51 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=20.54 [2s]
+o m128 | torch=10.82 dg_nt=10.82 dg_lt=10.85 fi_mm=10.82 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=10.82 [2s]
+pool m128 | torch=28.42 dg_nt=28.45 dg_lt=28.35 fi_mm=28.38 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=28.45 [3s]
+unpo m128 | torch=23.65 dg_nt=23.65 dg_lt=23.58 fi_mm=24.03 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=23.33 [3s]
+qkv_ m256 | torch=23.14 dg_nt=23.04 dg_lt=22.88 fi_mm=23.01 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=22.98 [3s]
+o m256 | torch=12.58 dg_nt=12.67 dg_lt=12.51 fi_mm=12.48 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=12.54 [3s]
+pool m256 | torch=35.30 dg_nt=33.50 dg_lt=35.33 fi_mm=35.49 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=33.57 [3s]
+unpo m256 | torch=27.87 dg_nt=27.94 dg_lt=27.94 fi_mm=27.94 fi_mm_cutlass=EXC:BackendSupportedError:mm_bf16 does not support backend 'cutlass' with capability 90 fi_mm_cudnn=27.90 [3s]

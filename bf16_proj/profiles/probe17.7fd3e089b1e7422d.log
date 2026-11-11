@@ -1,0 +1,33 @@
+/opt/sglang/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+o n8192 m1: plain v5 7.6 | zip best: 12.9 bk128 s3 w4 sp2 e2e-03 | 13.2 bk256 s3 w4 sp2 e2e-03 | 13.3 bk128 s3 w4 sp1 e2e-03 | 13.4 bk128 s4 w4 sp2 e2e-03 | 13.4 bk256 s2 w4 sp2 e2e-03 [10s]
+o n8192 m32: plain v5 7.4 | zip best: 14.5 bk128 s3 w4 sp2 e2e-03 | 14.7 bk128 s3 w4 sp1 e2e-03 | 14.7 bk256 s3 w4 sp1 e2e-03 | 14.9 bk128 s4 w4 sp1 e2e-03 | 15.0 bk256 s2 w4 sp2 e2e-03 [23s]
+qkv_gate n2304 m1: plain v5 13.0 | zip best: 20.9 bk128 s2 w4 sp16 e2e-03 | 21.1 bk256 s2 w4 sp8 e2e-03 | 22.0 bk128 s3 w4 sp8 e2e-03 | 22.6 bk128 s4 w4 sp8 e2e-03 | 22.8 bk128 s2 w4 sp8 e2e-03 [23s]
+qkv_gate n2304 m32: plain v5 14.9 | zip best: 24.7 bk128 s2 w4 sp8 e2e-03 | 24.7 bk128 s3 w4 sp8 e2e-03 | 26.9 bk128 s3 w4 sp16 e2e-03 | 27.3 bk128 s2 w4 sp16 e2e-03 | 29.4 bk128 s4 w4 sp4 e2e-03 [23s]
+pooler n4096 m1: plain v5 21.6 | zip best: 26.5 bk256 s3 w4 sp4 e2e-03 | 27.7 bk128 s2 w4 sp8 e2e-03 | 27.8 bk128 s3 w4 sp4 e2e-03 | 28.2 bk128 s4 w4 sp4 e2e-03 | 29.7 bk128 s3 w4 sp8 e2e-03 [24s]
+pooler n4096 m32: plain v5 20.2 | zip best: 29.9 bk128 s4 w4 sp4 e2e-03 | 30.1 bk128 s3 w4 sp4 e2e-03 | 31.1 bk128 s2 w4 sp8 e2e-03 | 31.8 bk256 s2 w4 sp4 e2e-03 | 33.2 bk128 s3 w4 sp8 e2e-03 [24s]
+unpooler n1024 m1: plain v5 6.9 | zip best: 10.5 bk256 s2 w4 sp16 e2e-03 | 10.7 bk128 s3 w4 sp16 e2e-03 | 10.8 bk128 s4 w4 sp16 e2e-03 | 10.9 bk128 s2 w4 sp16 e2e-03 | 10.9 bk256 s3 w4 sp16 e2e-03 [24s]
+unpooler n1024 m8: plain v5 6.4 | zip best: 10.7 bk256 s2 w4 sp16 e2e-03 | 10.8 bk128 s3 w4 sp16 e2e-03 | 10.9 bk128 s4 w4 sp16 e2e-03 | 10.9 bk128 s2 w4 sp16 e2e-03 | 11.1 bk128 s3 w4 sp8 e2e-03 [24s]
+unpooler n8192 m1: plain v5 21.2 | zip best: 26.3 bk256 s3 w4 sp2 e2e-03 | 27.8 bk128 s3 w4 sp2 e2e-03 | 28.3 bk128 s4 w4 sp2 e2e-03 | 28.4 bk128 s2 w4 sp4 e2e-03 | 29.5 bk256 s2 w4 sp2 e2e-03 [25s]
+unpooler n8192 m32: plain v5 18.8 | zip best: 29.5 bk128 s4 w4 sp2 e2e-03 | 29.6 bk128 s3 w4 sp2 e2e-03 | 30.5 bk128 s2 w4 sp4 e2e-03 | 31.7 bk256 s2 w4 sp2 e2e-03 | 33.2 bk128 s3 w4 sp4 e2e-03 [25s]
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-p8c3lef6/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-p8c3lef6/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-p8c3lef6/run/submission.py", line 415, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+empty graph 3.10 us
+o n8192 m1: plain v5 7.6 | zip best: 12.9 bk128 s3 w4 sp2 e2e-03 | 13.2 bk256 s3 w4 sp2 e2e-03 | 13.3 bk128 s3 w4 sp1 e2e-03 | 13.4 bk128 s4 w4 sp2 e2e-03 | 13.4 bk256 s2 w4 sp2 e2e-03 [10s]
+o n8192 m32: plain v5 7.4 | zip best: 14.5 bk128 s3 w4 sp2 e2e-03 | 14.7 bk128 s3 w4 sp1 e2e-03 | 14.7 bk256 s3 w4 sp1 e2e-03 | 14.9 bk128 s4 w4 sp1 e2e-03 | 15.0 bk256 s2 w4 sp2 e2e-03 [23s]
+qkv_gate n2304 m1: plain v5 13.0 | zip best: 20.9 bk128 s2 w4 sp16 e2e-03 | 21.1 bk256 s2 w4 sp8 e2e-03 | 22.0 bk128 s3 w4 sp8 e2e-03 | 22.6 bk128 s4 w4 sp8 e2e-03 | 22.8 bk128 s2 w4 sp8 e2e-03 [23s]
+qkv_gate n2304 m32: plain v5 14.9 | zip best: 24.7 bk128 s2 w4 sp8 e2e-03 | 24.7 bk128 s3 w4 sp8 e2e-03 | 26.9 bk128 s3 w4 sp16 e2e-03 | 27.3 bk128 s2 w4 sp16 e2e-03 | 29.4 bk128 s4 w4 sp4 e2e-03 [23s]
+pooler n4096 m1: plain v5 21.6 | zip best: 26.5 bk256 s3 w4 sp4 e2e-03 | 27.7 bk128 s2 w4 sp8 e2e-03 | 27.8 bk128 s3 w4 sp4 e2e-03 | 28.2 bk128 s4 w4 sp4 e2e-03 | 29.7 bk128 s3 w4 sp8 e2e-03 [24s]
+pooler n4096 m32: plain v5 20.2 | zip best: 29.9 bk128 s4 w4 sp4 e2e-03 | 30.1 bk128 s3 w4 sp4 e2e-03 | 31.1 bk128 s2 w4 sp8 e2e-03 | 31.8 bk256 s2 w4 sp4 e2e-03 | 33.2 bk128 s3 w4 sp8 e2e-03 [24s]
+unpooler n1024 m1: plain v5 6.9 | zip best: 10.5 bk256 s2 w4 sp16 e2e-03 | 10.7 bk128 s3 w4 sp16 e2e-03 | 10.8 bk128 s4 w4 sp16 e2e-03 | 10.9 bk128 s2 w4 sp16 e2e-03 | 10.9 bk256 s3 w4 sp16 e2e-03 [24s]
+unpooler n1024 m8: plain v5 6.4 | zip best: 10.7 bk256 s2 w4 sp16 e2e-03 | 10.8 bk128 s3 w4 sp16 e2e-03 | 10.9 bk128 s4 w4 sp16 e2e-03 | 10.9 bk128 s2 w4 sp16 e2e-03 | 11.1 bk128 s3 w4 sp8 e2e-03 [24s]
+unpooler n8192 m1: plain v5 21.2 | zip best: 26.3 bk256 s3 w4 sp2 e2e-03 | 27.8 bk128 s3 w4 sp2 e2e-03 | 28.3 bk128 s4 w4 sp2 e2e-03 | 28.4 bk128 s2 w4 sp4 e2e-03 | 29.5 bk256 s2 w4 sp2 e2e-03 [25s]
+unpooler n8192 m32: plain v5 18.8 | zip best: 29.5 bk128 s4 w4 sp2 e2e-03 | 29.6 bk128 s3 w4 sp2 e2e-03 | 30.5 bk128 s2 w4 sp4 e2e-03 | 31.7 bk256 s2 w4 sp2 e2e-03 | 33.2 bk128 s3 w4 sp4 e2e-03 [25s]

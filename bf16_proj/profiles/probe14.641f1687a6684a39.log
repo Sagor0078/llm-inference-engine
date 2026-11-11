@@ -1,0 +1,49 @@
+unpo m1 n1024 | v5=9.57 cu_s4=12.61 cu_s8=11.90 cu_s16=12.45 [41s]
+unpo m8 n1024 | v5=9.66 cu_s4=12.64 cu_s8=12.03 cu_s16=12.74 [41s]
+rout m1 n256 | v5=9.66 cu_s8=11.87 cu_s16=11.07 [41s]
+rout m16 n256 | v5=9.89 cu_s8=13.50 cu_s16=12.61 [41s]
+rout m32 n256 | v5=10.40 cu_s8=15.52 cu_s16=15.71 [41s]
+o m1 n8192 | v5=10.50 cu_s1=12.22 cu_s2=12.58 [41s]
+o m32 n8192 | v5=10.24 cu_s1=16.58 cu_s2=18.18 [41s]
+qkv_ m1 n2304 | v5=16.10 cu_s2=26.43 cu_s4=21.22 cu_s8=19.26 [41s]
+qkv_ m8 n2304 | v5=16.45 cu_s2=26.56 cu_s4=21.15 cu_s8=19.71 [42s]
+qkv_ m16 n2304 | v5=16.45 cu_s2=26.75 cu_s4=22.75 cu_s8=30.05 [42s]
+qkv_ m32 n2304 | v5=17.06 cu_s2=33.12 cu_s4=29.18 cu_s8=39.78 [42s]
+pool m1 n4096 | v5=22.37 cu_s1=43.78 cu_s2=27.04 cu_s4=27.84 [42s]
+pool m16 n4096 | v5=22.72 cu_s1=42.34 cu_s2=28.10 cu_s4=36.45 [42s]
+pool m32 n4096 | v5=23.30 cu_s1=52.64 cu_s2=33.95 cu_s4=46.40 [42s]
+unpo m16 n8192 | v5=21.15 cu_s1=27.07 cu_s2=26.14 [42s]
+unpo m32 n8192 | v5=21.44 cu_s1=32.74 cu_s2=32.38 [42s]
+qkv_ m5 n2304 | v5=17.31 cu_s4=21.25 [42s]
+rout m27 n256 | v5=10.37 cu_s16=15.78 [42s]
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-r8ylj95q/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-r8ylj95q/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-r8ylj95q/run/submission.py", line 514, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+compile 38.3s
+v5 prepare done [41s]
+nop 5.18
+unpo m1 n1024 | v5=9.57 cu_s4=12.61 cu_s8=11.90 cu_s16=12.45 [41s]
+unpo m8 n1024 | v5=9.66 cu_s4=12.64 cu_s8=12.03 cu_s16=12.74 [41s]
+rout m1 n256 | v5=9.66 cu_s8=11.87 cu_s16=11.07 [41s]
+rout m16 n256 | v5=9.89 cu_s8=13.50 cu_s16=12.61 [41s]
+rout m32 n256 | v5=10.40 cu_s8=15.52 cu_s16=15.71 [41s]
+o m1 n8192 | v5=10.50 cu_s1=12.22 cu_s2=12.58 [41s]
+o m32 n8192 | v5=10.24 cu_s1=16.58 cu_s2=18.18 [41s]
+qkv_ m1 n2304 | v5=16.10 cu_s2=26.43 cu_s4=21.22 cu_s8=19.26 [41s]
+qkv_ m8 n2304 | v5=16.45 cu_s2=26.56 cu_s4=21.15 cu_s8=19.71 [42s]
+qkv_ m16 n2304 | v5=16.45 cu_s2=26.75 cu_s4=22.75 cu_s8=30.05 [42s]
+qkv_ m32 n2304 | v5=17.06 cu_s2=33.12 cu_s4=29.18 cu_s8=39.78 [42s]
+pool m1 n4096 | v5=22.37 cu_s1=43.78 cu_s2=27.04 cu_s4=27.84 [42s]
+pool m16 n4096 | v5=22.72 cu_s1=42.34 cu_s2=28.10 cu_s4=36.45 [42s]
+pool m32 n4096 | v5=23.30 cu_s1=52.64 cu_s2=33.95 cu_s4=46.40 [42s]
+unpo m16 n8192 | v5=21.15 cu_s1=27.07 cu_s2=26.14 [42s]
+unpo m32 n8192 | v5=21.44 cu_s1=32.74 cu_s2=32.38 [42s]
+qkv_ m5 n2304 | v5=17.31 cu_s4=21.25 [42s]
+rout m27 n256 | v5=10.37 cu_s16=15.78 [42s]

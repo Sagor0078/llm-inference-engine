@@ -1,0 +1,23 @@
+pooler m1 v5 22.5 cublas 24.4 | 21.5/w4u4 e2e-03 ; 21.9/w2u4 e2e-03 ; 22.0/w2u8 e2e-03 ; 22.0/w1u4 e2e-03 ; 22.5/w1u8 e2e-03 ; 23.1/w1u2 e2e-03 ; 23.1/w8u4 e2e-03 ; 23.2/w4u8 e2e-03
+qkv_gate m1 v5 15.8 cublas 17.9 | 14.8/w8u2 e2e-03 ; 14.9/w4u4 e2e-03 ; 15.4/w8u4 e2e-03 ; 15.4/w1u4 e2e-03 ; 15.6/w1u8 e2e-03 ; 15.8/w2u4 e2e-03 ; 16.5/w4u8 e2e-03 ; 17.0/w2u8 e2e-03
+o m1 v5 10.3 cublas 10.5 | 10.1/w1u2 e2e-03 ; 10.3/w2u2 e2e-03 ; 10.4/w1u1 e1e+00 ; 10.6/w1u4 e2e-03 ; 16.0/w2u1 e1e+00 ; 25.6/w4u1 e1e+00
+unpooler m1 v5 9.4 cublas 10.8 | 8.1/w4u2 e2e-03 ; 8.2/w4u4 e2e-03 ; 8.3/w2u8 e2e-03 ; 8.3/w2u4 e2e-03 ; 8.5/w8u2 e2e-03 ; 8.7/w1u8 e2e-03 ; 8.8/w1u4 e2e-03
+router m1 v5 9.6 cublas nan | 8.1/w8u8 e1e-07 ; 8.3/w8u4 e1e-07 ; 8.5/w4u8 e1e-07 ; 8.7/w8u2 e1e-07 ; 8.9/w4u4 e1e-07 ; 9.1/w2u8 e2e-07
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-vhojykij/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-vhojykij/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-vhojykij/run/submission.py", line 434, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+compile 39s
+nop 5.1
+pooler m1 v5 22.5 cublas 24.4 | 21.5/w4u4 e2e-03 ; 21.9/w2u4 e2e-03 ; 22.0/w2u8 e2e-03 ; 22.0/w1u4 e2e-03 ; 22.5/w1u8 e2e-03 ; 23.1/w1u2 e2e-03 ; 23.1/w8u4 e2e-03 ; 23.2/w4u8 e2e-03
+qkv_gate m1 v5 15.8 cublas 17.9 | 14.8/w8u2 e2e-03 ; 14.9/w4u4 e2e-03 ; 15.4/w8u4 e2e-03 ; 15.4/w1u4 e2e-03 ; 15.6/w1u8 e2e-03 ; 15.8/w2u4 e2e-03 ; 16.5/w4u8 e2e-03 ; 17.0/w2u8 e2e-03
+o m1 v5 10.3 cublas 10.5 | 10.1/w1u2 e2e-03 ; 10.3/w2u2 e2e-03 ; 10.4/w1u1 e1e+00 ; 10.6/w1u4 e2e-03 ; 16.0/w2u1 e1e+00 ; 25.6/w4u1 e1e+00
+unpooler m1 v5 9.4 cublas 10.8 | 8.1/w4u2 e2e-03 ; 8.2/w4u4 e2e-03 ; 8.3/w2u8 e2e-03 ; 8.3/w2u4 e2e-03 ; 8.5/w8u2 e2e-03 ; 8.7/w1u8 e2e-03 ; 8.8/w1u4 e2e-03
+router m1 v5 9.6 cublas nan | 8.1/w8u8 e1e-07 ; 8.3/w8u4 e1e-07 ; 8.5/w4u8 e1e-07 ; 8.7/w8u2 e1e-07 ; 8.9/w4u4 e1e-07 ; 9.1/w2u8 e2e-07
+total 42s

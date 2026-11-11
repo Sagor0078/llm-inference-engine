@@ -1,0 +1,72 @@
+bs256 local_routes 629 distinct 7 marlin 366.3 slow-dequant 1457.1 | 1457.1/Sbn64/128,bk128,w8,st3,bm64 1503.1/Sbn64/64,bk128,w8,st3,bm64 1781.1/Sbn64/128,bk128,w8,st3,bm32 1800.6/Sbn64/64,bk128,w8,st3,bm32 | bad 72 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [12s]
+bs128 local_routes 314 distinct 7 marlin 246.9 slow-dequant 1004.7 | 1004.7/Sbn64/64,bk128,w8,st3,bm64 1017.7/Sbn64/128,bk128,w8,st3,bm64 1056.1/Sbn64/64,bk128,w8,st3,bm32 1085.9/Sbn64/128,bk128,w8,st3,bm32 | bad 72 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [18s]
+bs32 local_routes 78 distinct 6 marlin 121.8 slow-dequant 398.3 | 398.3/Sbn64/128,bk128,w8,st3,bm16 410.3/Sbn64/64,bk128,w8,st3,bm16 492.8/Sbn64/64,bk128,w8,st3,bm32 509.4/Sbn64/128,bk128,w8,st3,bm32 | bad 72 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [21s]
+bs16 local_routes 40 distinct 4 marlin 126.2 slow-dequant 258.1 | 258.1/Sbn64/64,bk128,w8,st3,bm16 283.0/Sbn64/128,bk128,w8,st3,bm16 1000000000.0/Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro 1000000000.0/Fbn128/128,bk128,w4,st4,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro | bad 24 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [22s]
+bs8 local_routes 20 distinct 4 marlin 105.8 slow-dequant 251.9 | 251.9/Sbn64/64,bk128,w8,st3,bm16 279.0/Sbn64/128,bk128,w8,st3,bm16 1000000000.0/Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro 1000000000.0/Fbn128/128,bk128,w4,st4,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro | bad 24 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [23s]
+bs1 local_routes 3 distinct 3 marlin 86.3 slow-dequant 244.4 | 244.4/Sbn64/64,bk128,w8,st3,bm16 272.1/Sbn64/128,bk128,w8,st3,bm16 1000000000.0/Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro 1000000000.0/Fbn128/128,bk128,w4,st4,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro | bad 24 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [24s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-gvgv4vop/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-gvgv4vop/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-gvgv4vop/run/submission.py", line 434, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0 prep 0s
+nop 5.2
+bs256 local_routes 629 distinct 7 marlin 366.3 slow-dequant 1457.1 | 1457.1/Sbn64/128,bk128,w8,st3,bm64 1503.1/Sbn64/64,bk128,w8,st3,bm64 1781.1/Sbn64/128,bk128,w8,st3,bm32 1800.6/Sbn64/64,bk128,w8,st3,bm32 | bad 72 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [12s]
+bs128 local_routes 314 distinct 7 marlin 246.9 slow-dequant 1004.7 | 1004.7/Sbn64/64,bk128,w8,st3,bm64 1017.7/Sbn64/128,bk128,w8,st3,bm64 1056.1/Sbn64/64,bk128,w8,st3,bm32 1085.9/Sbn64/128,bk128,w8,st3,bm32 | bad 72 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [18s]
+bs32 local_routes 78 distinct 6 marlin 121.8 slow-dequant 398.3 | 398.3/Sbn64/128,bk128,w8,st3,bm16 410.3/Sbn64/64,bk128,w8,st3,bm16 492.8/Sbn64/64,bk128,w8,st3,bm32 509.4/Sbn64/128,bk128,w8,st3,bm32 | bad 72 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [21s]
+bs16 local_routes 40 distinct 4 marlin 126.2 slow-dequant 258.1 | 258.1/Sbn64/64,bk128,w8,st3,bm16 283.0/Sbn64/128,bk128,w8,st3,bm16 1000000000.0/Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro 1000000000.0/Fbn128/128,bk128,w4,st4,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro | bad 24 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [22s]
+bs8 local_routes 20 distinct 4 marlin 105.8 slow-dequant 251.9 | 251.9/Sbn64/64,bk128,w8,st3,bm16 279.0/Sbn64/128,bk128,w8,st3,bm16 1000000000.0/Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro 1000000000.0/Fbn128/128,bk128,w4,st4,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro | bad 24 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [23s]
+bs1 local_routes 3 distinct 3 marlin 86.3 slow-dequant 244.4 | 244.4/Sbn64/64,bk128,w8,st3,bm16 272.1/Sbn64/128,bk128,w8,st3,bm16 1000000000.0/Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro 1000000000.0/Fbn128/128,bk128,w4,st4,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro | bad 24 Fbn128/128,bk128,w4,st3,bm16CompilationEat 31:21:
+    su = sf_ptr + (e64 * (2 * I) + I + n)[:, None] * (H // 16)
+    xro [24s]

@@ -1,0 +1,726 @@
+<title>Qwen Across Six Chips</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap">
+<style>
+/* Layout: one Substack-style reading column; whiteboard math blocks and hand-drawn figures break out slightly wider. */
+:root {
+  --bg: #fffefb;
+  --fg: #23211d;
+  --muted: #6b675f;
+  --rule: #e7e3da;
+  --panel: #f6f4ee;
+  --marker: #e03131;
+  --ink: #1e1e1e;
+  --blue: #1971c2;  --blue-fill: #74c0fc;
+  --orange: #e8590c; --orange-fill: #ffa94d;
+  --green: #2f9e44; --green-fill: #8ce99a;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-hand: "Kalam", "Comic Sans MS", "Segoe Print", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514; --fg: #e9e6df; --muted: #a29d93; --rule: #2f2e2b; --panel: #1e1d1b;
+    --marker: #ff6b6b; --ink: #dedad2;
+    --blue: #4dabf7; --blue-fill: #1c7ed6; --orange: #ff922b; --orange-fill: #d9480f;
+    --green: #51cf66; --green-fill: #2b8a3e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514; --fg: #e9e6df; --muted: #a29d93; --rule: #2f2e2b; --panel: #1e1d1b;
+  --marker: #ff6b6b; --ink: #dedad2;
+  --blue: #4dabf7; --blue-fill: #1c7ed6; --orange: #ff922b; --orange-fill: #d9480f;
+  --green: #51cf66; --green-fill: #2b8a3e;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 19px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 680px; margin: 0 auto; }
+.masthead {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding-block: 18px; border-bottom: 1px solid var(--rule);
+  font-family: var(--font-ui); font-size: 15px;
+}
+.masthead .pub { font-weight: 600; letter-spacing: .01em; }
+.masthead .tag { color: var(--muted); font-size: 13px; }
+
+header.post { padding-block: 40px 8px; }
+h1 {
+  font-size: clamp(30px, 6vw, 42px); line-height: 1.15; font-weight: 700;
+  margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em;
+}
+.dek { font-size: 21px; color: var(--muted); margin: 0 0 24px; line-height: 1.45; text-wrap: pretty; }
+.byline {
+  display: flex; align-items: center; gap: 12px; padding-block: 14px;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  font-family: var(--font-ui); font-size: 14px; color: var(--muted);
+}
+.avatar {
+  width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--panel); border: 1.5px solid var(--ink); color: var(--fg);
+  font-family: var(--font-hand); font-weight: 700; font-size: 18px; flex: none;
+}
+.byline b { color: var(--fg); font-weight: 600; }
+
+article p, article li { text-wrap: pretty; }
+article p { margin: 0 0 1.1em; }
+article a { color: inherit; text-decoration-color: var(--marker); text-underline-offset: 3px; }
+h2 { font-size: 27px; line-height: 1.25; margin: 2em 0 .6em; font-weight: 700; text-wrap: balance; }
+h2 .num { color: var(--marker); font-family: var(--font-hand); font-weight: 700; margin-right: .25em; }
+h2 .uline { display: inline-block; position: relative; }
+h2 .uline svg { position: absolute; left: -2%; bottom: -10px; width: 104%; height: 12px; overflow: visible; }
+h2 .uline path { fill: none; stroke: var(--marker); stroke-width: 2.4; stroke-linecap: round; }
+
+.specs {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px;
+  background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+  margin: 1.4em 0 1.6em; font-family: var(--font-ui);
+}
+.specs > div { background: var(--bg); padding: 12px 14px; min-width: 0; }
+.specs .hd { font-weight: 600; font-size: 16px; }
+.specs .kind { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.specs .kind.hy { color: var(--blue); }
+.specs dl { margin: 6px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 14.5px; }
+.specs dt { color: var(--muted); }
+.specs dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.shared { font-family: var(--font-ui); font-size: 14px; color: var(--muted); margin: -0.8em 0 1.4em; }
+@media (max-width: 600px) { .specs { grid-template-columns: 1fr; } }
+
+.board {
+  font-family: var(--font-mono); font-size: 15.5px; line-height: 1.5;
+  background: var(--panel); border-radius: 6px; padding: 16px 18px; margin: 1.2em 0 1.4em;
+  display: grid; gap: 10px; overflow-x: auto;
+}
+.board .model { font-family: var(--font-hand); font-weight: 700; font-size: 18px; color: var(--fg); }
+.board .model + .row { margin-top: -4px; }
+.board .row { display: grid; grid-template-columns: 11.5em 1fr; gap: 4px 14px; align-items: baseline; }
+.board .lbl { color: var(--muted); font-family: var(--font-hand); font-size: 18px; }
+.board .res { color: var(--marker); font-weight: 500; white-space: nowrap; }
+.board hr { border: 0; border-top: 1px dashed var(--rule); margin: 4px 0; }
+@media (max-width: 520px) { .board .row { grid-template-columns: 1fr; } }
+
+figure { margin: 1.8em 0 2em; }
+.fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+figure svg.sketch { display: block; width: 100%; min-width: 540px; height: auto; }
+figcaption { font-family: var(--font-ui); font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+.calc {
+  border: 1.5px solid var(--ink); border-radius: 10px; padding: 18px; margin: 1.4em 0 1.8em;
+  font-family: var(--font-ui); font-size: 15px; display: grid; gap: 14px;
+}
+.calc .lab { font-weight: 600; display: block; margin-bottom: 6px; }
+.calc input[type=range] { width: 100%; accent-color: var(--marker); }
+.ctrls { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 14px; }
+.ctrls > div { min-width: 0; }
+@media (max-width: 600px) { .ctrls { grid-template-columns: 1fr; } }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button {
+  font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--fg);
+}
+.seg button[aria-pressed="true"] { border-color: var(--marker); color: var(--marker); }
+.seg button:focus-visible, .calc input:focus-visible { outline: 2px solid var(--marker); outline-offset: 2px; }
+.out { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; border-top: 1px solid var(--rule); padding-top: 14px; }
+.out div { min-width: 0; }
+.out span { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.out b { font-family: var(--font-mono); font-size: 21px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.out .big b { color: var(--marker); }
+.calc .warn { font-size: 13px; color: var(--muted); margin: -4px 0 0; }
+@media (max-width: 560px) { .out { grid-template-columns: 1fr 1fr; } }
+
+.tbl { overflow-x: auto; margin: 1.2em 0 1.6em; }
+table { border-collapse: collapse; width: 100%; font-family: var(--font-ui); font-size: 15px; min-width: 500px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+td.n, th.n { text-align: right; }
+tr.hl td { font-weight: 600; }
+td.na { color: var(--muted); }
+
+blockquote { margin: 1.4em 0; padding: 2px 0 2px 18px; border-left: 3px solid var(--marker); font-style: italic; }
+.end { margin-top: 3em; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--font-ui); font-size: 14px; color: var(--muted); }
+.end ol { padding-left: 1.2em; margin: .4em 0 0; }
+.end li { margin-bottom: .4em; }
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <span class="pub">Wafer Math</span>
+    <span class="tag">notes on serving big models</span>
+  </div>
+
+  <header class="post">
+    <h1>Qwen on six chips: from an L40S to Vera Rubin to a Cerebras wafer</h1>
+    <p class="dek">The Cerebras whiteboard math for Qwen3-8B, Qwen3-14B and Qwen3.5-9B, run on six machines. Memory size decides how many conversations fit. Memory speed decides how fast they run.</p>
+    <div class="byline">
+      <div class="avatar" aria-hidden="true">S</div>
+      <div><b>Sagor0078</b><br>Nov 3, 2026 · 8 min read</div>
+    </div>
+  </header>
+
+  <article>
+    <p>In <a href="https://youtu.be/efqQMmvSsVE">“Deploying Trillion-parameter Frontier Models”</a>, Cerebras sizes Kimi K3, a model of about 3 trillion parameters, with three lines of whiteboard arithmetic: <b>#1 Weights</b>, <b>#2 KV cache</b>, <b>#3 Layer mapping</b>. The answer was 59 wafers (<a href="https://claude.ai/artifact/4A6vwcjZdLkXnZvEfHhBA1">I worked through it here</a>).</p>
+
+    <p>A wafer is one Cerebras chip, the size of a dinner plate, with 44 GB of SRAM on it. What happens if you run the same three steps on a model hundreds of times smaller? Here are three of Alibaba’s open Qwen models in the size class most people actually deploy.</p>
+
+    <h2>The setup</h2>
+    <p>Two dense Qwen3 models, where every layer is full attention, and one Qwen3.5 hybrid. The hybrid stacks layers in groups of three linear-attention layers (Gated DeltaNet) and one full-attention layer. That is the same pattern drawn down the left side of the Kimi K3 whiteboard.</p>
+
+    <div class="specs">
+      <div>
+        <div class="kind">dense</div>
+        <div class="hd">Qwen3-8B</div>
+        <dl><dt>Params</dt><dd>8.2 B</dd><dt>Layers</dt><dd>36 full attn</dd><dt>Heads</dt><dd>32 Q · 8 KV</dd><dt>Head size</dt><dd>128</dd><dt>Context</dt><dd>32K (128K YaRN)</dd></dl>
+      </div>
+      <div>
+        <div class="kind">dense</div>
+        <div class="hd">Qwen3-14B</div>
+        <dl><dt>Params</dt><dd>14.8 B</dd><dt>Layers</dt><dd>40 full attn</dd><dt>Heads</dt><dd>40 Q · 8 KV</dd><dt>Head size</dt><dd>128</dd><dt>Context</dt><dd>32K (128K YaRN)</dd></dl>
+      </div>
+      <div>
+        <div class="kind hy">hybrid</div>
+        <div class="hd">Qwen3.5-9B</div>
+        <dl><dt>Params</dt><dd>9 B</dd><dt>Layers</dt><dd>24 linear + 8 full</dd><dt>Full attn</dt><dd>16 Q · 4 KV</dd><dt>Head size</dt><dd>256</dd><dt>Context</dt><dd>256K native</dd></dl>
+      </div>
+    </div>
+    <p class="shared">All three: 16-bit (BF16) weights and KV cache · requests sized at 32K tokens · 44 GB SRAM per wafer.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-layers" viewBox="0 0 640 360" role="img" aria-label="Layer stacks: Qwen3-8B has 36 full-attention layers, Qwen3-14B has 40, and Qwen3.5-9B has 32 layers in groups of three linear-attention layers and one full-attention layer, the same pattern as Kimi K3."></svg></div>
+      <figcaption>Fig. 1. Orange layers keep a KV cache that grows with every token. Blue layers keep a fixed-size state. Qwen3.5-9B has the Kimi K3 pattern at 1/300th the size.</figcaption>
+    </figure>
+
+    <h2><span class="num">#1</span><span class="uline">Weights<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1 7 C 22 3, 48 10, 70 5 S 94 6, 99 4"/></svg></span></h2>
+
+    <div class="board" role="group" aria-label="Weights calculation">
+      <div class="model">Qwen3-8B</div>
+      <div class="row"><span class="lbl">total model size</span><span>8.2×10⁹ × 16 bits ÷ 8 bits/byte = <span class="res">16.4 GB</span></span></div>
+      <div class="row"><span class="lbl">GB / layer</span><span>16.4 GB ÷ 36 layers = <span class="res">0.46 GB</span></span></div>
+      <hr>
+      <div class="model">Qwen3-14B</div>
+      <div class="row"><span class="lbl">total model size</span><span>14.8×10⁹ × 16 bits ÷ 8 bits/byte = <span class="res">29.6 GB</span></span></div>
+      <div class="row"><span class="lbl">GB / layer</span><span>29.6 GB ÷ 40 layers = <span class="res">0.74 GB</span></span></div>
+      <hr>
+      <div class="model">Qwen3.5-9B</div>
+      <div class="row"><span class="lbl">total model size</span><span>9.0×10⁹ × 16 bits ÷ 8 bits/byte = <span class="res">18.0 GB</span></span></div>
+      <div class="row"><span class="lbl">GB / layer</span><span>18.0 GB ÷ 32 layers = <span class="res">0.56 GB</span></span></div>
+    </div>
+
+    <p>For Kimi K3 this step gave 1,500 GB, 34 wafers’ worth of memory just for weights. Here every model fits whole on one wafer at full 16-bit precision. The 8B and 9B take under half of it; the 14B takes two thirds.</p>
+
+    <h2><span class="num">#2</span><span class="uline">KV cache<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1 6 C 25 9, 45 3, 66 7 S 92 4, 99 6"/></svg></span></h2>
+
+    <p>Whatever the weights don’t use becomes KV cache. Each token stores a key and a value for every KV head in every full-attention layer: 2 × layers × KV heads × head size × bytes. Linear-attention layers instead keep one fixed-size state per request, however long it runs.</p>
+
+    <div class="board" role="group" aria-label="KV cache calculation">
+      <div class="model">Qwen3-8B</div>
+      <div class="row"><span class="lbl">memory for KV</span><span>44 GB − 16.4 GB = <span class="res">27.6 GB</span></span></div>
+      <div class="row"><span class="lbl">KV per token</span><span>2 × 36 layers × 8 KV heads × 128 × 2 bytes = <span class="res">144 KB</span></span></div>
+      <div class="row"><span class="lbl">KV size of each req</span><span>144 KB × 32,768 tokens = <span class="res">4.83 GB</span></span></div>
+      <div class="row"><span class="lbl"># of concurrent req</span><span>27.6 GB ÷ 4.83 GB = 5.7 → <span class="res">5</span></span></div>
+      <hr>
+      <div class="model">Qwen3-14B</div>
+      <div class="row"><span class="lbl">memory for KV</span><span>44 GB − 29.6 GB = <span class="res">14.4 GB</span></span></div>
+      <div class="row"><span class="lbl">KV per token</span><span>2 × 40 layers × 8 KV heads × 128 × 2 bytes = <span class="res">160 KB</span></span></div>
+      <div class="row"><span class="lbl">KV size of each req</span><span>160 KB × 32,768 tokens = <span class="res">5.37 GB</span></span></div>
+      <div class="row"><span class="lbl"># of concurrent req</span><span>14.4 GB ÷ 5.37 GB = 2.7 → <span class="res">2</span></span></div>
+      <hr>
+      <div class="model">Qwen3.5-9B</div>
+      <div class="row"><span class="lbl">memory for KV</span><span>44 GB − 18.0 GB = <span class="res">26.0 GB</span></span></div>
+      <div class="row"><span class="lbl">KV per token</span><span>2 × 8 full layers × 4 KV heads × 256 × 2 bytes = <span class="res">32 KB</span></span></div>
+      <div class="row"><span class="lbl">linear state</span><span>24 layers × 2.2 MB, fixed per request = <span class="res">52 MB</span></span></div>
+      <div class="row"><span class="lbl">KV size of each req</span><span>32 KB × 32,768 tokens + 52 MB = <span class="res">1.13 GB</span></span></div>
+      <div class="row"><span class="lbl"># of concurrent req</span><span>26.0 GB ÷ 1.13 GB = 23.1 → <span class="res">23</span></span></div>
+    </div>
+
+    <p>Here is the surprise. The two dense models are almost out of room after a handful of conversations: 5 for the 8B, 2 for the 14B. The 9B hybrid is <em>larger</em> than the 8B, yet it holds 23. Only 8 of its 32 layers keep a growing cache, so each token costs 32 KB instead of 144 KB. It is the same reason Kimi K3 only needed KV room on 24 of its 93 layers.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-wafers" viewBox="0 0 640 400" role="img" aria-label="Three 44 GB wafers drawn to scale. Qwen3-8B: 16.4 GB of weights and 5 request slices of 4.83 GB. Qwen3-14B: 29.6 GB of weights and 2 slices of 5.37 GB. Qwen3.5-9B: 18.0 GB of weights and 23 slices of 1.13 GB."></svg></div>
+      <figcaption>Fig. 2. One wafer each, drawn to scale. Every red slice is the cache of one 32K-token request.</figcaption>
+    </figure>
+
+    <p>Precision and context length move these numbers a lot. Try it:</p>
+
+    <div class="calc" aria-label="Single-wafer calculator">
+      <div class="ctrls">
+        <div><span class="lab">Model</span><div class="seg" data-k="model"><button type="button" data-v="q8">Qwen3-8B</button><button type="button" data-v="q14">Qwen3-14B</button><button type="button" data-v="q9">Qwen3.5-9B</button></div></div>
+        <div><span class="lab">Weights</span><div class="seg" data-k="wb"><button type="button" data-v="16">16-bit</button><button type="button" data-v="8">8-bit</button><button type="button" data-v="4">4-bit</button></div></div>
+        <div><span class="lab">KV cache</span><div class="seg" data-k="kb"><button type="button" data-v="16">16-bit</button><button type="button" data-v="8">8-bit</button></div></div>
+      </div>
+      <div>
+        <label class="lab" for="ctx">Context per request: <span id="ctx-val">32K</span> tokens</label>
+        <input type="range" id="ctx" min="0" max="6" step="1" value="3">
+      </div>
+      <div class="out">
+        <div><span>Weights</span><b id="o-w">–</b></div>
+        <div><span>Left for KV</span><b id="o-room">–</b></div>
+        <div><span>Cache per request</span><b id="o-req">–</b></div>
+        <div class="big"><span>Concurrent requests</span><b id="o-conc">–</b></div>
+      </div>
+      <p class="warn" id="o-warn" hidden></p>
+    </div>
+
+    <p>Dropping the 14B weights to 4-bit frees 22 GB and takes it from 2 to 6 requests at 32K. Halving the KV cache to 8-bit roughly doubles concurrency on any of them. Long context is where the designs split apart:</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Concurrent requests, one wafer, 16-bit</th><th class="n">4K</th><th class="n">32K</th><th class="n">128K</th><th class="n">256K</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3-8B</td><td class="n">45</td><td class="n">5</td><td class="n">1</td><td class="n na">beyond max</td></tr>
+          <tr><td>Qwen3-14B</td><td class="n">21</td><td class="n">2</td><td class="n">0</td><td class="n na">beyond max</td></tr>
+          <tr class="hl"><td>Qwen3.5-9B</td><td class="n">139</td><td class="n">23</td><td class="n">5</td><td class="n">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>At 128K tokens one Qwen3-14B request needs 21.5 GB of cache, more than the wafer has left. The hybrid still serves 5 at that length, and 3 at its full native 256K.</p>
+
+    <h2><span class="num">#3</span><span class="uline">Layer mapping<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1 5 C 20 8, 40 4, 62 7 S 90 3, 99 6"/></svg></span></h2>
+
+    <div class="board" role="group" aria-label="Layer mapping calculation">
+      <div class="row"><span class="lbl">Qwen3-8B</span><span>36 layers, 16.4 GB → all on one wafer = <span class="res">1 wafer</span></span></div>
+      <div class="row"><span class="lbl">Qwen3-14B</span><span>40 layers, 29.6 GB → all on one wafer = <span class="res">1 wafer</span></span></div>
+      <div class="row"><span class="lbl">Qwen3.5-9B</span><span>32 layers, 18.0 GB → all on one wafer = <span class="res">1 wafer</span></span></div>
+      <div class="row"><span class="lbl">network hops</span><span>no wafer-to-wafer traffic = <span class="res">0 µs</span></span></div>
+    </div>
+
+    <p>The answer to step three is one wafer, so the more useful question is how to grow past it. Add a second wafer and there are two ways to use it.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-scale" viewBox="0 0 640 330" role="img" aria-label="Two ways to use two wafers for Qwen3-14B. Replicas: each wafer holds the full model and 2 requests, 4 in total. Pipeline: each wafer holds 20 layers and 10 requests' worth of cache for those layers, 10 in total."></svg></div>
+      <figcaption>Fig. 3. Two wafers, Qwen3-14B, 32K context. Splitting the layers stores the weights once, so more SRAM goes to KV cache.</figcaption>
+    </figure>
+
+    <ul>
+      <li><b>Replicas.</b> Put a full copy of the model on each wafer. Each serves 2 requests on its own, 4 in total. No traffic between wafers, but the 29.6 GB of weights is stored twice.</li>
+      <li><b>Pipeline.</b> Put layers 1–20 on one wafer and 21–40 on the other, the way Kimi K3 was spread over 59. Each wafer holds 14.8 GB of weights and 29.2 GB of KV, and each request needs only 2.68 GB per wafer because it’s only half the layers. That’s <b>10</b> requests, two and a half times as many, at the cost of one 2 µs hop per token.</li>
+    </ul>
+
+    <p>The others gain less: Qwen3-8B goes from 10 to 14, and Qwen3.5-9B from 46 to 62. The smaller the share of the wafer that’s left for KV, the more it pays to store the weights only once, which is why the 14B gains the most.</p>
+
+    <h2>Why put a small model on a wafer at all?</h2>
+
+    <p>On a GPU, generating each token means reading all the weights out of HBM. That sets a ceiling on how fast one conversation can go: memory bandwidth divided by model size.</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Memory</th><th class="n">Bandwidth</th><th class="n">8B (16.4 GB)</th><th class="n">9B (18.0 GB)</th><th class="n">14B (29.6 GB)</th></tr></thead>
+        <tbody>
+          <tr><td>H100 SXM, HBM3</td><td class="n">3.35 TB/s</td><td class="n">≈ 205 tok/s</td><td class="n">≈ 185 tok/s</td><td class="n">≈ 115 tok/s</td></tr>
+          <tr><td>H200, HBM3e</td><td class="n">4.8 TB/s</td><td class="n">≈ 295 tok/s</td><td class="n">≈ 265 tok/s</td><td class="n">≈ 160 tok/s</td></tr>
+          <tr><td>WSE-3, on-chip SRAM</td><td class="n">21 PB/s</td><td class="n">≈ 1.3 M tok/s</td><td class="n">≈ 1.2 M tok/s</td><td class="n">≈ 710 K tok/s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The wafer’s ceiling is so far out that it stops being the limit; compute and the rest of the system set the real speed. That is the actual case for wafer-scale on small models. Capacity was never the issue at 8B. Bandwidth is.</p>
+
+    <h2>What about 2× L40S?</h2>
+
+    <p>Most people asking “what fits?” have a GPU server, not a wafer. So here is the same math on a common one: two NVIDIA L40S cards, built on the Ada Lovelace architecture. One L40S has 48 GB of memory, almost exactly a wafer’s 44 GB. What differs is how fast that memory can be read, and how the two cards talk to each other.</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th></th><th class="n">1× L40S</th><th class="n">2× L40S</th><th class="n">1 wafer</th></tr></thead>
+        <tbody>
+          <tr><td>Memory</td><td class="n">48 GB GDDR6</td><td class="n">96 GB</td><td class="n">44 GB SRAM</td></tr>
+          <tr><td>Usable for the model</td><td class="n">≈ 43 GB</td><td class="n">≈ 86 GB</td><td class="n">44 GB</td></tr>
+          <tr><td>Memory bandwidth</td><td class="n">864 GB/s</td><td class="n">2 × 864 GB/s</td><td class="n">≈ 21 PB/s</td></tr>
+          <tr><td>Link between devices</td><td class="n" colspan="2">PCIe Gen4, no NVLink</td><td class="n">2 µs RDMA hop</td></tr>
+          <tr><td>FP8 tensor cores</td><td class="n" colspan="2">yes</td><td class="n">–</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>I’ve reserved about 10% of each card for the CUDA runtime, activations and fragmentation, which is what serving engines like vLLM hold back by default. With 32K-token requests in 16-bit, two cards can run either one full copy of the model each, or one copy split across both (tensor parallel):</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>32K requests, 16-bit</th><th class="n">Weights</th><th class="n">One copy per GPU</th><th class="n">Split across both</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3-8B</td><td class="n">16.4 GB</td><td class="n">5 + 5 = 10</td><td class="n">14</td></tr>
+          <tr><td>Qwen3-14B</td><td class="n">29.6 GB</td><td class="n">2 + 2 = 4</td><td class="n">10</td></tr>
+          <tr class="hl"><td>Qwen3.5-9B</td><td class="n">18.0 GB</td><td class="n">22 + 22 = 44</td><td class="n">60</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>It is the same pattern as the two-wafer pipeline: store the weights once and more memory goes to KV cache, so the 14B gains most from splitting. Per card, an L40S lands within one request of a wafer, because the capacity is nearly the same.</p>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-l40s" viewBox="0 0 640 430" role="img" aria-label="Two L40S GPUs next to one wafer, each holding Qwen3.5-9B. Each L40S has 48 GB with 4.8 GB reserved, 18 GB of weights and 22 requests of 1.13 GB, read at 864 GB/s, about 21 ms to read the weights once. The wafer has 44 GB with 18 GB of weights and 23 requests, read at about 21 PB/s, under 1 microsecond. The two GPUs are linked by PCIe Gen4 with no NVLink."></svg></div>
+      <figcaption>Fig. 4. Qwen3.5-9B, one copy per device, 32K requests, to scale. The memory holds the same thing; reading it once takes 21 ms on an L40S and under a microsecond on the wafer.</figcaption>
+    </figure>
+
+    <p><b>FP8 changes the picture on L40S.</b> Ada’s tensor cores run FP8 natively, and Qwen publishes official FP8 builds of Qwen3. At FP8 the 14B’s weights drop to 14.8 GB, and one copy per GPU holds 5 + 5 = 10 conversations with no traffic between the cards.</p>
+
+    <p>Speed is where the GPU gives ground. Every new token reads all the weights, so bandwidth sets a ceiling for a single conversation:</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Single-stream ceiling</th><th class="n">1 GPU, 16-bit</th><th class="n">1 GPU, FP8</th><th class="n">2 GPUs split, FP8</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3-8B</td><td class="n">≈ 53 tok/s</td><td class="n">≈ 105 tok/s</td><td class="n">≈ 210 tok/s</td></tr>
+          <tr><td>Qwen3-14B</td><td class="n">≈ 29 tok/s</td><td class="n">≈ 58 tok/s</td><td class="n">≈ 117 tok/s</td></tr>
+          <tr><td>Qwen3.5-9B</td><td class="n">≈ 48 tok/s</td><td class="n">≈ 96 tok/s</td><td class="n">≈ 192 tok/s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The split numbers will come in 10–20% lower in practice, because without NVLink every layer synchronises the two cards over PCIe. With every slot busy, the KV cache has to be read too, so total throughput per GPU at 16-bit is about 440 tokens/s for Qwen3.5-9B, 107 for Qwen3-8B and only 43 for Qwen3-14B.</p>
+
+    <p>What I’d run on 2× L40S:</p>
+    <ul>
+      <li><b>For the most conversations and long context:</b> Qwen3.5-9B, one copy per GPU. 44 conversations at 32K, up to 256K tokens, and nothing crosses PCIe.</li>
+      <li><b>For the strongest model here:</b> Qwen3-14B in FP8, one copy per GPU. 10 conversations at about 58 tok/s each, no PCIe traffic. Split it across both cards only when you need more than 10 conversations or BF16 accuracy.</li>
+      <li><b>Avoid:</b> Qwen3-14B in 16-bit as one copy per GPU. Two conversations per card.</li>
+    </ul>
+
+    <h2>How A100, H200, B200 and Vera Rubin compare</h2>
+
+    <p>The L40S is the smallest card here. The data-center GPUs above it add two things: more memory, and much faster memory. That runs from the A100 through Hopper (H200) and Blackwell (B200) to Vera Rubin, NVIDIA’s 2026 platform that pairs the Rubin GPU with the Vera CPU. Here is one GPU of each, next to the wafer, with the same 10% held back on every GPU.</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>One device</th><th class="n">Memory</th><th class="n">Usable</th><th class="n">Bandwidth</th><th class="n">Link to next device</th><th class="n">FP8</th></tr></thead>
+        <tbody>
+          <tr><td>L40S</td><td class="n">48 GB GDDR6</td><td class="n">43 GB</td><td class="n">0.86 TB/s</td><td class="n">PCIe Gen4, 64 GB/s</td><td class="n">yes</td></tr>
+          <tr><td>A100 80GB SXM</td><td class="n">80 GB HBM2e</td><td class="n">72 GB</td><td class="n">2.0 TB/s</td><td class="n">NVLink 3, 600 GB/s</td><td class="n na">no</td></tr>
+          <tr><td>H200 SXM</td><td class="n">141 GB HBM3e</td><td class="n">127 GB</td><td class="n">4.8 TB/s</td><td class="n">NVLink 4, 900 GB/s</td><td class="n">yes</td></tr>
+          <tr><td>B200</td><td class="n">180 GB HBM3e</td><td class="n">162 GB</td><td class="n">8.0 TB/s</td><td class="n">NVLink 5, 1.8 TB/s</td><td class="n">yes, + FP4</td></tr>
+          <tr><td>Rubin (Vera Rubin)</td><td class="n">288 GB HBM4</td><td class="n">259 GB</td><td class="n">22 TB/s</td><td class="n">NVLink 6, 3.6 TB/s</td><td class="n">yes, + NVFP4</td></tr>
+          <tr><td>1 wafer (WSE-3T)</td><td class="n">44 GB SRAM</td><td class="n">44 GB</td><td class="n">≈ 21,000 TB/s</td><td class="n">2 µs RDMA hop</td><td class="n na">–</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>32K conversations, one device, 16-bit</th><th class="n">L40S</th><th class="n">A100</th><th class="n">H200</th><th class="n">B200</th><th class="n">Rubin</th><th class="n">Wafer</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3-8B</td><td class="n">5</td><td class="n">11</td><td class="n">22</td><td class="n">30</td><td class="n">50</td><td class="n">5</td></tr>
+          <tr><td>Qwen3-14B</td><td class="n">2</td><td class="n">7</td><td class="n">18</td><td class="n">24</td><td class="n">42</td><td class="n">2</td></tr>
+          <tr class="hl"><td>Qwen3.5-9B</td><td class="n">22</td><td class="n">47</td><td class="n">96</td><td class="n">127</td><td class="n">214</td><td class="n">23</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="fig-scroll"><svg class="sketch" id="fig-gpus" viewBox="0 0 640 440" role="img" aria-label="Qwen3-14B on one device each, memory drawn to scale. L40S 48 GB holds 2 conversations and reads the weights in 34 ms. A100 80 GB holds 7, 14.5 ms. H200 141 GB holds 18, 6.2 ms. B200 180 GB holds 24, 3.7 ms. Rubin 288 GB holds 42, 1.3 ms. One wafer, 44 GB, holds 2 and reads the weights in about 1.4 microseconds."></svg></div>
+      <figcaption>Fig. 5. Qwen3-14B in 16-bit, one device each, memory to scale. Capacity sets how many conversations fit; bandwidth sets how long one pass over the weights takes.</figcaption>
+    </figure>
+
+    <p>Capacity decides concurrency. An H200 or B200 holds 18–24 full Qwen3-14B conversations on one card, nine to twelve times an L40S. One Rubin GPU holds 42, and 214 of the hybrid Qwen3.5-9B. By capacity alone, one wafer is an L40S.</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>16-bit, one device</th><th class="n">L40S</th><th class="n">A100</th><th class="n">H200</th><th class="n">B200</th><th class="n">Rubin</th><th class="n">Wafer</th></tr></thead>
+        <tbody>
+          <tr><td colspan="7"><b>Single-stream ceiling</b> (tokens/s)</td></tr>
+          <tr><td>Qwen3-8B</td><td class="n">53</td><td class="n">124</td><td class="n">293</td><td class="n">488</td><td class="n">1,341</td><td class="n">≈ 1.3 M</td></tr>
+          <tr><td>Qwen3-14B</td><td class="n">29</td><td class="n">69</td><td class="n">162</td><td class="n">270</td><td class="n">743</td><td class="n">≈ 710 K</td></tr>
+          <tr><td>Qwen3.5-9B</td><td class="n">48</td><td class="n">113</td><td class="n">267</td><td class="n">444</td><td class="n">1,222</td><td class="n">≈ 1.2 M</td></tr>
+          <tr><td colspan="7"><b>Total with every 32K slot busy</b> (tokens/s)</td></tr>
+          <tr><td>Qwen3-14B</td><td class="n">43</td><td class="n">212</td><td class="n">684</td><td class="n">1,212</td><td class="n">3,622</td><td class="n na">compute-bound</td></tr>
+          <tr><td>Qwen3.5-9B</td><td class="n">444</td><td class="n">1,352</td><td class="n">3,655</td><td class="n">6,312</td><td class="n">18,185</td><td class="n na">compute-bound</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Bandwidth decides speed, and here the gap runs the other way. A B200 is about nine times faster than an L40S at reading its memory, and Rubin’s HBM4 is another 2.75 times faster again, 25 times an L40S. The wafer is still about 950 times faster than Rubin. On every GPU a single conversation is limited by memory reads; on the wafer it isn’t.</p>
+
+    <p>A few things the tables don’t show:</p>
+    <ul>
+      <li><b>2× L40S against one A100.</b> The pair has more memory (96 GB against 80), so a split Qwen3-14B fits 10 conversations against the A100’s 7. But the A100 reads memory 2.4 times faster per card and needs no PCIe hop, so each conversation runs faster.</li>
+      <li><b>A100 has no FP8 tensor cores.</b> FP8 checkpoints still load and halve the memory, but the math runs in 16-bit, so the speed gain is smaller than on L40S, H200 or B200.</li>
+      <li><b>B200 adds FP4.</b> At 4 bits Qwen3-14B takes 7.4 GB and the single-stream ceiling roughly quadruples. Whether quality holds at FP4 depends on the model and the checkpoint.</li>
+      <li><b>Splitting pays less on big cards.</b> Two H200s split over NVLink barely gain, because one card already has plenty of room for KV. Splitting is a fix for small cards like the L40S.</li>
+      <li><b>Vera Rubin is built for the other end of this blog.</b> A 14B model uses about a ninth of one Rubin GPU. The platform ships as racks of 72 GPUs (Vera Rubin NVL72, about 20.7 TB of HBM4), aimed at models like Kimi K3: its 1.5 TB of 4-bit weights fit in the memory of six Rubin GPUs, where Cerebras needs 59 wafers to hold weights and KV cache.</li>
+    </ul>
+
+    <blockquote>At 3 trillion parameters the whiteboard asks how many wafers hold the model. At 9 billion it asks how many conversations fit beside it, and the answer depends on how many layers forget.</blockquote>
+
+    <div class="end">
+      <b>Assumptions and sources</b>
+      <ol>
+        <li>Method, the 44 GB of SRAM per WSE-3T wafer and the 2 µs hop are from the Cerebras video and their post <a href="https://www.cerebras.ai/blog/how-we-deploy-trillion-parameter-frontier-models-on-cerebras">“How we deploy trillion-parameter frontier models on Cerebras”</a>.</li>
+        <li>Shapes are from the published <code>config.json</code> and model cards of Qwen3-8B, Qwen3-14B and Qwen3.5-9B on Hugging Face. Qwen3 runs 32K natively and up to about 128K with YaRN, so 256K is outside its supported range.</li>
+        <li>Qwen3.5-9B is counted as its 9 B-parameter language model, served text-only. The full checkpoint is about 10 B with the vision encoder and multi-token-prediction head, which would take about 2 GB more.</li>
+        <li>Linear-attention state per layer: 32 value heads × 128 × 128 in FP32 (2.1 MB) plus a small convolution buffer. Concurrency counts cache only; activations and scratch memory lower it in practice.</li>
+        <li>Bandwidth ceilings are bytes of weights read per token, single stream, no batching. The 21 PB/s figure is Cerebras’ published number for WSE-3; I assumed WSE-3T is no slower.</li>
+        <li>L40S figures (48 GB GDDR6, 864 GB/s, PCIe Gen4 x16, no NVLink, FP8 support) are from NVIDIA’s L40S datasheet. 10% of each card is held back for the runtime. All L40S numbers are calculations from specs, not measurements; real serving adds kernel and scheduling overhead.</li>
+        <li>A100 80GB SXM (2.0 TB/s, NVLink 3), H200 SXM (141 GB, 4.8 TB/s, NVLink 4) and B200 (180 GB as listed for DGX/HGX B200, 8 TB/s, NVLink 5) are from NVIDIA’s datasheets; B200 was first announced at 192 GB. Rubin (288 GB HBM4, 22 TB/s, NVLink 6 at 3.6 TB/s) uses NVIDIA’s Vera Rubin NVL72 launch figures; a September 2026 report says NVIDIA revised these to 19.2 TB/s and 3 TB/s, which would lower Rubin’s speed numbers by about 13% and leave its capacity numbers unchanged. Same 10% reserve on every GPU. Full-load throughput assumes every slot holds a full 32K context and each step reads the weights plus all KV once.</li>
+      </ol>
+    </div>
+  </article>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.js"></script>
+<script>
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const SRAM = 44;
+  // fixed linear-attention state per layer per request: FP32 DeltaNet state + BF16 conv buffer
+  const LIN_STATE = 32 * 128 * 128 * 4 + 4 * (16 * 128 * 2 + 32 * 128) * 2;
+  const MODELS = {
+    q8:  { name: "Qwen3-8B",   params: 8.2e9,  full: 36, kvHeads: 8, head: 128, linear: 0,  maxCtx: 131072 },
+    q14: { name: "Qwen3-14B",  params: 14.8e9, full: 40, kvHeads: 8, head: 128, linear: 0,  maxCtx: 131072 },
+    q9:  { name: "Qwen3.5-9B", params: 9.0e9,  full: 8,  kvHeads: 4, head: 256, linear: 24, maxCtx: 262144 },
+  };
+  // cache bytes for one request; the linear state stays FP32 whatever the KV precision
+  const reqBytes = (m, ctx, kvBits) => 2 * m.full * m.kvHeads * m.head * kvBits / 8 * ctx + m.linear * LIN_STATE;
+
+  function colors() {
+    const s = getComputedStyle(document.documentElement);
+    const v = n => s.getPropertyValue(n).trim();
+    return { ink: v("--ink"), muted: v("--muted"), red: v("--marker"), blue: v("--blue"),
+      blueFill: v("--blue-fill"), orange: v("--orange"), orangeFill: v("--orange-fill"),
+      green: v("--green"), greenFill: v("--green-fill") };
+  }
+
+  // Small drawing API over rough.js, with plain-SVG fallback if the library didn't load.
+  function sketch(svg) {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const rc = window.rough ? window.rough.svg(svg) : null;
+    const c = colors();
+    let seed = 11;
+    const base = o => Object.assign({ seed: seed++, roughness: 1.1, bowing: 1, stroke: c.ink,
+      strokeWidth: 1.6, hachureGap: 6, fillWeight: 1.1, fillStyle: "hachure" }, o || {});
+    const el = (tag, attrs) => { const e = document.createElementNS(NS, tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]); svg.appendChild(e); return e; };
+    const plain = (tag, attrs, o) => el(tag, Object.assign({ stroke: o.stroke, "stroke-width": o.strokeWidth,
+      fill: o.fill || "none", "stroke-dasharray": o.strokeLineDash ? o.strokeLineDash.join(" ") : "" }, attrs));
+    return {
+      c,
+      rect(x, y, w, h, o) { o = base(o); rc ? svg.appendChild(rc.rectangle(x, y, w, h, o))
+        : plain("rect", { x, y, width: w, height: h, rx: 3 }, o); },
+      line(x1, y1, x2, y2, o) { o = base(o); rc ? svg.appendChild(rc.line(x1, y1, x2, y2, o))
+        : plain("line", { x1, y1, x2, y2 }, o); },
+      path(d, o) { o = base(o); rc ? svg.appendChild(rc.path(d, o)) : plain("path", { d }, o); },
+      head(x, y, fromX, fromY, o) {
+        const a = Math.atan2(y - fromY, x - fromX), L = 10;
+        for (const s of [-0.45, 0.45]) this.line(x, y, x - L * Math.cos(a + s), y - L * Math.sin(a + s), o);
+      },
+      arrow(x1, y1, x2, y2, o) { this.line(x1, y1, x2, y2, o); this.head(x2, y2, x1, y1, o); },
+      text(x, y, str, o) {
+        o = Object.assign({ size: 17, anchor: "start", color: c.ink, weight: 400 }, o || {});
+        const t = el("text", { x, y, "font-family": "Kalam, 'Comic Sans MS', cursive", "font-size": o.size,
+          "text-anchor": o.anchor, fill: o.color, "font-weight": o.weight });
+        t.textContent = str; return t;
+      },
+    };
+  }
+
+  function drawLayers() {
+    const d = sketch(document.getElementById("fig-layers")), c = d.c;
+    const bh = 4, gap = 2, top = 56, w = 105;
+    function stack(x, title, n, isFull, sub) {
+      d.text(x + w / 2, 24, title, { anchor: "middle", size: 17, weight: 700 });
+      d.text(x + w / 2, 44, sub, { anchor: "middle", size: 13, color: c.muted });
+      for (let i = 0; i < n; i++) {
+        const full = isFull(i);
+        d.rect(x, top + i * (bh + gap), w, bh, { stroke: full ? c.orange : c.blue,
+          fill: full ? c.orangeFill : c.blueFill, fillStyle: "solid", roughness: 0.6, strokeWidth: 1 });
+      }
+      return top + n * (bh + gap);
+    }
+    const b8 = stack(25, "Qwen3-8B", 36, () => true, "0.46 GB / layer");
+    const b14 = stack(160, "Qwen3-14B", 40, () => true, "0.74 GB / layer");
+    const b9 = stack(295, "Qwen3.5-9B", 32, i => i % 4 === 3, "0.56 GB / layer");
+    d.text(25 + w / 2, b8 + 22, "36 full", { anchor: "middle", size: 15, weight: 700, color: c.orange });
+    d.text(160 + w / 2, b14 + 22, "40 full", { anchor: "middle", size: 15, weight: 700, color: c.orange });
+    d.text(295 + w / 2, b9 + 22, "24 linear + 8 full", { anchor: "middle", size: 15, weight: 700, color: c.blue });
+
+    d.rect(435, 60, 14, 14, { stroke: c.orange, fill: c.orangeFill, fillStyle: "solid", roughness: 0.7 });
+    d.text(457, 72, "full attention", { size: 16, weight: 700, color: c.orange });
+    d.text(457, 92, "KV grows every token", { size: 14, color: c.muted });
+    d.rect(435, 114, 14, 14, { stroke: c.blue, fill: c.blueFill, fillStyle: "solid", roughness: 0.7 });
+    d.text(457, 126, "linear attention", { size: 16, weight: 700, color: c.blue });
+    d.text(457, 146, "Gated DeltaNet, fixed", { size: 14, color: c.muted });
+    d.text(457, 164, "2.2 MB state", { size: 14, color: c.muted });
+
+    d.rect(430, 190, 195, 96, { strokeWidth: 1.2, fill: "none", strokeLineDash: [6, 6], roughness: 0.8 });
+    d.text(527, 218, "same as Kimi K3:", { anchor: "middle", size: 16, weight: 700 });
+    d.text(527, 242, "3 linear + 1 full,", { anchor: "middle", size: 15, color: c.muted });
+    d.text(527, 264, "repeated", { anchor: "middle", size: 15, color: c.muted });
+    d.arrow(426, 236, 405, 236, { stroke: c.blue });
+  }
+
+  function drawWafers() {
+    const d = sketch(document.getElementById("fig-wafers")), c = d.c;
+    const px = 6, top = 56, H = SRAM * px, ww = 160;
+    function wafer(x, m) {
+      const wGB = m.params * 2 / 1e9, room = SRAM - wGB;
+      const req = reqBytes(m, 32768, 16) / 1e9, n = Math.floor(room / req);
+      d.text(x + ww / 2, 28, m.name, { anchor: "middle", size: 19, weight: 700 });
+      d.rect(x - 10, top - 10, ww + 20, H + 20, { strokeWidth: 2.2, roughness: 1.4 });
+      let y = top + H - wGB * px;
+      d.rect(x, y, ww, wGB * px, { stroke: c.blue, fill: c.blueFill });
+      d.text(x + ww / 2, y + wGB * px / 2 + 2, "weights", { anchor: "middle", size: 17, weight: 700, color: c.blue });
+      d.text(x + ww / 2, y + wGB * px / 2 + 22, wGB.toFixed(1) + " GB", { anchor: "middle", size: 15, color: c.blue });
+      for (let i = 0; i < n; i++) {
+        y -= req * px;
+        d.rect(x, y, ww, req * px, { stroke: c.red, fill: c.red, fillStyle: "hachure", hachureGap: 7,
+          fillWeight: 0.8, roughness: 0.6, strokeWidth: n > 10 ? 0.8 : 1.1 });
+      }
+      d.text(x + ww / 2, top + H + 40, n + " × " + req.toFixed(2) + " GB", { anchor: "middle", size: 17, color: c.red, weight: 700 });
+      d.text(x + ww / 2, top + H + 62, "32K requests", { anchor: "middle", size: 14, color: c.muted });
+    }
+    wafer(25, MODELS.q8);
+    wafer(235, MODELS.q14);
+    wafer(445, MODELS.q9);
+  }
+
+  function drawScale() {
+    const d = sketch(document.getElementById("fig-scale")), c = d.c;
+    const ww = 150, wh = 84;
+    d.text(30, 34, "replicas", { size: 20, weight: 700 });
+    d.text(30, 56, "full model on each wafer", { size: 14, color: c.muted });
+    [210, 410].forEach(x => {
+      d.rect(x, 18, ww, wh, { strokeWidth: 2, fill: c.blueFill, stroke: c.blue, hachureGap: 9 });
+      d.text(x + ww / 2, 50, "layers 1–40", { anchor: "middle", size: 17, weight: 700, color: c.blue });
+      d.text(x + ww / 2, 78, "29.6 GB · 2 req", { anchor: "middle", size: 15 });
+    });
+    d.text(590, 66, "= 4", { anchor: "start", size: 22, weight: 700, color: c.muted });
+    d.text(385, 66, "+", { anchor: "middle", size: 24, weight: 700, color: c.muted });
+
+    d.line(30, 140, 620, 140, { stroke: c.muted, strokeWidth: 1, strokeLineDash: [4, 7], roughness: 0.5 });
+
+    d.text(30, 196, "pipeline", { size: 20, weight: 700 });
+    d.text(30, 218, "half the layers each", { size: 14, color: c.muted });
+    [[210, "layers 1–20"], [410, "layers 21–40"]].forEach(([x, a]) => {
+      d.rect(x, 180, ww, wh, { strokeWidth: 2, fill: c.greenFill, stroke: c.green, hachureGap: 9 });
+      d.text(x + ww / 2, 212, a, { anchor: "middle", size: 17, weight: 700, color: c.green });
+      d.text(x + ww / 2, 240, "14.8 GB · 10 req", { anchor: "middle", size: 15 });
+    });
+    d.arrow(362, 222, 408, 222, { stroke: c.ink });
+    d.text(385, 206, "2 µs", { anchor: "middle", size: 13, color: c.muted });
+    d.text(590, 228, "= 10", { anchor: "start", size: 22, weight: 700, color: c.red });
+    d.text(320, 305, "same 88 GB of SRAM · weights stored once → more room for KV", { anchor: "middle", size: 15, color: c.muted });
+  }
+
+  function drawL40s() {
+    const d = sketch(document.getElementById("fig-l40s")), c = d.c;
+    const m = MODELS.q9, px = 5.4, top = 78, ww = 150;
+    const wGB = m.params * 2 / 1e9, req = reqBytes(m, 32768, 16) / 1e9;
+    const base = top + 48 * px;                     // shared floor so both kinds compare to scale
+    function device(x, title, sub, totalGB, reserveGB, bw, readTime, isWafer) {
+      const n = Math.floor((totalGB - reserveGB - wGB) / req);
+      d.text(x + ww / 2, 26, title, { anchor: "middle", size: 19, weight: 700 });
+      d.text(x + ww / 2, 46, sub, { anchor: "middle", size: 14, color: c.muted });
+      const H = totalGB * px, y0 = base - H;
+      d.rect(x - 10, y0 - 10, ww + 20, H + 20, isWafer
+        ? { strokeWidth: 2.2, roughness: 1.4 }
+        : { strokeWidth: 2.2, roughness: 0.9, stroke: c.green });
+      let y = base - wGB * px;
+      d.rect(x, y, ww, wGB * px, { stroke: c.blue, fill: c.blueFill });
+      d.text(x + ww / 2, y + wGB * px / 2 + 2, "weights", { anchor: "middle", size: 16, weight: 700, color: c.blue });
+      d.text(x + ww / 2, y + wGB * px / 2 + 20, wGB.toFixed(1) + " GB", { anchor: "middle", size: 14, color: c.blue });
+      for (let i = 0; i < n; i++) {
+        y -= req * px;
+        d.rect(x, y, ww, req * px, { stroke: c.red, fill: c.red, fillStyle: "hachure", hachureGap: 7,
+          fillWeight: 0.8, roughness: 0.6, strokeWidth: 0.8 });
+      }
+      d.text(x + ww / 2, y + (n * req * px) / 2 + 6, n + " req", { anchor: "middle", size: 18, weight: 700, color: c.ink });
+      if (reserveGB) {
+        d.rect(x, y0, ww, reserveGB * px, { stroke: c.muted, fill: "none", strokeLineDash: [4, 5], roughness: 0.5, strokeWidth: 1 });
+        d.text(x + ww / 2, y0 + reserveGB * px / 2 + 5, "runtime · 4.8 GB", { anchor: "middle", size: 13, color: c.muted });
+      }
+      d.text(x + ww / 2, base + 40, bw, { anchor: "middle", size: 19, weight: 700, color: isWafer ? c.red : c.green });
+      d.text(x + ww / 2, base + 62, readTime, { anchor: "middle", size: 14, color: c.muted });
+    }
+    device(25, "L40S #1", "48 GB GDDR6", 48, 4.8, "864 GB/s", "weights read in ~21 ms", false);
+    device(245, "L40S #2", "48 GB GDDR6", 48, 4.8, "864 GB/s", "weights read in ~21 ms", false);
+    device(465, "1 wafer", "44 GB SRAM", 44, 0, "~21 PB/s", "weights read in <1 µs", true);
+
+    // PCIe link between the two GPUs
+    const ly = top + 24 * px;
+    d.arrow(190, ly, 230, ly, { stroke: c.green, strokeWidth: 1.4 });
+    d.head(190, ly, 230, ly, { stroke: c.green, strokeWidth: 1.4 });
+    d.text(210, ly - 12, "PCIe", { anchor: "middle", size: 13, weight: 700, color: c.green });
+    d.text(210, ly + 22, "no", { anchor: "middle", size: 12, color: c.muted });
+    d.text(210, ly + 36, "NVLink", { anchor: "middle", size: 12, color: c.muted });
+    d.line(430, 60, 430, base + 70, { stroke: c.muted, strokeWidth: 1, strokeLineDash: [4, 7], roughness: 0.5 });
+  }
+
+  function drawGpus() {
+    const d = sketch(document.getElementById("fig-gpus")), c = d.c;
+    const m = MODELS.q14, px = 1.0, top = 64, ww = 80, base = top + 288 * px;
+    const wGB = m.params * 2 / 1e9, req = reqBytes(m, 32768, 16) / 1e9;
+    const DEV = [
+      { name: "L40S", mem: 48, gpu: true, bw: "0.86 TB/s", read: "34 ms" },
+      { name: "A100", mem: 80, gpu: true, bw: "2.0 TB/s", read: "14.5 ms" },
+      { name: "H200", mem: 141, gpu: true, bw: "4.8 TB/s", read: "6.2 ms" },
+      { name: "B200", mem: 180, gpu: true, bw: "8.0 TB/s", read: "3.7 ms" },
+      { name: "Rubin", mem: 288, gpu: true, bw: "22 TB/s", read: "1.3 ms" },
+      { name: "wafer", mem: 44, gpu: false, bw: "≈21 PB/s", read: "1.4 µs" },
+    ];
+    DEV.forEach((v, i) => {
+      const x = 20 + i * 104, H = v.mem * px, y0 = base - H;
+      const usable = v.gpu ? v.mem * 0.9 : v.mem;
+      const n = Math.floor((usable - wGB) / req);
+      d.text(x + ww / 2, 24, v.name, { anchor: "middle", size: 19, weight: 700, color: v.gpu ? c.green : c.ink });
+      d.text(x + ww / 2, 44, v.mem + " GB", { anchor: "middle", size: 14, color: c.muted });
+      d.rect(x - 8, y0 - 8, ww + 16, H + 16, v.gpu
+        ? { strokeWidth: 2, roughness: 0.9, stroke: c.green }
+        : { strokeWidth: 2.2, roughness: 1.4 });
+      let y = base - wGB * px;
+      d.rect(x, y, ww, wGB * px, { stroke: c.blue, fill: c.blueFill, hachureGap: 5 });
+      d.text(x + ww / 2, y + wGB * px / 2 + 5, "weights", { anchor: "middle", size: 13, weight: 700, color: c.blue });
+      for (let k = 0; k < n; k++) {
+        y -= req * px;
+        d.rect(x, y, ww, req * px, { stroke: c.red, fill: c.red, fillStyle: "solid",
+          roughness: 0.4, strokeWidth: 0.6 });
+      }
+      if (v.gpu) d.rect(x, y0, ww, v.mem * 0.1 * px, { stroke: c.muted, fill: "none", strokeLineDash: [3, 4], roughness: 0.4, strokeWidth: 1 });
+      d.text(x + ww / 2, base + 34, n + " req", { anchor: "middle", size: 18, weight: 700, color: c.red });
+      d.text(x + ww / 2, base + 56, v.bw, { anchor: "middle", size: 14, weight: 700, color: v.gpu ? c.green : c.ink });
+      d.text(x + ww / 2, base + 76, "read: " + v.read, { anchor: "middle", size: 13, color: c.muted });
+    });
+  }
+
+  function drawAll() { drawLayers(); drawWafers(); drawScale(); drawL40s(); drawGpus(); }
+
+  // calculator
+  const CTXS = [1024, 4096, 8192, 32768, 65536, 131072, 262144];
+  const state = { model: "q8", wb: "16", kb: "16" };
+  const fmtGB = g => g >= 10 ? g.toFixed(1) + " GB" : g >= 1 ? g.toFixed(2) + " GB" : Math.round(g * 1000) + " MB";
+  function update() {
+    const m = MODELS[state.model], ctx = CTXS[+document.getElementById("ctx").value];
+    const w = m.params * (+state.wb) / 8 / 1e9, room = SRAM - w;
+    const req = reqBytes(m, ctx, +state.kb) / 1e9;
+    const n = Math.max(0, Math.floor(room / req));
+    document.getElementById("ctx-val").textContent = (ctx / 1024) + "K";
+    document.getElementById("o-w").textContent = fmtGB(w);
+    document.getElementById("o-room").textContent = fmtGB(room);
+    document.getElementById("o-req").textContent = fmtGB(req);
+    document.getElementById("o-conc").textContent = n === 0 ? "0 (won't fit)" : String(n);
+    const warn = document.getElementById("o-warn");
+    warn.hidden = ctx <= m.maxCtx;
+    warn.textContent = m.name + " supports up to 128K tokens (with YaRN); this length is shown for comparison only.";
+    document.querySelectorAll(".seg").forEach(g => g.querySelectorAll("button").forEach(b =>
+      b.setAttribute("aria-pressed", String(b.dataset.v === state[g.dataset.k]))));
+  }
+  document.querySelectorAll(".seg").forEach(g => g.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state[g.dataset.k] = b.dataset.v; update();
+  }));
+  document.getElementById("ctx").addEventListener("input", update);
+  update();
+
+  drawAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawAll);
+  new MutationObserver(drawAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>

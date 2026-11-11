@@ -1,0 +1,24 @@
+bs256 local_routes 629 distinct 7 marlin 365.1 slow-dequant nan | 539.3/Fbn64/128,bk128,w4,st3,bm64 548.1/Fbn64/64,bk128,w4,st3,bm64 598.5/Fbn64/128,bk64,w4,st3,bm64 613.3/Fbn64/64,bk64,w4,st3,bm64 | bad 0  [38s]
+bs128 local_routes 314 distinct 7 marlin 246.4 slow-dequant nan | 406.1/Fbn64/64,bk128,w4,st3,bm64 411.4/Fbn64/128,bk128,w4,st3,bm16 413.1/Fbn128/128,bk128,w4,st3,bm16 413.9/Fbn64/128,bk128,w4,st4,bm16 | bad 0  [44s]
+bs32 local_routes 78 distinct 6 marlin 120.5 slow-dequant nan | 172.0/Fbn64/64,bk128,w4,st3,bm16 172.5/Fbn64/64,bk128,w4,st4,bm16 176.4/Fbn64/128,bk128,w4,st4,bm16 177.0/Fbn128/128,bk128,w4,st3,bm16 | bad 0  [46s]
+bs16 local_routes 40 distinct 4 marlin 125.8 slow-dequant nan | 127.3/Fbn64/64,bk128,w8,st4,bm16 128.2/Fbn64/64,bk128,w8,st3,bm16 137.6/Fbn128/128,bk128,w8,st3,bm16 142.3/Fbn64/128,bk128,w8,st4,bm16 | bad 0  [47s]
+bs8 local_routes 20 distinct 4 marlin 104.5 slow-dequant nan | 125.2/Fbn64/64,bk128,w8,st4,bm16 125.5/Fbn64/64,bk128,w8,st3,bm16 135.1/Fbn128/128,bk128,w8,st3,bm16 140.4/Fbn64/128,bk128,w8,st4,bm16 | bad 0  [47s]
+bs1 local_routes 3 distinct 3 marlin 85.5 slow-dequant nan | 118.8/Fbn64/64,bk128,w8,st4,bm16 119.3/Fbn64/64,bk128,w8,st3,bm16 132.0/Fbn128/128,bk128,w8,st3,bm16 136.1/Fbn64/128,bk128,w8,st4,bm16 | bad 0  [48s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-94oz0k2q/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-94oz0k2q/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-94oz0k2q/run/submission.py", line 451, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0 prep 0s
+nop 5.2
+bs256 local_routes 629 distinct 7 marlin 365.1 slow-dequant nan | 539.3/Fbn64/128,bk128,w4,st3,bm64 548.1/Fbn64/64,bk128,w4,st3,bm64 598.5/Fbn64/128,bk64,w4,st3,bm64 613.3/Fbn64/64,bk64,w4,st3,bm64 | bad 0  [38s]
+bs128 local_routes 314 distinct 7 marlin 246.4 slow-dequant nan | 406.1/Fbn64/64,bk128,w4,st3,bm64 411.4/Fbn64/128,bk128,w4,st3,bm16 413.1/Fbn128/128,bk128,w4,st3,bm16 413.9/Fbn64/128,bk128,w4,st4,bm16 | bad 0  [44s]
+bs32 local_routes 78 distinct 6 marlin 120.5 slow-dequant nan | 172.0/Fbn64/64,bk128,w4,st3,bm16 172.5/Fbn64/64,bk128,w4,st4,bm16 176.4/Fbn64/128,bk128,w4,st4,bm16 177.0/Fbn128/128,bk128,w4,st3,bm16 | bad 0  [46s]
+bs16 local_routes 40 distinct 4 marlin 125.8 slow-dequant nan | 127.3/Fbn64/64,bk128,w8,st4,bm16 128.2/Fbn64/64,bk128,w8,st3,bm16 137.6/Fbn128/128,bk128,w8,st3,bm16 142.3/Fbn64/128,bk128,w8,st4,bm16 | bad 0  [47s]
+bs8 local_routes 20 distinct 4 marlin 104.5 slow-dequant nan | 125.2/Fbn64/64,bk128,w8,st4,bm16 125.5/Fbn64/64,bk128,w8,st3,bm16 135.1/Fbn128/128,bk128,w8,st3,bm16 140.4/Fbn64/128,bk128,w8,st4,bm16 | bad 0  [47s]
+bs1 local_routes 3 distinct 3 marlin 85.5 slow-dequant nan | 118.8/Fbn64/64,bk128,w8,st4,bm16 119.3/Fbn64/64,bk128,w8,st3,bm16 132.0/Fbn128/128,bk128,w8,st3,bm16 136.1/Fbn64/128,bk128,w8,st4,bm16 | bad 0  [48s]

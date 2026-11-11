@@ -1,0 +1,30 @@
+unpo m1 n1024 split16 | E0=9.41 E1pdl=9.02 E2plain=9.22 [1s]
+unpo m8 n1024 split16 | E0=9.60 E1pdl=9.15 E2plain=9.60 [1s]
+rout m1 n256 split16 | E0=9.63 E1pdl=9.70 E2plain=9.89 E3zero=9.73 [1s]
+rout m16 n256 split16 | E0=9.73 E1pdl=9.86 E2plain=10.11 E3zero=9.79 [1s]
+rout m32 n256 split33 | E0=10.30 E1pdl=9.95 E2plain=10.30 E3zero=10.05 [2s]
+qkv_ m1 n2304 split7 | E0=16.16 E1pdl=15.94 E2plain=16.10 [2s]
+qkv_ m16 n2304 split7 | E0=16.42 E1pdl=17.31 E2plain=16.38 [2s]
+pool m1 n4096 split4 | E0=22.46 E1pdl=22.43 E2plain=22.72 [2s]
+pool m32 n4096 split4 | E0=23.20 E1pdl=23.04 E2plain=23.33 [3s]
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-1f2pbegx/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-1f2pbegx/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-1f2pbegx/run/submission.py", line 207, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0
+nop 5.18
+unpo m1 n1024 split16 | E0=9.41 E1pdl=9.02 E2plain=9.22 [1s]
+unpo m8 n1024 split16 | E0=9.60 E1pdl=9.15 E2plain=9.60 [1s]
+rout m1 n256 split16 | E0=9.63 E1pdl=9.70 E2plain=9.89 E3zero=9.73 [1s]
+rout m16 n256 split16 | E0=9.73 E1pdl=9.86 E2plain=10.11 E3zero=9.79 [1s]
+rout m32 n256 split33 | E0=10.30 E1pdl=9.95 E2plain=10.30 E3zero=10.05 [2s]
+qkv_ m1 n2304 split7 | E0=16.16 E1pdl=15.94 E2plain=16.10 [2s]
+qkv_ m16 n2304 split7 | E0=16.42 E1pdl=17.31 E2plain=16.38 [2s]
+pool m1 n4096 split4 | E0=22.46 E1pdl=22.43 E2plain=22.72 [2s]
+pool m32 n4096 split4 | E0=23.20 E1pdl=23.04 E2plain=23.33 [3s]

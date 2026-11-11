@@ -1,0 +1,90 @@
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-14oze5h4/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-14oze5h4/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-14oze5h4/run/submission.py", line 53, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+cutlass include roots (9): /opt/cutlass/include | /opt/sglang/lib/python3.12/site-packages/deep_gemm/include | /opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include | /opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include | /opt/sglang/lib/python3.12/site-packages/tilelang/3rdparty/cutlass/include | /opt/sglang/lib64/python3.12/site-packages/deep_gemm/include | /opt/sglang/lib64/python3.12/site-packages/flashinfer/data/cutlass/include | /opt/sglang/lib64/python3.12/site-packages/nvidia/mathdx/external/cutlass/include | /opt/sglang/lib64/python3.12/site-packages/tilelang/3rdparty/cutlass/include
+[/opt/cutlass/include] version ['opt/cutlass/include/cutlass/version.h:41: #define CUTLASS_MAJOR 4', 'opt/cutlass/include/cutlass/version.h:42: #define CUTLASS_MINOR 8', 'opt/cutlass/include/cutlass/version.h:43: #define CUTLASS_PATCH 0']
+  sm90 mixed-input collectives: ['sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp', 'sm90_mma_tma_gmma_rs_warpspecialized_mixed_input.hpp']
+  opt/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:301: int chunk_size = 0;
+  opt/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:353: int chunk_size;
+  opt/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:354: int reload_factor = (chunk_size + size<2>(TileShape{}) - 1) / size<2>(TileShape{});
+  opt/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:464: auto args_setup = [&](auto ptr_A, auto ptr_B, int64_t scale_k = 0, int chunk_size = 0, int reload_factor = 1) -> Params {
+  opt/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:480: chunk_size,
+  opt/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:492: auto scale_k = ceil_div(init_K, args.chunk_size);
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:81: cutlass::int4b_t,
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:96: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:98: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:129: cutlass::uint4b_t,
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:144: static_assert(cute::is_same_v<cutlass::uint4b_t, typename EngineIn::value_type> &&
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:146: using SrcArray = cutlass::Array<cutlass::uint4b_t, 8>;
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:177: cutlass::int4b_t,
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:192: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:194: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:243: cutlass::uint4b_t,
+  conv: opt/cutlass/include/cutlass/numeric_conversion.h:5475: struct NumericArrayConverter<cutlass::bfloat16_t, cutlass::float_e2m1_t, N, Round> {
+  example 69 files: []
+[/opt/sglang/lib/python3.12/site-packages/deep_gemm/include] version ['opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/version.h:37: #define CUTLASS_MAJOR 4', 'opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/version.h:38: #define CUTLASS_MINOR 2', 'opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/version.h:39: #define CUTLASS_PATCH 1']
+  sm90 mixed-input collectives: ['sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp', 'sm90_mma_tma_gmma_rs_warpspecialized_mixed_input.hpp']
+  opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:301: int chunk_size = 0;
+  opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:353: int chunk_size;
+  opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:354: int reload_factor = (chunk_size + size<2>(TileShape{}) - 1) / size<2>(TileShape{});
+  opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:464: auto args_setup = [&](auto ptr_A, auto ptr_B, int64_t scale_k = 0, int chunk_size = 0, int reload_factor = 1) -> Params {
+  opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:480: chunk_size,
+  opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:492: auto scale_k = ceil_div(init_K, args.chunk_size);
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:81: cutlass::int4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:96: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:98: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:129: cutlass::uint4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:144: static_assert(cute::is_same_v<cutlass::uint4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:146: using SrcArray = cutlass::Array<cutlass::uint4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:177: cutlass::int4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:192: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:194: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/deep_gemm/include/cutlass/detail/collective/mixed_input_utils.hpp:243: cutlass::uint4b_t,
+  example 69 files: []
+[/opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include] version ['opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/version.h:37: #define CUTLASS_MAJOR 4', 'opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/version.h:38: #define CUTLASS_MINOR 5', 'opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/version.h:39: #define CUTLASS_PATCH 0']
+  sm90 mixed-input collectives: ['sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp', 'sm90_mma_tma_gmma_rs_warpspecialized_mixed_input.hpp']
+  opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:301: int chunk_size = 0;
+  opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:353: int chunk_size;
+  opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:354: int reload_factor = (chunk_size + size<2>(TileShape{}) - 1) / size<2>(TileShape{});
+  opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:464: auto args_setup = [&](auto ptr_A, auto ptr_B, int64_t scale_k = 0, int chunk_size = 0, int reload_factor = 1) -> Params {
+  opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:480: chunk_size,
+  opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:492: auto scale_k = ceil_div(init_K, args.chunk_size);
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:81: cutlass::int4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:96: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:98: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:129: cutlass::uint4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:144: static_assert(cute::is_same_v<cutlass::uint4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:146: using SrcArray = cutlass::Array<cutlass::uint4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:177: cutlass::int4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:192: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:194: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:243: cutlass::uint4b_t,
+  conv: opt/sglang/lib/python3.12/site-packages/flashinfer/data/cutlass/include/cutlass/numeric_conversion.h:5101: struct NumericArrayConverter<cutlass::bfloat16_t, cutlass::float_e2m1_t, N, Round> {
+  example 69 files: []
+[/opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include] version ['opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/version.h:37: #define CUTLASS_MAJOR 3', 'opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/version.h:38: #define CUTLASS_MINOR 9', 'opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/version.h:39: #define CUTLASS_PATCH 2']
+  sm90 mixed-input collectives: ['sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp', 'sm90_mma_tma_gmma_rs_warpspecialized_mixed_input.hpp']
+  opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:307: int chunk_size = 0;
+  opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:359: int chunk_size;
+  opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:360: int reload_factor = (chunk_size + size<2>(TileShape{}) - 1) / size<2>(TileShape{});
+  opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:470: auto args_setup = [&](auto ptr_A, auto ptr_B, int64_t scale_k = 0, int chunk_size = 0, int reload_factor = 1) -> Params {
+  opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:486: chunk_size,
+  opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/gemm/collective/sm90_mma_array_tma_gmma_rs_warpspecialized_mixed_input.hpp:498: auto scale_k = ceil_div(init_K, args.chunk_size);
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:81: cutlass::int4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:96: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:98: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:129: cutlass::uint4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:144: static_assert(cute::is_same_v<cutlass::uint4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:146: using SrcArray = cutlass::Array<cutlass::uint4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:177: cutlass::int4b_t,
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:192: static_assert(cute::is_same_v<cutlass::int4b_t, typename EngineIn::value_type> &&
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:194: using SrcArray = cutlass::Array<cutlass::int4b_t, 8>;
+  util: opt/sglang/lib/python3.12/site-packages/nvidia/mathdx/external/cutlass/include/cutlass/detail/collective/mixed_input_utils.hpp:243: cutlass::uint4b_t,
+  example 69 files: []
+nvcc: True  [1s]

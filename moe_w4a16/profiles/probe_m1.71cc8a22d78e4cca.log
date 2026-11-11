@@ -1,0 +1,24 @@
+bs256 local_routes 629 distinct 7 marlin 364.3 | 977.3/bn64/128,bk64,w4,st4,bm64 978.1/bn64/128,bk64,w4,st3,bm64 979.8/bn64/128,bk64,w4,st2,bm64 1001.9/bn128/128,bk64,w4,st3,bm64 | bad 0  [71s]
+bs128 local_routes 314 distinct 7 marlin 245.7 | 688.7/bn64/64,bk128,w4,st2,bm64 691.6/bn64/64,bk128,w4,st3,bm64 693.1/bn64/64,bk128,w4,st4,bm64 736.7/bn64/64,bk64,w4,st3,bm64 | bad 0  [78s]
+bs32 local_routes 78 distinct 6 marlin 120.5 | 379.0/bn64/128,bk64,w8,st2,bm32 385.1/bn64/64,bk64,w8,st2,bm32 388.3/bn64/64,bk128,w4,st4,bm16 388.7/bn64/64,bk128,w4,st3,bm16 | bad 0  [81s]
+bs16 local_routes 40 distinct 4 marlin 126.0 | 252.6/bn64/64,bk128,w8,st4,bm16 253.8/bn64/64,bk128,w8,st3,bm16 255.6/bn64/64,bk128,w8,st2,bm16 279.6/bn64/128,bk128,w8,st4,bm16 | bad 0  [82s]
+bs8 local_routes 20 distinct 4 marlin 105.0 | 246.8/bn64/64,bk128,w8,st4,bm16 247.7/bn64/64,bk128,w8,st3,bm16 248.4/bn64/64,bk128,w8,st2,bm16 275.7/bn64/128,bk128,w8,st4,bm16 | bad 0  [83s]
+bs1 local_routes 3 distinct 3 marlin 85.2 | 238.5/bn64/64,bk128,w8,st4,bm16 238.7/bn64/64,bk128,w8,st3,bm16 242.9/bn64/64,bk128,w8,st2,bm16 270.1/bn64/128,bk128,w8,st4,bm16 | bad 0  [84s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-o7mqajqr/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-o7mqajqr/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-o7mqajqr/run/submission.py", line 384, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0 prep 0s
+nop 5.2
+bs256 local_routes 629 distinct 7 marlin 364.3 | 977.3/bn64/128,bk64,w4,st4,bm64 978.1/bn64/128,bk64,w4,st3,bm64 979.8/bn64/128,bk64,w4,st2,bm64 1001.9/bn128/128,bk64,w4,st3,bm64 | bad 0  [71s]
+bs128 local_routes 314 distinct 7 marlin 245.7 | 688.7/bn64/64,bk128,w4,st2,bm64 691.6/bn64/64,bk128,w4,st3,bm64 693.1/bn64/64,bk128,w4,st4,bm64 736.7/bn64/64,bk64,w4,st3,bm64 | bad 0  [78s]
+bs32 local_routes 78 distinct 6 marlin 120.5 | 379.0/bn64/128,bk64,w8,st2,bm32 385.1/bn64/64,bk64,w8,st2,bm32 388.3/bn64/64,bk128,w4,st4,bm16 388.7/bn64/64,bk128,w4,st3,bm16 | bad 0  [81s]
+bs16 local_routes 40 distinct 4 marlin 126.0 | 252.6/bn64/64,bk128,w8,st4,bm16 253.8/bn64/64,bk128,w8,st3,bm16 255.6/bn64/64,bk128,w8,st2,bm16 279.6/bn64/128,bk128,w8,st4,bm16 | bad 0  [82s]
+bs8 local_routes 20 distinct 4 marlin 105.0 | 246.8/bn64/64,bk128,w8,st4,bm16 247.7/bn64/64,bk128,w8,st3,bm16 248.4/bn64/64,bk128,w8,st2,bm16 275.7/bn64/128,bk128,w8,st4,bm16 | bad 0  [83s]
+bs1 local_routes 3 distinct 3 marlin 85.2 | 238.5/bn64/64,bk128,w8,st4,bm16 238.7/bn64/64,bk128,w8,st3,bm16 242.9/bn64/64,bk128,w8,st2,bm16 270.1/bn64/128,bk128,w8,st4,bm16 | bad 0  [84s]

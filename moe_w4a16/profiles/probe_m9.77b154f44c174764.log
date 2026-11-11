@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-tfdpo59a/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-tfdpo59a/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-tfdpo59a/run/submission.py", line 515, in prepare
+    state = v2_prepare(weights)
+            ^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-tfdpo59a/run/submission.py", line 425, in v2_prepare
+    if count != N_EXPERTS:
+                ^^^^^^^^^
+NameError: name 'N_EXPERTS' is not defined

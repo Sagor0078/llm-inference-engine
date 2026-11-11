@@ -1,0 +1,65 @@
+okc run fba916695f4d4c05 on muse_moe_w4a16
+submission  /home/technonext/okc/moe_w4a16/submission.py
+status      ok
+passed      true
+speedup     1.1794977381291185
+speedup_ci  [1.1618052720571816 1.1971902042010552]
+score_us    11401.88706197231
+tests       5/5 passed
+
+scored shapes (µs; speed of light is the reference's bound)
+case                                                         sglang      yours  speedup        sol  
+bs=1 load=decode 1 sharding=ep8                               77.76      49.68   1.565x      11.42  
+bs=16 load=decode 16 sharding=ep8                            188.14     152.72   1.232x      52.52  
+bs=32 load=decode 32 sharding=ep8                            204.93     197.34   1.038x      70.76  
+bs=8 load=verify 1 sharding=ep8                              150.70     113.42   1.329x      37.32  
+bs=128 load=verify 16 sharding=ep8                           459.12     451.17   1.018x     101.34  
+bs=256 load=verify 32 sharding=ep8                           607.63     611.04   0.994x     108.94  
+
+profile 0: bs=1 load=decode 1 sharding=ep8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...      39.7 µs  85.6%      2
+_finalize_kernel                                                   3.3 µs   7.0%      1
+_align_kernel                                                      1.9 µs   4.0%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       1.6 µs   3.4%      1
+total                                                             46.4 µs
+
+profile 1: bs=16 load=decode 16 sharding=ep8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     132.8 µs  94.0%      2
+_finalize_kernel                                                   3.8 µs   2.7%      1
+_align_kernel                                                      2.5 µs   1.8%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.1 µs   1.5%      1
+total                                                            141.3 µs
+
+profile 2: bs=32 load=decode 32 sharding=ep8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     218.2 µs  95.4%      2
+_finalize_kernel                                                   5.3 µs   2.3%      1
+_align_kernel                                                      2.8 µs   1.2%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.6 µs   1.1%      1
+total                                                            228.8 µs
+
+profile 3: bs=8 load=verify 1 sharding=ep8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...      93.5 µs  92.1%      2
+_finalize_kernel                                                   3.9 µs   3.8%      1
+_align_kernel                                                      2.1 µs   2.0%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       2.1 µs   2.0%      1
+total                                                            101.6 µs
+
+profile 4: bs=128 load=verify 16 sharding=ep8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     463.9 µs  96.9%      2
+_align_kernel                                                      5.9 µs   1.2%      1
+_finalize_kernel                                                   5.3 µs   1.1%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       3.7 µs   0.8%      1
+total                                                            478.8 µs
+
+profile 5: bs=256 load=verify 32 sharding=ep8
+kernel                                                           GPU time  share  calls
+void sglang::device::marlin_moe::Marlin<__nv_bfloat16, 56...     459.5 µs  93.5%      2
+_align_kernel                                                     19.9 µs   4.1%      1
+_finalize_kernel                                                   6.1 µs   1.2%      1
+void sglang::act_and_mul_kernel<__nv_bfloat16, (sglang::A...       5.7 µs   1.2%      1
+total                                                            491.2 µs

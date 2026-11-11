@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/tmp/muse_bf16_proj-luae1w5x/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-luae1w5x/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_bf16_proj-luae1w5x/run/submission.py", line 51, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 cuda 13.0
+CUDA_HOME /usr/local/cuda
+load_inline OK=True compile 21.2s
+deep_gemm 0.2.1.post1+muse.cbe1727: ['SM90SymmBuffer', 'SymmBuffer', 'batched_symm', 'bf16_gemm_nn', 'bf16_gemm_nt', 'bf16_gemm_tn', 'bf16_gemm_tt', 'bf16_m_grouped_gemm_nt_masked', 'bf16_mega_gate', 'bf16_mega_moe', 'cublaslt_gemm_nn', 'cublaslt_gemm_nt', 'cublaslt_gemm_tn', 'cublaslt_gemm_tt', 'cublaslt_nvfp4_gemm_nt', 'fp4_gemm_nt', 'fp8_fp4_gemm_nn', 'fp8_fp4_gemm_nt', 'fp8_fp4_gemm_tn', 'fp8_fp4_gemm_tt', 'fp8_gemm_nn', 'fp8_gemm_nt', 'fp8_gemm_nt_skip_head_mid', 'fp8_gemm_tn', 'fp8_gemm_tt']
+cutlass 4.8.0: ['_common']
+cutlass.cute ?: ['MmaAtom', 'ThrMma', 'TiledMma', 'gemm', 'make_mma_atom', 'make_tiled_mma', 'max_common_layout', 'max_common_vector', 'mma_atom_call']
+flashinfer 0.7.0.post1: ['CuteDslBf16MoEWrapper', 'SegmentGEMMWrapper', '__git_commit__', 'bmm_bf16', 'bmm_fp8', 'bmm_mxfp8', 'cute_dsl_fused_moe_bf16', 'fused_dit_gate_residual_layernorm_gamma_beta', 'gemm', 'gemma_fused_add_rmsnorm', 'gemma_rmsnorm', 'grouped_mm', 'grouped_mm_bf16', 'grouped_mm_fp4', 'grouped_mm_fp8', 'grouped_mm_mxfp8', 'mm_bf16', 'mm_bf16_fp4', 'mm_fp4', 'mm_fp8', 'mm_mxfp8', 'mm_nvfp4_svdquant', 'prepare_bf16_fp4_weights', 'prepare_low_latency_gemm_weights', 'prims_ts_bf16_moe']
+tilelang 0.1.12: ['common']
+sgl_kernel 0.4.9: ['common_ops', 'cutlass_w4a8_moe_mm', 'es_fp8_blockwise_scaled_grouped_mm', 'es_sm100_mxfp8_blockscaled_grouped_mm', 'fp8_blockwise_scaled_grouped_mm', 'fp8_scaled_mm', 'gemm', 'gemma_fused_add_rmsnorm', 'gemma_rmsnorm', 'get_cutlass_w4a8_moe_mm_data', 'grammar', 'int8_scaled_mm']
+nproc 192

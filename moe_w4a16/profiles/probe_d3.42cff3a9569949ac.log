@@ -1,0 +1,25 @@
+bs1 v2 57.2 | cuda 88.2/nt1,s8/4,err6.0e-03 88.8/nt1,s4/4,err6.0e-03 90.5/nt1,s8/8,err6.0e-03 95.7/nt2,s8/4,err6.0e-03 | bad 0  [40s]
+bs8 v2 68.7 | cuda 110.0/nt1,s4/4,err5.9e-03 111.4/nt1,s2/2,err5.9e-03 114.4/nt1,s8/8,err5.9e-03 115.7/nt1,s8/4,err5.9e-03 | bad 0  [42s]
+bs16 v2 72.9 | cuda 127.2/nt2,s4/4,err5.8e-03 129.9/nt2,s8/8,err5.8e-03 131.2/nt2,s2/2,err5.8e-03 132.2/nt2,s8/4,err5.8e-03 | bad 0  [43s]
+bs32 v2 114.4 | cuda 203.8/nt2,s4/4,err5.8e-03 210.6/nt2,s8/4,err5.8e-03 211.5/nt2,s2/2,err5.8e-03 214.2/nt2,s8/8,err5.8e-03 | bad 0  [45s]
+bs128 v2 239.5 | cuda 547.2/nt4,s1/1,err5.7e-03 548.2/nt4,s2/2,err5.7e-03 | bad 0  [49s]
+bs256 v2 369.8 | cuda 854.0/nt4,s1/1,err5.7e-03 919.9/nt4,s2/2,err5.7e-03 | bad 0  [54s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-gb2c5kth/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-gb2c5kth/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-gb2c5kth/run/submission.py", line 705, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+compile 38s
+pack + prep [39s]
+nop 5.0
+bs1 v2 57.2 | cuda 88.2/nt1,s8/4,err6.0e-03 88.8/nt1,s4/4,err6.0e-03 90.5/nt1,s8/8,err6.0e-03 95.7/nt2,s8/4,err6.0e-03 | bad 0  [40s]
+bs8 v2 68.7 | cuda 110.0/nt1,s4/4,err5.9e-03 111.4/nt1,s2/2,err5.9e-03 114.4/nt1,s8/8,err5.9e-03 115.7/nt1,s8/4,err5.9e-03 | bad 0  [42s]
+bs16 v2 72.9 | cuda 127.2/nt2,s4/4,err5.8e-03 129.9/nt2,s8/8,err5.8e-03 131.2/nt2,s2/2,err5.8e-03 132.2/nt2,s8/4,err5.8e-03 | bad 0  [43s]
+bs32 v2 114.4 | cuda 203.8/nt2,s4/4,err5.8e-03 210.6/nt2,s8/4,err5.8e-03 211.5/nt2,s2/2,err5.8e-03 214.2/nt2,s8/8,err5.8e-03 | bad 0  [45s]
+bs128 v2 239.5 | cuda 547.2/nt4,s1/1,err5.7e-03 548.2/nt4,s2/2,err5.7e-03 | bad 0  [49s]
+bs256 v2 369.8 | cuda 854.0/nt4,s1/1,err5.7e-03 919.9/nt4,s2/2,err5.7e-03 | bad 0  [54s]

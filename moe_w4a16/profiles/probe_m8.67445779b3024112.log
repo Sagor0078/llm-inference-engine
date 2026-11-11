@@ -1,0 +1,20 @@
+bs1 blocks_used 3 local_routes 3 | align 5.8 gemm1 70.1 gemm2 46.6 finalize 8.5 us (nop-included) | gemm1 weight GB 0.057 -> 0.87 TB/s
+bs8 blocks_used 4 local_routes 20 | align 6.0 gemm1 73.0 gemm2 49.5 finalize 9.2 us (nop-included) | gemm1 weight GB 0.075 -> 1.11 TB/s
+bs32 blocks_used 8 local_routes 78 | align 6.6 gemm1 100.7 gemm2 67.5 finalize 9.3 us (nop-included) | gemm1 weight GB 0.113 -> 1.19 TB/s
+bs256 blocks_used 14 local_routes 629 | align 24.4 gemm1 342.3 gemm2 175.5 finalize 10.1 us (nop-included) | gemm1 weight GB 0.132 -> 0.39 TB/s
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-t1gfixl8/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-t1gfixl8/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-t1gfixl8/run/submission.py", line 447, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0 prep 0s
+nop 5.1
+bs1 blocks_used 3 local_routes 3 | align 5.8 gemm1 70.1 gemm2 46.6 finalize 8.5 us (nop-included) | gemm1 weight GB 0.057 -> 0.87 TB/s
+bs8 blocks_used 4 local_routes 20 | align 6.0 gemm1 73.0 gemm2 49.5 finalize 9.2 us (nop-included) | gemm1 weight GB 0.075 -> 1.11 TB/s
+bs32 blocks_used 8 local_routes 78 | align 6.6 gemm1 100.7 gemm2 67.5 finalize 9.3 us (nop-included) | gemm1 weight GB 0.113 -> 1.19 TB/s
+bs256 blocks_used 14 local_routes 629 | align 24.4 gemm1 342.3 gemm2 175.5 finalize 10.1 us (nop-included) | gemm1 weight GB 0.132 -> 0.39 TB/s

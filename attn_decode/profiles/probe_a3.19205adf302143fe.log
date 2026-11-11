@@ -1,0 +1,138 @@
+slid L1 B1 sglang 24.1 cur 13.1 | 13.0/tp132,ms256 13.0/tp528,ms256 13.1/tp1056,ms256 13.1/tp132,ms256,pf [3s]
+slid L1 B16 sglang 30.3 cur 18.1 | 17.8/tp264,ms256,pf 17.9/tp264,ms32,pf 18.0/tp1056,ms32 18.0/tp1056,ms256,pf [5s]
+slid L1 B32 sglang 34.8 cur 23.8 | 21.3/tp528,ms256,pf 21.4/tp528,ms32,pf 22.0/tp528,ms256 22.1/tp528,ms32 [5s]
+slid L8 B1 sglang 26.7 cur 15.0 | 15.0/tp1056,ms256 15.2/tp264,ms256 15.2/tp528,ms256 15.3/tp132,ms256 [6s]
+slid L8 B16 sglang 33.2 cur 29.5 | 24.6/tp1056,ms32 24.9/tp528,ms256 25.0/tp528,ms32 29.5/tp1056,ms256 [6s]
+slid L8 B32 sglang 39.2 cur 33.0 | 33.0/tp1056,ms256 33.0/tp1056,ms32 36.3/tp528,ms32 36.4/tp528,ms256 [6s]
+full L1 B1 sglang 34.8 cur 28.4 | 28.2/tp528,ms256 28.4/tp1056,ms256 28.8/tp528,ms256,pf 28.9/tp1056,ms256,pf [8s]
+full L1 B16 sglang 204.8 cur 135.2 | 129.4/tp1056,ms256,pf 135.2/tp1056,ms256 143.4/tp1056,ms32,pf 143.5/tp528,ms32,pf [10s]
+full L1 B32 sglang 389.2 cur 250.5 | 234.2/tp1056,ms256,pf 234.5/tp1056,ms32,pf 249.6/tp1056,ms32 250.5/tp1056,ms256 [10s]
+full L8 B1 sglang 40.1 cur 34.1 | 33.8/tp528,ms256 34.1/tp1056,ms256 38.3/tp264,ms256 52.2/tp132,ms256 [10s]
+full L8 B16 sglang 209.0 cur 217.0 | 216.2/tp1056,ms32 217.0/tp1056,ms256 290.9/tp528,ms32 291.8/tp528,ms256 [11s]
+full L8 B32 sglang 396.2 cur 414.1 | 414.1/tp1056,ms256 415.6/tp1056,ms32 570.1/tp528,ms8 570.7/tp528,ms32 [11s]
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 427, in kernel_fn
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+torch 2.14.1+cu130 triton 3.8.0
+nop 5.0
+slid L1 B1 sglang 24.1 cur 13.1 | 13.0/tp132,ms256 13.0/tp528,ms256 13.1/tp1056,ms256 13.1/tp132,ms256,pf [3s]
+slid L1 B16 sglang 30.3 cur 18.1 | 17.8/tp264,ms256,pf 17.9/tp264,ms32,pf 18.0/tp1056,ms32 18.0/tp1056,ms256,pf [5s]
+slid L1 B32 sglang 34.8 cur 23.8 | 21.3/tp528,ms256,pf 21.4/tp528,ms32,pf 22.0/tp528,ms256 22.1/tp528,ms32 [5s]
+slid L8 B1 sglang 26.7 cur 15.0 | 15.0/tp1056,ms256 15.2/tp264,ms256 15.2/tp528,ms256 15.3/tp132,ms256 [6s]
+slid L8 B16 sglang 33.2 cur 29.5 | 24.6/tp1056,ms32 24.9/tp528,ms256 25.0/tp528,ms32 29.5/tp1056,ms256 [6s]
+slid L8 B32 sglang 39.2 cur 33.0 | 33.0/tp1056,ms256 33.0/tp1056,ms32 36.3/tp528,ms32 36.4/tp528,ms256 [6s]
+full L1 B1 sglang 34.8 cur 28.4 | 28.2/tp528,ms256 28.4/tp1056,ms256 28.8/tp528,ms256,pf 28.9/tp1056,ms256,pf [8s]
+full L1 B16 sglang 204.8 cur 135.2 | 129.4/tp1056,ms256,pf 135.2/tp1056,ms256 143.4/tp1056,ms32,pf 143.5/tp528,ms32,pf [10s]
+full L1 B32 sglang 389.2 cur 250.5 | 234.2/tp1056,ms256,pf 234.5/tp1056,ms32,pf 249.6/tp1056,ms32 250.5/tp1056,ms256 [10s]
+full L8 B1 sglang 40.1 cur 34.1 | 33.8/tp528,ms256 34.1/tp1056,ms256 38.3/tp264,ms256 52.2/tp132,ms256 [10s]
+full L8 B16 sglang 209.0 cur 217.0 | 216.2/tp1056,ms32 217.0/tp1056,ms256 290.9/tp528,ms32 291.8/tp528,ms256 [11s]
+full L8 B32 sglang 396.2 cur 414.1 | 414.1/tp1056,ms256 415.6/tp1056,ms32 570.1/tp528,ms8 570.7/tp528,ms32 [11s]
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe
+Traceback (most recent call last):
+  File "/tmp/muse_attention_decode-rafuzlko/run/worker.py", line 484, in child_main
+    out = kernel()(state.get("data"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_attention_decode-rafuzlko/run/submission.py", line 368, in kernel_fn
+    raise RuntimeError("probe")
+RuntimeError: probe

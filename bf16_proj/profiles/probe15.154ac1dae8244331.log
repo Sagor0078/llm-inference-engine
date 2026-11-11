@@ -1,0 +1,24 @@
+TRANSPOSE 128 qkv_gate 20.416000857949257 20.416000857949257 0.0
+TRANSPOSE 128 o 10.912000201642513 10.847999714314938 0.0
+TRANSPOSE 128 pooler 26.91200003027916 26.655999943614006 0.00015230303688440472
+TRANSPOSE 128 unpooler 23.552000522613525 22.84800074994564 0.0
+TRANSPOSE 256 qkv_gate 23.231999948620796 24.09599907696247 0.0
+TRANSPOSE 256 o 13.088000006973743 13.055999763309956 0.0
+TRANSPOSE 256 pooler 34.20799970626831 32.96000137925148 0.0
+TRANSPOSE 256 unpooler 27.904000133275986 27.936000376939774 0.0
+ROUTER 1 old 9.664000011980534 best [(9.536, 16, 64, 128, 4, 33), (9.568, 16, 64, 128, 3, 33), (9.632, 16, 64, 128, 3, 64), (9.76, 16, 64, 256, 3, 32), (9.856, 16, 64, 256, 3, 32), (10.016, 16, 32, 256, 3, 32), (10.112, 16, 32, 128, 3, 33), (10.24, 16, 32, 256, 3, 16)] elapsed 3.8901784420013428
+ROUTER 8 old 9.696000255644321 best [(9.536, 16, 64, 128, 3, 33), (9.536, 16, 64, 128, 4, 33), (9.792, 16, 64, 128, 3, 64), (9.792, 16, 64, 256, 3, 32), (9.888, 16, 64, 256, 3, 32), (10.112, 16, 32, 256, 3, 32), (10.144, 16, 32, 128, 3, 33), (10.272, 16, 32, 256, 3, 16)] elapsed 3.940513849258423
+ROUTER 16 old 9.759999811649323 best [(9.92, 16, 64, 128, 3, 33), (9.92, 16, 64, 128, 4, 33), (10.08, 16, 64, 256, 3, 32), (10.112, 16, 64, 128, 3, 64), (10.144, 16, 64, 256, 3, 32), (10.272, 16, 32, 128, 3, 33), (10.4, 16, 32, 128, 3, 16), (10.4, 16, 32, 256, 3, 16)] elapsed 3.981261968612671
+ERR out of resource: shared memory, Required: 245784, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 245784, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ROUTER 32 old 10.528000071644783 best [(10.24, 32, 64, 128, 4, 33), (10.432, 32, 64, 128, 3, 33), (10.912, 32, 32, 256, 3, 16), (10.944, 32, 32, 128, 3, 16), (10.976, 32, 32, 256, 3, 32), (11.136, 32, 32, 128, 3, 33), (12.896, 32, 64, 128, 3, 64), (12.928, 32, 64, 128, 4, 64)] elapsed 4.979149103164673
+ERR out of resource: shared memory, Required: 245784, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 245784, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 294936, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 294936, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ROUTER 128 old 12.256000190973282 best [(12.224, 64, 64, 128, 3, 16), (12.256, 32, 64, 128, 4, 8), (12.288, 64, 64, 128, 4, 16), (12.896, 32, 64, 128, 3, 8), (13.824, 64, 32, 256, 3, 8), (14.656, 64, 32, 128, 3, 16), (14.848, 64, 32, 128, 3, 8), (15.456, 32, 64, 128, 3, 16)] elapsed 6.224938154220581
+ERR out of resource: shared memory, Required: 245784, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 245784, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 294936, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ERR out of resource: shared memory, Required: 294936, Hardware limit: 232448. Reducing block sizes or `num_stages` may help.
+ROUTER 256 old 14.240000396966934 best [(13.568, 64, 64, 128, 4, 8), (14.304, 64, 64, 128, 3, 8), (15.904, 32, 64, 128, 4, 4), (16.768, 32, 64, 128, 3, 4), (17.44, 64, 64, 128, 3, 16), (17.568, 64, 64, 128, 4, 16), (18.976, 32, 64, 128, 4, 8), (19.328, 64, 32, 256, 3, 4)] elapsed 6.298588275909424

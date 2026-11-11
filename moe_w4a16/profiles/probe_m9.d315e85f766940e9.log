@@ -1,0 +1,23 @@
+bs1 v2 56.8 | triton 87.8/bn64/64,w4,s2/2,bm16 90.9/bn128/128,w4,s8/4,bm16 91.4/bn64/64,w4,s4/4,bm16 92.1/bn128/128,w4,s4/4,bm16 | bad 0  [6s]
+bs8 v2 68.7 | triton 107.4/bn128/128,w4,s2/2,bm16 109.1/bn128/128,w4,s4/4,bm16 112.7/bn64/64,w4,s4/4,bm16 114.8/bn128/128,w4,s8/4,bm16 | bad 0  [7s]
+bs16 v2 72.7 | triton 109.1/bn128/128,w4,s2/2,bm16 111.6/bn128/128,w4,s4/4,bm16 115.2/bn64/64,w4,s4/4,bm16 117.1/bn64/64,w4,s2/2,bm16 | bad 0  [9s]
+bs32 v2 114.0 | triton 181.1/bn128/128,w4,s1/1,bm16 181.3/bn128/128,w4,s2/2,bm16 183.0/bn128/128,w4,s4/4,bm16 186.5/bn64/64,w4,s2/2,bm16 | bad 0  [10s]
+bs128 v2 238.6 | triton 384.6/bn64/64,w4,s2/2,bm64 393.2/bn32/32,w4,s1/1,bm64 428.1/bn64/64,w4,s1/1,bm64 428.8/bn32/32,w4,s2/2,bm64 | bad 0  [21s]
+bs256 v2 371.0 | triton 557.6/bn64/64,w4,s2/2,bm64 573.0/bn64/64,w4,s1/1,bm64 623.7/bn32/32,w4,s1/1,bm64 658.0/bn32/32,w4,s2/2,bm64 | bad 0  [26s]
+Traceback (most recent call last):
+  File "/tmp/muse_moe_w4a16-xo5tfoiv/run/worker.py", line 423, in child_main
+    send(_setup_op(msg, module, state, sync, perf))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-xo5tfoiv/run/worker.py", line 322, in _setup_op
+    state["prep"] = prepare(weights)
+                    ^^^^^^^^^^^^^^^^
+  File "/tmp/muse_moe_w4a16-xo5tfoiv/run/submission.py", line 585, in prepare
+    raise RuntimeError("PROBE\n" + "\n".join(lines))
+RuntimeError: PROBE
+nop 5.1
+bs1 v2 56.8 | triton 87.8/bn64/64,w4,s2/2,bm16 90.9/bn128/128,w4,s8/4,bm16 91.4/bn64/64,w4,s4/4,bm16 92.1/bn128/128,w4,s4/4,bm16 | bad 0  [6s]
+bs8 v2 68.7 | triton 107.4/bn128/128,w4,s2/2,bm16 109.1/bn128/128,w4,s4/4,bm16 112.7/bn64/64,w4,s4/4,bm16 114.8/bn128/128,w4,s8/4,bm16 | bad 0  [7s]
+bs16 v2 72.7 | triton 109.1/bn128/128,w4,s2/2,bm16 111.6/bn128/128,w4,s4/4,bm16 115.2/bn64/64,w4,s4/4,bm16 117.1/bn64/64,w4,s2/2,bm16 | bad 0  [9s]
+bs32 v2 114.0 | triton 181.1/bn128/128,w4,s1/1,bm16 181.3/bn128/128,w4,s2/2,bm16 183.0/bn128/128,w4,s4/4,bm16 186.5/bn64/64,w4,s2/2,bm16 | bad 0  [10s]
+bs128 v2 238.6 | triton 384.6/bn64/64,w4,s2/2,bm64 393.2/bn32/32,w4,s1/1,bm64 428.1/bn64/64,w4,s1/1,bm64 428.8/bn32/32,w4,s2/2,bm64 | bad 0  [21s]
+bs256 v2 371.0 | triton 557.6/bn64/64,w4,s2/2,bm64 573.0/bn64/64,w4,s1/1,bm64 623.7/bn32/32,w4,s1/1,bm64 658.0/bn32/32,w4,s2/2,bm64 | bad 0  [26s]
