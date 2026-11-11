@@ -324,40 +324,13 @@ Correctness is relative L2 against an FP64 reference: $`\lVert \text{out} - \tex
 
 ---
 
-## Repository layout
-
-```
-.
-├── README.md                  # this file
-├── .gitignore                 # keeps TASK.md, AGENTS.md, intent.md and working submission*.py out of git
-├── best_submissions/          # the best submission of every problem, in one place
-├── bf16_proj/                 # muse_bf16_proj
-├── attn_decode/               # muse_attention_decode (my working copy)
-├── muse_attention_decode/     # untouched `okc init` starter for the same problem
-├── moe_w4a16/                 # muse_moe_w4a16
-├── decode_layer/              # muse_decode_layer
-├── prefill_layer/             # muse_prefill_layer
-└── 10t_model/                 # side study: sizing a 10T-parameter model on Cerebras wafers
-```
-
-Inside each problem folder:
-
-| File | Purpose |
-|---|---|
-| `LOG.md` | Every experiment: hypothesis, judge job ID, result, and why it was kept or dropped |
-| `baseline.py` | SGLang's implementation, the one I'm timed against |
-| `reference.py`, `checks.py` | The judge's reference computation and correctness checks |
-| `probe*.py`, `tune*.py` | Exploration and tuning scripts run on the judge via `okc check` |
-| `*.cu`, `moe_triton*.py` | Native CUDA and alternative Triton prototypes |
-| `profiles/` | Judge outputs per job (`.json` result, `.log` output, `.txt` profile) |
+## Reproducing
 
 Each folder's working `submission.py` (and older variants) stays local; the final version of each
 is in [best_submissions/](best_submissions/). The problem statements (`TASK.md`) and agent notes
 (`AGENTS.md`), plus my local planning notes (`intent.md`), are not in the repository either (see [.gitignore](.gitignore)). To get a problem's
 statement, run `okc init <problem>` (for example `okc init muse_bf16_proj`) or read it on
 [openkernelchallenge.dev](https://openkernelchallenge.dev/).
-
-## Reproducing
 
 You need the `okc` CLI and an account that has accepted the rules (`okc login`, run by a person).
 No local GPU is needed: everything runs on the judge's H200.
