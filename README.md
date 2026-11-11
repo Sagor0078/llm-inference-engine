@@ -12,13 +12,13 @@ SGLang on the same inputs). Leaderboard positions are provisional until the orga
 
 ## Results at a glance
 
-| Problem | Folder | What it computes | Best result | Status |
-|---|---|---|---|---|
-| `muse_bf16_proj` | [bf16_proj/](bf16_proj/) | Dense BF16 projections + FP32 router (`x @ W.T`) | **1.265x** (check), **1.259x** scored | Scored, v6 |
-| `muse_attention_decode` | [attn_decode/](attn_decode/) | Gated GQA decode/verify over a paged FP8 KV cache | **1.434x** scored | Scored, v7 |
-| `muse_moe_w4a16` | [moe_w4a16/](moe_w4a16/) | Top-8 of 256 routed experts, NVFP4 weights, SwiGLU | **1.179x** (check), **1.174x** scored | Scored, v2 |
-| `muse_decode_layer` | [decode_layer/](decode_layer/) | A whole decoder layer at decode/verify sizes | **1.271x** (check) | v7 |
-| `muse_prefill_layer` | [prefill_layer/](prefill_layer/) | A whole decoder layer at prefill sizes | **1.133x** submitted | Submitted, v3 |
+| Problem | Folder | What it computes | Speedup over SGLang |
+|---|---|---|---|
+| `muse_bf16_proj` | [bf16_proj/](bf16_proj/) | Dense BF16 projections + FP32 router (`x @ W.T`) | **1.26x** |
+| `muse_attention_decode` | [attn_decode/](attn_decode/) | Gated GQA decode/verify over a paged FP8 KV cache | **1.43x** |
+| `muse_moe_w4a16` | [moe_w4a16/](moe_w4a16/) | Top-8 of 256 routed experts, NVFP4 weights, SwiGLU | **1.17x** |
+| `muse_decode_layer` | [decode_layer/](decode_layer/) | A whole decoder layer at decode/verify sizes | **1.27x** |
+| `muse_prefill_layer` | [prefill_layer/](prefill_layer/) | A whole decoder layer at prefill sizes | **1.13x** |
 
 The speedup is the judge's score: the geometric mean over loads of SGLang's time divided by mine.
 1.0x means parity with SGLang.
@@ -34,8 +34,8 @@ KV cache) from HBM once, at close to full bandwidth, with as few kernel launches
 work was: measure where SGLang loses time (small-kernel chains, under-filled SMs, PyTorch fallbacks),
 replace those pieces with fused Triton or native CUDA kernels, tune them per shape with CUDA-graph
 replays from a cold L2 (as the judge times them), and keep SGLang's own kernels wherever nothing
-beat them (cuBLAS at large m, Marlin for the NVFP4 GEMMs). Every candidate went through
-`okc check` before a scored run, and the log records the attempts that failed as well as the ones that worked.
+beat them (cuBLAS at large m, Marlin for the NVFP4 GEMMs). Every candidate was tested for
+correctness and speed on the official judge before it was submitted, and the log records the attempts that failed as well as the ones that worked.
 
 ---
 
@@ -56,8 +56,9 @@ m = 1 to 256 tokens.
   both halves go through the tensor cores into one FP32 accumulator in a single pass over the weights.
 - **m > 32:** cuBLAS, which nothing I tried beat there, except the pooler at 65-128 tokens.
 
-**Results:** v1 0.83x → v2 1.20x (balanced split-K, tuned per layer) → v4 1.23x (swap-AB TMA)
-→ **v6 1.265x** (CUDA GEMV for m = 1; router at m = 1 is 2.5x faster than SGLang).
+**Results:** the first split-K kernel ran at 0.83x. Balancing split-K and tuning each layer brought it
+to 1.20x, the swap-AB TMA kernel to 1.23x, and the CUDA GEMV for one token to **1.26x** (the router
+at one token runs 2.5x faster than SGLang's).
 
 **What I tried that didn't pay off** (all in [LOG.md](bf16_proj/LOG.md)):
 - A race in the split-K reduction showed up in only 95 of 1,500 replays. I found it with
@@ -84,9 +85,9 @@ in place of SGLang's chain of five:
 3. **Combine:** merges the chunks, then applies RMSNorm × sigmoid(gate) to BF16.
 
 Per-shape tuning (block size, warps, stages, split cap, page-index prefetch on decode) took it from
-v1 1.21x to **v7 1.434x scored**. Sliding-window calls run 1.6-2.2x faster than SGLang's.
+1.21x for the first working kernels to **1.43x**. Sliding-window calls run 1.6-2.2x faster than SGLang's.
 
-**Lessons:** a runtime branch inside the key loop stops Triton pipelining the loads (that version scored 0.84x).
+**Lessons:** a runtime branch inside the key loop stops Triton pipelining the loads (that attempt dropped to 0.84x).
 FP8 P @ V was no faster, because Triton's operand conversion ate the gain. The remaining gap is in the
 page-size-1 gather on full layers, which runs at about 65% of peak.
 
@@ -101,7 +102,7 @@ W4A16 GEMMs and replaces the glue around them:
 - **One Triton align kernel** that writes Marlin's sorted-ids/block layout directly, replacing the
   expert-map index, its copy and `moe_align_block_size`. It uses block size 16 at 9-32 tokens.
 
-Result: **1.179x**, with 1.57x at batch size 1. Large batches stay at parity because Marlin dominates there.
+Result: **1.17x**, with 1.57x at batch size 1. Large batches stay at parity because Marlin dominates there.
 
 **Explored and rejected (each correct, but slower than Marlin):**
 - A Triton grouped GEMM with an exact inline-PTX E2M1 → BF16 dequant, split-K and a tile-major
@@ -116,17 +117,17 @@ Result: **1.179x**, with 1.57x at batch size 1. Large batches stay at parity bec
 This problem combines the pieces above. It is SGLang's layer with the stages swapped one at a time,
 each swap measured:
 
-| Version | Change | Speedup |
+| Step | Change | Speedup |
 |---|---|---|
-| v1 | bf16_proj + attention-decode kernels dropped in; dead 512 MB RoPE table removed | 1.089x |
-| v2 | + fused post-expert norm and weighted sum | 1.172x |
-| v3 | + router as one fused hi/lo Triton kernel, overlapped with the pooler on a side stream | 1.197x |
-| v4 | + one kernel for the pre-expert RMSNorm and the slot → local-expert map | 1.254x |
-| v5 | + both norm/residual boundaries as Triton kernels | 1.257x |
-| v7 | + Marlin block layout from one Triton kernel, block size 16 at 9-32 tokens | **1.271x** |
+| 1 | bf16_proj + attention-decode kernels dropped in; dead 512 MB RoPE table removed | 1.089x |
+| 2 | + fused post-expert norm and weighted sum | 1.172x |
+| 3 | + router as one fused hi/lo Triton kernel, overlapped with the pooler on a side stream | 1.197x |
+| 4 | + one kernel for the pre-expert RMSNorm and the slot → local-expert map | 1.254x |
+| 5 | + both norm/residual boundaries as Triton kernels | 1.257x |
+| 6 | + Marlin block layout from one Triton kernel, block size 16 at 9-32 tokens | **1.271x** |
 
-(v6 folded routing into the pre-expert kernel but moved it off the side stream onto the
-critical path, so it gained nothing.) The v7 file is
+I also tried folding the routing into the pre-expert kernel. It saved a launch, but it moved the
+routing off the side stream onto the critical path, so it gained nothing. The final kernel is
 [muse_decode_layer.py](best_submissions/muse_decode_layer.py).
 
 ## 5. Prefill layer: `muse_prefill_layer` ([prefill_layer/](prefill_layer/))
@@ -141,7 +142,7 @@ attention and the projections. It then scatters tokens by expert and runs `torch
 TFLOPS), followed by a grouped SiLU-mul and finalize. Smaller blocks stay on Marlin, where the
 1.4 ms dequant doesn't pay for itself.
 
-Result: v1 1.000x (parity) → **v3 1.133x submitted**, with 1.28-1.50x on the 16K-token shapes.
+Result: from parity (1.00x) with the first version to **1.13x**, with 1.28-1.50x on the 16K-token shapes.
 The weights stay NVFP4 in memory, and the dequant runs inside the timed call.
 
 ---
@@ -328,18 +329,12 @@ Correctness is relative L2 against an FP64 reference: $`\lVert \text{out} - \tex
 
 Each folder's working `submission.py` (and older variants) stays local; the final version of each
 is in [best_submissions/](best_submissions/). The problem statements (`TASK.md`) and agent notes
-(`AGENTS.md`), plus my local planning notes (`intent.md`), are not in the repository either (see [.gitignore](.gitignore)). To get a problem's
-statement, run `okc init <problem>` (for example `okc init muse_bf16_proj`) or read it on
+(`AGENTS.md`), plus my local planning notes (`intent.md`), are not in the repository either (see [.gitignore](.gitignore)). Each problem's full statement is on
 [openkernelchallenge.dev](https://openkernelchallenge.dev/).
 
-You need the `okc` CLI and an account that has accepted the rules (`okc login`, run by a person).
-No local GPU is needed: everything runs on the judge's H200.
-
-```bash
-okc check best_submissions/muse_bf16_proj.py --json    # tests + timing, kept off the leaderboard
-okc submit best_submissions/muse_bf16_proj.py --json   # scored run
-okc leaderboard muse_bf16_proj --json
-```
+Every file in [best_submissions/](best_submissions/) can be submitted to the challenge as it is.
+No local GPU is needed: the challenge runs each submission on its own H200, checks it against the
+reference and times it against SGLang.
 
 The judge environment: torch 2.14.1+cu130, Triton 3.8.0, CUDA 13.0, H200 SXM. Locally I checked
 correctness without a GPU using `TRITON_INTERPRET=1` against the judge's `reference.py`.
