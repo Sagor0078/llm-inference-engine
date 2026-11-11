@@ -1,5 +1,6 @@
-# Muse Spark Open Kernel Challenge: my solutions
+# llm-inference-engine
 
+**Muse Spark Open Kernel Challenge: my solutions.**
 GPU kernels that make parts of **Muse Spark Open** inference faster than stock **SGLang** on one
 NVIDIA H200, written for the [Open Kernel Challenge](https://openkernelchallenge.dev/).
 Each folder holds one challenge problem: the kernel I submitted, the probes I used to explore it,
@@ -21,6 +22,9 @@ SGLang on the same inputs). Leaderboard positions are provisional until the orga
 The speedup is the judge's score: the geometric mean over loads of SGLang's time divided by mine.
 1.0x means parity with SGLang.
 
+**Just want the kernels?** The best submission for each problem is collected in
+[best_submissions/](best_submissions/), one self-contained file per problem.
+
 ## The approach, in one paragraph
 
 Almost every decode-time shape here is **memory-bound**: the job is to stream the weights (or the
@@ -38,7 +42,7 @@ beat them (cuBLAS at large m, Marlin for the NVFP4 GEMMs). Every candidate went 
 `out = x @ W.T` for the qkv_gate, o, pooler, unpooler (BF16) and router (FP32) weights, at
 m = 1 to 256 tokens.
 
-**What the submission does** ([submission.py](bf16_proj/submission.py)):
+**What the submission does** ([muse_bf16_proj.py](best_submissions/muse_bf16_proj.py)):
 - **m = 1:** a native CUDA GEMV ([gemv1.cu](bf16_proj/gemv1.cu), compiled in `prepare()` with
   `load_inline`). Each warp streams one row segment with 16-byte loads, double-buffered in registers,
   and the warps reduce in shared memory. There is no split-K hand-off and no pipeline to fill.
@@ -68,7 +72,7 @@ m = 1 to 256 tokens.
 One decode step or 8-token verify block of grouped-query attention over a paged FP8 cache, with
 QK-norm, a 2,048-token sliding window with RoPE (or full attention), and a gated, normalized output.
 
-**What the submission does** ([submission.py](attn_decode/submission.py)), as three Triton kernels
+**What the submission does** ([muse_attention_decode.py](best_submissions/muse_attention_decode.py)), as three Triton kernels
 in place of SGLang's chain of five:
 1. **Prologue:** RMSNorm of q and the new keys, RoPE, writing the new K/V to the cache as E4M3,
    and the query rounded to E4M3.
@@ -88,7 +92,7 @@ page-size-1 gather on full layers, which runs at about 65% of peak.
 
 Top-8 of 256 experts, SwiGLU, NVFP4 weights with BF16 activations, and a norm on each expert's output.
 
-**What the submission does** ([submission.py](moe_w4a16/submission.py)): it keeps SGLang's Marlin
+**What the submission does** ([muse_moe_w4a16.py](best_submissions/muse_moe_w4a16.py)): it keeps SGLang's Marlin
 W4A16 GEMMs and replaces the glue around them:
 - **One Triton finalize kernel** for the post-expert RMSNorm × (1 + w) and top-k weighted sum. Up to
   16 tokens, SGLang falls back to about 14 PyTorch kernels here (34-43 µs of the call).
@@ -120,8 +124,8 @@ each swap measured:
 | v7 | + Marlin block layout from one Triton kernel, block size 16 at 9-32 tokens | **1.271x** |
 
 (v6 folded routing into the pre-expert kernel but moved it off the side stream onto the
-critical path, so it gained nothing.) [submission_v5_good.py](decode_layer/submission_v5_good.py) is kept as a
-fallback.
+critical path, so it gained nothing.) The v7 file is
+[muse_decode_layer.py](best_submissions/muse_decode_layer.py).
 
 ## 5. Prefill layer: `muse_prefill_layer` ([prefill_layer/](prefill_layer/))
 
@@ -129,7 +133,7 @@ The same layer at prefill sizes (753-token turns on an 80K context, and 16K-toke
 chunks). Here 65-69% of the time is the MoE GEMM at large M, where Marlin reaches only about 17-27% of
 BF16 tensor-core peak.
 
-**What the submission does** ([submission.py](prefill_layer/submission.py)): for ≥ 8,192 tokens it
+**What the submission does** ([muse_prefill_layer.py](best_submissions/muse_prefill_layer.py)): for ≥ 8,192 tokens it
 dequantizes the NVFP4 experts exactly to BF16 in scratch memory, on a side stream that overlaps
 attention and the projections. It then scatters tokens by expert and runs `torch._grouped_mm` (about 750
 TFLOPS), followed by a grouped SiLU-mul and finalize. Smaller blocks stay on Marlin, where the
@@ -144,8 +148,9 @@ The weights stay NVFP4 in memory, and the dequant runs inside the timed call.
 
 ```
 .
-├── TASK.md, AGENTS.md         # challenge statement and agent notes for muse_bf16_proj
-├── intent.md                  # my plan: objectives, rules I follow, optimization process
+├── README.md                  # this file
+├── .gitignore                 # keeps TASK.md, AGENTS.md and intent.md out of git (every folder)
+├── best_submissions/          # the best submission of every problem, in one place
 ├── bf16_proj/                 # muse_bf16_proj
 ├── attn_decode/               # muse_attention_decode (my working copy)
 ├── muse_attention_decode/     # untouched `okc init` starter for the same problem
@@ -159,14 +164,18 @@ Inside each problem folder:
 
 | File | Purpose |
 |---|---|
-| `submission.py` | My kernel, the file I submit (its first line names the problem) |
 | `LOG.md` | Every experiment: hypothesis, judge job ID, result, and why it was kept or dropped |
 | `baseline.py` | SGLang's implementation, the one I'm timed against |
 | `reference.py`, `checks.py` | The judge's reference computation and correctness checks |
-| `TASK.md`, `AGENTS.md` | The problem statement: shapes, tolerances, rules |
 | `probe*.py`, `tune*.py` | Exploration and tuning scripts run on the judge via `okc check` |
 | `*.cu`, `moe_triton*.py` | Native CUDA and alternative Triton prototypes |
 | `profiles/` | Judge outputs per job (`.json` result, `.log` output, `.txt` profile) |
+
+Each folder's working `submission.py` (and older variants) stays local; the final version of each
+is in [best_submissions/](best_submissions/). The problem statements (`TASK.md`) and agent notes
+(`AGENTS.md`), plus my local planning notes (`intent.md`), are not in the repository either (see [.gitignore](.gitignore)). To get a problem's
+statement, run `okc init <problem>` (for example `okc init muse_bf16_proj`) or read it on
+[openkernelchallenge.dev](https://openkernelchallenge.dev/).
 
 ## Reproducing
 
@@ -174,9 +183,8 @@ You need the `okc` CLI and an account that has accepted the rules (`okc login`, 
 No local GPU is needed: everything runs on the judge's H200.
 
 ```bash
-cd bf16_proj                          # or any problem folder
-okc check submission.py --json        # correctness tests + timing, kept off the leaderboard
-okc submit submission.py --json       # scored run
+okc check best_submissions/muse_bf16_proj.py --json    # tests + timing, kept off the leaderboard
+okc submit best_submissions/muse_bf16_proj.py --json   # scored run
 okc leaderboard muse_bf16_proj --json
 ```
 
@@ -198,4 +206,3 @@ This is not part of the kernel challenge. It sizes a 10-trillion-parameter model
 using the method from Cerebras' "Deploying Trillion-parameter Frontier Models" talk: about 128-190 wafers,
 with the trade-off between wafer count and KV-cache room. See [10t_model/README.md](10t_model/README.md)
 and `python3 10t_model/calc.py`.
-# llm-inference-engine

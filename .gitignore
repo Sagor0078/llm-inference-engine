@@ -6,3 +6,7 @@ TASK.md
 **/AGENTS.md
 **/intent.md
 **/TASK.md
+
+# Submissions: only the copies in best_submissions/ are tracked.
+# Working copies and older variants in the problem folders stay local.
+**/submission*.py
