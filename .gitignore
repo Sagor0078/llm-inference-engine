@@ -1,0 +1,8 @@
+# Challenge statements, agent notes and planning brief,
+# at the root and in every subfolder (bf16_proj/, attn_decode/, moe_w4a16/, ...)
+AGENTS.md
+intent.md
+TASK.md
+**/AGENTS.md
+**/intent.md
+**/TASK.md
